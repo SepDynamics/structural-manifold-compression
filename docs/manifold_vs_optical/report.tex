@@ -14,12 +14,13 @@ We revisit the Fox and OmniDocBench corpora with a purely textual approach: stru
 Using 512~byte windows, a 384~byte stride, and a 9~byte payload per unique signature, the proposed encoder delivers \textbf{42$\times$ byte} and \textbf{85--90$\times$ token compression} on the full benchmarks while retaining \textbf{94.9--95.3\% token accuracy} and \textbf{$<5.1\%$ normalized edit distance}.
 Hazard-gated verification keeps false positives under \textbf{0.09\%} at 100\% recall, and the entire run finishes in under one hour on a single RTX~3080~Ti.
 On the shared 150-document subset, the text-only manifold is 23--37 accuracy points better than DeepSeek-OCR despite operating at higher compression ratios.
+The evaluation harness and figures are released at \href{https://github.com/SepDynamics/structural-manifold-compression}{github.com/SepDynamics/structural-manifold-compression}.
 \end{abstract}
 
 \section{Introduction}
 Long-context LLM deployments frequently turn to optical tricks: convert documents into images, run a vision encoder, and hope that the reconstructed text stays faithful.
 The approach works, yet it incurs a second inference stack, saturates GPU memory with image tensors, and leaves downstream systems without a crisp verification signal.
-This report demonstrates that a structural manifold---built purely from textual signatures---matches or exceeds optical fidelity on Fox and OmniDocBench while simultaneously supplying an interpretable hazard-based verifier.
+This report demonstrates that the Sep Dynamics (SEP) structural manifold---built purely from textual signatures---matches or exceeds optical fidelity on Fox and OmniDocBench while simultaneously supplying an interpretable hazard-based verifier.
 
 \textbf{Contributions.}
 \begin{itemize}
@@ -59,10 +60,12 @@ Encoding Fox EN + Fox CN + OmniDocBench (1\,561 documents in total) takes 47~min
 \subsection{Datasets}
 The Fox benchmark contributes 112 English and 100 Chinese OCR pages sourced from the publicly released Fox dataset~\cite{liu2024fox}; the authors distribute the material for non-commercial research use via the project site.
 OmniDocBench~\cite{ouyang2024omnidocbench} adds 1\,349 heterogeneous pages (academic papers, financial reports, presentations, notes, and formula sheets) under the Apache-2.0 license, which enables redistribution alongside this study's scripts.
+The original OmniDocBench paper reports 981 PDF-level samples across nine types; we operate on the OpenDataLab page-level text manifest (downloaded 2025-03-24) plus its appendix addenda, which expands to 1\,349 UTF-8 files, and we evaluate every entry in that extended manifest.
 All corpora are evaluated verbatim---no preprocessing beyond UTF-8 normalization.
 
 \subsection{Baselines}
 The primary baseline is DeepSeek-OCR~\cite{wei2025deepseek}, run via \texttt{scripts/experiments/deepseek\_ocr\_runner.py} on the first 150 records of each corpus (matching the subset used for our structural evaluation).
+We follow their public inference recipe---prompting with ``\texttt{<image>\textbackslash nFree OCR.}'' and the released tokenizer/checkpoint in \texttt{bfloat16}---but cap evaluation to the first 150 manifest entries and stream per-page text, which partially explains the lower accuracies relative to the headline Fox/OmniDoc numbers reported in~\cite{wei2025deepseek}.
 Additionally, we reference the published DeepSeek Fox/OmniDoc numbers to contextualize compression ratios, since the released model does not expose byte-level budgets for its image tokens.
 
 \subsection{Metrics and Protocol}
