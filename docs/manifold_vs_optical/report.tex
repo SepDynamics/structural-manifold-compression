@@ -11,7 +11,7 @@
 \begin{abstract}
 Vision-language pipelines such as DeepSeek-OCR compress long contexts by rendering pages to images and streaming vision tokens, but they require expensive GPUs and offer limited verification of reconstructed spans.
 We revisit the Fox and OmniDocBench corpora with a purely textual approach: structural manifolds that store only quantized coherence, stability, entropy, and hazard signatures.
-Using 512~byte windows, a 384~byte stride, and a 9~byte payload per unique signature, the proposed encoder delivers \textbf{41--42$\times$ byte} and \textbf{85--90$\times$ token compression} on the full benchmarks while retaining \textbf{94.9--95.3\% token accuracy} and \textbf{$<5.1\%$ normalized edit distance}.
+Using 512~byte windows, a 384~byte stride, and a 9~byte payload per unique signature, the proposed encoder delivers \textbf{41--42$\times$ byte} and \textbf{85--90$\times$ token compression} on the full benchmarks while retaining \textbf{94.9--95.3\% token accuracy} and \textbf{$\leq4.96\%$ normalized edit distance}.
 Hazard-gated verification keeps false positives under \textbf{0.09\%} at 100\% recall while holding dataset-level precision between \textbf{80--97\%}, and the entire run finishes in under one hour on a single RTX~3080~Ti.
 On the shared 150-document subset, the text-only manifold is 23--37 accuracy points better than DeepSeek-OCR despite operating at higher compression ratios.
 The evaluation harness and figures are released at \href{https://github.com/SepDynamics/structural-manifold-compression}{github.com/SepDynamics/structural-manifold-compression}.
@@ -92,8 +92,8 @@ Unless noted otherwise, window size is 512~bytes, stride is 384~bytes, signature
 \section{Results}
 \subsection{Full-Benchmark Compression and Fidelity}
 Table~\ref{tab:full} summarises the full Fox (EN and CN) and OmniDocBench runs.
-All corpora exceed 41$\times$ byte compression and 85--90$\times$ token compression while retaining 94.9--95.3\% token accuracy and $<5.1\%$ normalized edit distance.
-Hazard verification remains strict: Fox EN attains 91.21\% precision with only 0.087\% false positives, Fox CN reaches 97.19\% precision at 0.029\% FPR, and even the diverse OmniDoc corpus keeps precision above 80\% with a 0.017\% false-positive rate.
+All corpora exceed 41$\times$ byte compression and 85--90$\times$ token compression while retaining 94.9--95.3\% token accuracy and $\leq$4.96\% normalized edit distance.
+Hazard verification remains strict: Fox EN attains 91.21\% precision with only 0.0868\% false positives, Fox CN reaches 97.19\% precision at 0.0292\% FPR, and even the diverse OmniDoc corpus keeps precision above 80\% with a 0.0175\% false-positive rate.
 Figure~\ref{fig:compression} overlays our ratios against DeepSeek-OCR's Fox curve to visualise the order-of-magnitude token savings at comparable accuracy.
 
 \begin{table}[h]
@@ -104,9 +104,9 @@ Figure~\ref{fig:compression} overlays our ratios against DeepSeek-OCR's Fox curv
         \toprule
         Dataset & Byte$\times$ & Token$\times$ & Token Acc. & Norm. Edit & Verif. Prec. & Verif. FPR \\
         \midrule
-        Fox EN (112)  & 42.03 & 85.48 & 95.35\% & 4.38\% & 91.21\% & 0.087\% \\
-        Fox CN (100)  & 42.01 & 88.08 & 94.94\% & 4.96\% & 97.19\% & 0.029\% \\
-        OmniDoc (1\,349) & 41.59 & 89.49 & 94.90\% & 5.06\% & 80.85\% & 0.017\% \\
+        Fox EN (112)  & 42.03 & 85.48 & 95.35\% & 4.38\% & 91.21\% & 0.0868\% \\
+        Fox CN (100)  & 42.01 & 88.08 & 94.94\% & 4.96\% & 97.19\% & 0.0292\% \\
+        OmniDoc (1\,349) & 41.59 & 89.49 & 94.90\% & 5.06\% & 80.85\% & 0.0175\% \\
         \bottomrule
     \end{tabular}
 \end{table}
