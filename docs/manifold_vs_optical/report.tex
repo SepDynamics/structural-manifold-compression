@@ -10,7 +10,7 @@
 
 \begin{abstract}
 Vision-language pipelines such as DeepSeek-OCR compress long contexts by rendering pages to images and streaming vision tokens, but they require expensive GPUs and offer limited verification of reconstructed spans.
-We revisit the Fox and OmniDocBench corpora with a purely textual approach: structural manifolds that store only quantised coherence, stability, entropy, and hazard signatures.
+We revisit the Fox and OmniDocBench corpora with a purely textual approach: structural manifolds that store only quantized coherence, stability, entropy, and hazard signatures.
 Using 512~byte windows, a 384~byte stride, and a 9~byte payload per unique signature, the proposed encoder delivers \textbf{42$\times$ byte} and \textbf{85--90$\times$ token compression} on the full benchmarks while retaining \textbf{94.9--95.3\% token accuracy} and \textbf{$<5.1\%$ normalized edit distance}.
 Hazard-gated verification keeps false positives under \textbf{0.09\%} at 100\% recall, and the entire run finishes in under one hour on a single RTX~3080~Ti.
 On the shared 150-document subset, the text-only manifold is 23--37 accuracy points better than DeepSeek-OCR despite operating at higher compression ratios.
@@ -24,7 +24,7 @@ This report demonstrates that the Sep Dynamics (SEP) structural manifold---built
 
 \textbf{Contributions.}
 \begin{itemize}
-    \item We present a compact 9~byte signature that stores quantised coherence, stability, entropy, hazard, and repetition counts per 512~byte window, enabling $>$40$\times$ byte compression without discarding the original UTF-8 prototype.
+    \item We present a compact 9~byte signature that stores quantized coherence, stability, entropy, hazard, and repetition counts per 512~byte window, enabling $>$40$\times$ byte compression without discarding the original UTF-8 prototype.
     \item We integrate hazard-gated verification into the compression loop, yielding perfect recall and $<0.09\%$ false positives on the full Fox and OmniDocBench benchmarks.
     \item We release a reproducible benchmark harness (\texttt{scripts/experiments/benchmark\_eval.py}) and cross-modality comparison against DeepSeek-OCR, highlighting that text-only manifolds can outperform vision pipelines while using commodity hardware.
 \end{itemize}
@@ -38,8 +38,20 @@ Our work instead focuses on compressing the \emph{text itself}: by storing struc
 \subsection{Sliding-Window Encoding}
 We slide fixed windows of 512~bytes over UTF-8 documents with a 384~byte stride.
 Each window is passed through SEP's encoder, producing coherence ($q$), stability ($\phi$), entropy ($h$), and hazard ($\lambda$) metrics.
-The metrics are quantised to three decimal places and packed with repetition counts into a 9~byte signature payload.
+The metrics are quantized to three decimal places and packed with repetition counts into a 9~byte signature payload.
 Unique signatures are stored once per document alongside their first raw span, while repeats increase the count; serialization targets Valkey namespaces (e.g., \texttt{gate:last:\{instrument\}}) for the trading system compatibility.
+
+\subsection{Metric Definitions}
+Let $w$ be a window that yields $n$ bits $\{b_1,\dots,b_n\}$ and empirical probabilities $p_0$ and $p_1$ of zeroes/ones.
+We compute:
+\begin{align}
+    h &= -\sum_{b\in\{0,1\}} p_b \log_2 p_b, \\
+    q &= 1 - h, \\
+    r &= \frac{1}{n-1}\sum_{i=2}^{n} \mathbf{1}[b_i \neq b_{i-1}], \\
+    \phi &= 1 - r, \qquad \lambda = r.
+\end{align}
+Entropy $h$ (bits) measures information density, coherence $q$ is its complement, rupture $r$ measures the fraction of adjacent bit flips, stability $\phi$ complements rupture, and hazard $\lambda$ directly mirrors rupture so it can serve as a collision prior.
+After computing $(q,\phi,h,\lambda)$ we quantize each value to three decimals, yielding $1001$ buckets per metric, and pack the tuple plus a 32-bit repetition counter into the 9~byte signature.
 
 \subsection{Reconstruction and Token Metrics}
 Reconstruction concatenates the prototype spans in the order implied by the sliding windows, overlapping only the stride tail.
@@ -124,12 +136,14 @@ DeepSeek's released weights do not expose byte-level budgets for their image tok
 Slides with dense mathematical notation, handwriting scans, and documents with under 256~bytes of unique content produce the largest edit distances.
 These cases also drive the lower verification precision on OmniDoc, although the false-positive rate remains under 0.02\%.
 Hybrid operation is straightforward: the gate can fall back to optical OCR for windows whose hazard exceeds a tuned threshold while keeping the rest of the corpus in structural form.
+Because signatures collapse repeated structure, lossy collisions remain possible when semantically distinct spans share similar entropy/rupture profiles, especially on evolving legal clauses or highly templated boilerplate; hazard gating lowers but does not eliminate this risk.
 
 \section{Discussion and Limitations}
 Structural manifolds inherit the assumptions of their tokenizer and window granularity.
 Very small contexts require padding to reach 512~bytes, and scripts with heavy ligatures (e.g., handwritten math) still benefit from optical cues.
 Our current prototype stores the first raw window per signature, which can drift when layout-dependent artifacts (tables, multi-column text) appear; a future revision can attach lightweight layout hashes or use adaptive window sizes.
 Finally, hazard gating currently relies on percentile thresholds derived from the training corpus and could be further calibrated with Bayesian estimates when moving to production data.
+Future work should also benchmark non-optical compressors, sweep window/stride/precision hyperparameters, and explore hybrid code paths that automatically fall back to OCR for handwriting, formulas, or noisy web captures.
 
 \section{Reproducibility}
 All experiments were conducted from the \texttt{main} branch of this repository.
@@ -146,7 +160,10 @@ To reproduce the manifold runs:
     \texttt{\quad --output-dir output/benchmark\_runs/full\_benchmark}.
     \item For the optical baseline, run: \\
     \texttt{python scripts/experiments/deepseek\_ocr\_runner.py} \\
-    \texttt{\quad --dataset fox=\dots\ --dataset omnidoc=\dots} \\
+    \texttt{\quad --dataset fox=data/benchmark\_corpus/fox/metadata/text\_manifest.jsonl:}\\
+    \texttt{\qquad data/benchmark\_corpus/fox/raw} \\
+    \texttt{\quad --dataset omnidoc=data/benchmark\_corpus/omnidocbench/metadata/text\_manifest.jsonl:}\\
+    \texttt{\qquad data/benchmark\_corpus/omnidocbench/raw/OmniDocBench} \\
     \texttt{\quad --model-name external/DeepSeek-OCR/weights} \\
     \texttt{\quad --prompt "<image>\textbackslash nFree OCR." --max-records 150}.
     \item Plot compression curves with: \\
