@@ -1,0 +1,3953 @@
+{
+  "text_root": "data/benchmark_corpus/fox/text/cn_page_ocr",
+  "documents": 100,
+  "window_bytes": 512,
+  "stride_bytes": 384,
+  "precision": 3,
+  "tokenizer_name": "external/DeepSeek-OCR/weights",
+  "tokenizer_trust_remote_code": true,
+  "signature_storage_bytes": 9,
+  "original_size_bytes": 366366,
+  "compressed_size_bytes": 8721,
+  "compression_ratio": 42.009631922944614,
+  "unique_signatures": 969,
+  "shared_signatures": 14,
+  "verification": {
+    "positives": 969,
+    "true_positive": 969,
+    "negatives": 95931,
+    "false_positive": 28,
+    "precision": 0.9719157472417251,
+    "recall": 1.0,
+    "false_positive_rate": 0.00029187645286716493,
+    "f1": 0.9857578840284843
+  },
+  "per_document": {
+    "cn_1": {
+      "original_size_bytes": 4148,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 41.898989898989896,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 935,
+        "reconstructed_tokens": 989,
+        "edit_distance": 54,
+        "token_accuracy": 0.9453993933265925,
+        "token_precision": 0.9453993933265925,
+        "token_recall": 0.9422459893048128,
+        "token_f1": 0.9438200573578057
+      },
+      "character_metrics": {
+        "original_characters": 1438,
+        "reconstructed_characters": 1509,
+        "edit_distance": 71,
+        "character_accuracy": 0.9529489728296885,
+        "character_precision": 0.9529489728296885,
+        "character_recall": 0.9506258692628651,
+        "character_f1": 0.951786003500178,
+        "normalized_edit_distance": 0.04705102717031146
+      },
+      "normalized_edit_distance": 0.04705102717031146,
+      "token_compression_unique": 85.0,
+      "token_compression_stream": 85.0,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_10": {
+      "original_size_bytes": 3337,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 41.19753086419753,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 901,
+        "reconstructed_tokens": 962,
+        "edit_distance": 61,
+        "token_accuracy": 0.9365904365904366,
+        "token_precision": 0.9365904365904366,
+        "token_recall": 0.9322974472807991,
+        "token_f1": 0.9344390112607037
+      },
+      "character_metrics": {
+        "original_characters": 1246,
+        "reconstructed_characters": 1337,
+        "edit_distance": 91,
+        "character_accuracy": 0.9319371727748691,
+        "character_precision": 0.9319371727748691,
+        "character_recall": 0.9269662921348315,
+        "character_f1": 0.9294450861564265,
+        "normalized_edit_distance": 0.06806282722513089
+      },
+      "normalized_edit_distance": 0.06806282722513089,
+      "token_compression_unique": 100.11111111111111,
+      "token_compression_stream": 100.11111111111111,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_100": {
+      "original_size_bytes": 4254,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 42.96969696969697,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 938,
+        "reconstructed_tokens": 961,
+        "edit_distance": 23,
+        "token_accuracy": 0.9760665972944849,
+        "token_precision": 0.9760665972944849,
+        "token_recall": 0.9754797441364605,
+        "token_f1": 0.9757730824786162
+      },
+      "character_metrics": {
+        "original_characters": 1524,
+        "reconstructed_characters": 1560,
+        "edit_distance": 36,
+        "character_accuracy": 0.9769230769230769,
+        "character_precision": 0.9769230769230769,
+        "character_recall": 0.9763779527559056,
+        "character_f1": 0.9766504387732953,
+        "normalized_edit_distance": 0.023076923076923078
+      },
+      "normalized_edit_distance": 0.023076923076923078,
+      "token_compression_unique": 85.27272727272727,
+      "token_compression_stream": 85.27272727272727,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 1,
+        "precision": 0.9166666666666666,
+        "false_positive_rate": 0.0010438413361169101,
+        "recall": 1.0,
+        "f1": 0.9565217391304348
+      }
+    },
+    "cn_11": {
+      "original_size_bytes": 3033,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 42.125,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 645,
+        "reconstructed_tokens": 685,
+        "edit_distance": 40,
+        "token_accuracy": 0.9416058394160584,
+        "token_precision": 0.9416058394160584,
+        "token_recall": 0.937984496124031,
+        "token_f1": 0.9397916792100668
+      },
+      "character_metrics": {
+        "original_characters": 1081,
+        "reconstructed_characters": 1143,
+        "edit_distance": 62,
+        "character_accuracy": 0.9457567804024497,
+        "character_precision": 0.9457567804024497,
+        "character_recall": 0.9426456984273821,
+        "character_f1": 0.9441986767114763,
+        "normalized_edit_distance": 0.0542432195975503
+      },
+      "normalized_edit_distance": 0.0542432195975503,
+      "token_compression_unique": 80.625,
+      "token_compression_stream": 80.625,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 1,
+        "precision": 0.8888888888888888,
+        "false_positive_rate": 0.001040582726326743,
+        "recall": 1.0,
+        "f1": 0.9411764705882353
+      }
+    },
+    "cn_12": {
+      "original_size_bytes": 3110,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.19444444444444,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 703,
+        "reconstructed_tokens": 723,
+        "edit_distance": 20,
+        "token_accuracy": 0.9723374827109267,
+        "token_precision": 0.9723374827109267,
+        "token_recall": 0.9715504978662873,
+        "token_f1": 0.9719438309828363
+      },
+      "character_metrics": {
+        "original_characters": 1062,
+        "reconstructed_characters": 1093,
+        "edit_distance": 31,
+        "character_accuracy": 0.9716376944190301,
+        "character_precision": 0.9716376944190301,
+        "character_recall": 0.9708097928436912,
+        "character_f1": 0.9712235671990446,
+        "normalized_edit_distance": 0.028362305580969808
+      },
+      "normalized_edit_distance": 0.028362305580969808,
+      "token_compression_unique": 87.875,
+      "token_compression_stream": 87.875,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_13": {
+      "original_size_bytes": 3823,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.477777777777774,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 824,
+        "reconstructed_tokens": 854,
+        "edit_distance": 30,
+        "token_accuracy": 0.9648711943793911,
+        "token_precision": 0.9648711943793911,
+        "token_recall": 0.9635922330097088,
+        "token_f1": 0.9642312895894926
+      },
+      "character_metrics": {
+        "original_characters": 1324,
+        "reconstructed_characters": 1375,
+        "edit_distance": 51,
+        "character_accuracy": 0.9629090909090909,
+        "character_precision": 0.9629090909090909,
+        "character_recall": 0.9614803625377644,
+        "character_f1": 0.9621941963565741,
+        "normalized_edit_distance": 0.03709090909090909
+      },
+      "normalized_edit_distance": 0.03709090909090909,
+      "token_compression_unique": 82.4,
+      "token_compression_stream": 82.4,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_14": {
+      "original_size_bytes": 4536,
+      "compressed_size_bytes": 108,
+      "compression_ratio": 42.0,
+      "unique_signatures": 12,
+      "stream_windows": 12,
+      "token_metrics": {
+        "original_tokens": 948,
+        "reconstructed_tokens": 997,
+        "edit_distance": 49,
+        "token_accuracy": 0.950852557673019,
+        "token_precision": 0.950852557673019,
+        "token_recall": 0.9483122362869199,
+        "token_f1": 0.949580698013991
+      },
+      "character_metrics": {
+        "original_characters": 1636,
+        "reconstructed_characters": 1706,
+        "edit_distance": 70,
+        "character_accuracy": 0.958968347010551,
+        "character_precision": 0.958968347010551,
+        "character_recall": 0.9572127139364304,
+        "character_f1": 0.9580897262051588,
+        "normalized_edit_distance": 0.041031652989449004
+      },
+      "normalized_edit_distance": 0.041031652989449004,
+      "token_compression_unique": 79.0,
+      "token_compression_stream": 79.0,
+      "verification": {
+        "positives": 12,
+        "true_positive": 12,
+        "negatives": 957,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_15": {
+      "original_size_bytes": 5073,
+      "compressed_size_bytes": 117,
+      "compression_ratio": 43.35897435897436,
+      "unique_signatures": 13,
+      "stream_windows": 13,
+      "token_metrics": {
+        "original_tokens": 1123,
+        "reconstructed_tokens": 1133,
+        "edit_distance": 10,
+        "token_accuracy": 0.9911738746690203,
+        "token_precision": 0.9911738746690203,
+        "token_recall": 0.9910952804986642,
+        "token_f1": 0.9911345760257684
+      },
+      "character_metrics": {
+        "original_characters": 1761,
+        "reconstructed_characters": 1778,
+        "edit_distance": 17,
+        "character_accuracy": 0.9904386951631046,
+        "character_precision": 0.9904386951631046,
+        "character_recall": 0.9903463940942646,
+        "character_f1": 0.9903925424781517,
+        "normalized_edit_distance": 0.009561304836895388
+      },
+      "normalized_edit_distance": 0.009561304836895388,
+      "token_compression_unique": 86.38461538461539,
+      "token_compression_stream": 86.38461538461539,
+      "verification": {
+        "positives": 13,
+        "true_positive": 13,
+        "negatives": 956,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_16": {
+      "original_size_bytes": 5506,
+      "compressed_size_bytes": 135,
+      "compression_ratio": 40.785185185185185,
+      "unique_signatures": 15,
+      "stream_windows": 15,
+      "token_metrics": {
+        "original_tokens": 1145,
+        "reconstructed_tokens": 1228,
+        "edit_distance": 83,
+        "token_accuracy": 0.9324104234527687,
+        "token_precision": 0.9324104234527687,
+        "token_recall": 0.9275109170305676,
+        "token_f1": 0.9299542169679037
+      },
+      "character_metrics": {
+        "original_characters": 1977,
+        "reconstructed_characters": 2121,
+        "edit_distance": 144,
+        "character_accuracy": 0.9321074964639321,
+        "character_precision": 0.9321074964639321,
+        "character_recall": 0.9271623672230652,
+        "character_f1": 0.9296283555245666,
+        "normalized_edit_distance": 0.06789250353606789
+      },
+      "normalized_edit_distance": 0.06789250353606789,
+      "token_compression_unique": 76.33333333333333,
+      "token_compression_stream": 76.33333333333333,
+      "verification": {
+        "positives": 15,
+        "true_positive": 15,
+        "negatives": 954,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_17": {
+      "original_size_bytes": 4771,
+      "compressed_size_bytes": 117,
+      "compression_ratio": 40.77777777777778,
+      "unique_signatures": 13,
+      "stream_windows": 13,
+      "token_metrics": {
+        "original_tokens": 1393,
+        "reconstructed_tokens": 1502,
+        "edit_distance": 109,
+        "token_accuracy": 0.9274300932090546,
+        "token_precision": 0.9274300932090546,
+        "token_recall": 0.9217516152189519,
+        "token_f1": 0.924582135462315
+      },
+      "character_metrics": {
+        "original_characters": 1905,
+        "reconstructed_characters": 2046,
+        "edit_distance": 141,
+        "character_accuracy": 0.9310850439882699,
+        "character_precision": 0.9310850439882699,
+        "character_recall": 0.925984251968504,
+        "character_f1": 0.9285276428334294,
+        "normalized_edit_distance": 0.0689149560117302
+      },
+      "normalized_edit_distance": 0.0689149560117302,
+      "token_compression_unique": 107.15384615384616,
+      "token_compression_stream": 107.15384615384616,
+      "verification": {
+        "positives": 13,
+        "true_positive": 13,
+        "negatives": 956,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_18": {
+      "original_size_bytes": 4372,
+      "compressed_size_bytes": 108,
+      "compression_ratio": 40.48148148148148,
+      "unique_signatures": 12,
+      "stream_windows": 12,
+      "token_metrics": {
+        "original_tokens": 858,
+        "reconstructed_tokens": 930,
+        "edit_distance": 72,
+        "token_accuracy": 0.9225806451612903,
+        "token_precision": 0.9225806451612903,
+        "token_recall": 0.916083916083916,
+        "token_f1": 0.9193208028659763
+      },
+      "character_metrics": {
+        "original_characters": 1490,
+        "reconstructed_characters": 1614,
+        "edit_distance": 124,
+        "character_accuracy": 0.9231722428748451,
+        "character_precision": 0.9231722428748451,
+        "character_recall": 0.9167785234899328,
+        "character_f1": 0.9199642742852597,
+        "normalized_edit_distance": 0.0768277571251549
+      },
+      "normalized_edit_distance": 0.0768277571251549,
+      "token_compression_unique": 71.5,
+      "token_compression_stream": 71.5,
+      "verification": {
+        "positives": 12,
+        "true_positive": 12,
+        "negatives": 957,
+        "false_positive": 1,
+        "precision": 0.9230769230769231,
+        "false_positive_rate": 0.0010449320794148381,
+        "recall": 1.0,
+        "f1": 0.9600000000000001
+      }
+    },
+    "cn_19": {
+      "original_size_bytes": 4258,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 43.01010101010101,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 1263,
+        "reconstructed_tokens": 1293,
+        "edit_distance": 30,
+        "token_accuracy": 0.9767981438515081,
+        "token_precision": 0.9767981438515081,
+        "token_recall": 0.9762470308788599,
+        "token_f1": 0.9765225096082759
+      },
+      "character_metrics": {
+        "original_characters": 1534,
+        "reconstructed_characters": 1566,
+        "edit_distance": 32,
+        "character_accuracy": 0.979565772669221,
+        "character_precision": 0.979565772669221,
+        "character_recall": 0.9791395045632334,
+        "character_f1": 0.9793525922323989,
+        "normalized_edit_distance": 0.020434227330779056
+      },
+      "normalized_edit_distance": 0.020434227330779056,
+      "token_compression_unique": 114.81818181818181,
+      "token_compression_stream": 114.81818181818181,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_2": {
+      "original_size_bytes": 3984,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 40.24242424242424,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 1034,
+        "reconstructed_tokens": 1141,
+        "edit_distance": 107,
+        "token_accuracy": 0.9062226117440841,
+        "token_precision": 0.9062226117440841,
+        "token_recall": 0.8965183752417795,
+        "token_f1": 0.9013443743203018
+      },
+      "character_metrics": {
+        "original_characters": 1362,
+        "reconstructed_characters": 1488,
+        "edit_distance": 126,
+        "character_accuracy": 0.9153225806451613,
+        "character_precision": 0.9153225806451613,
+        "character_recall": 0.9074889867841409,
+        "character_f1": 0.9113889511484452,
+        "normalized_edit_distance": 0.0846774193548387
+      },
+      "normalized_edit_distance": 0.0846774193548387,
+      "token_compression_unique": 94.0,
+      "token_compression_stream": 94.0,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_20": {
+      "original_size_bytes": 4076,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 41.17171717171717,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 937,
+        "reconstructed_tokens": 1000,
+        "edit_distance": 63,
+        "token_accuracy": 0.937,
+        "token_precision": 0.937,
+        "token_recall": 0.9327641408751334,
+        "token_f1": 0.9348772723718285
+      },
+      "character_metrics": {
+        "original_characters": 1398,
+        "reconstructed_characters": 1492,
+        "edit_distance": 94,
+        "character_accuracy": 0.9369973190348525,
+        "character_precision": 0.9369973190348525,
+        "character_recall": 0.932761087267525,
+        "character_f1": 0.9348744042264918,
+        "normalized_edit_distance": 0.06300268096514745
+      },
+      "normalized_edit_distance": 0.06300268096514745,
+      "token_compression_unique": 85.18181818181819,
+      "token_compression_stream": 85.18181818181819,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 1,
+        "precision": 0.9166666666666666,
+        "false_positive_rate": 0.0010438413361169101,
+        "recall": 1.0,
+        "f1": 0.9565217391304348
+      }
+    },
+    "cn_21": {
+      "original_size_bytes": 3101,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.06944444444444,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 660,
+        "reconstructed_tokens": 680,
+        "edit_distance": 20,
+        "token_accuracy": 0.9705882352941176,
+        "token_precision": 0.9705882352941176,
+        "token_recall": 0.9696969696969697,
+        "token_f1": 0.9701423977951308
+      },
+      "character_metrics": {
+        "original_characters": 1109,
+        "reconstructed_characters": 1144,
+        "edit_distance": 35,
+        "character_accuracy": 0.9694055944055944,
+        "character_precision": 0.9694055944055944,
+        "character_recall": 0.9684400360685302,
+        "character_f1": 0.9689225746856769,
+        "normalized_edit_distance": 0.030594405594405596
+      },
+      "normalized_edit_distance": 0.030594405594405596,
+      "token_compression_unique": 82.5,
+      "token_compression_stream": 82.5,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_22": {
+      "original_size_bytes": 4206,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 42.484848484848484,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 942,
+        "reconstructed_tokens": 976,
+        "edit_distance": 34,
+        "token_accuracy": 0.9651639344262295,
+        "token_precision": 0.9651639344262295,
+        "token_recall": 0.9639065817409767,
+        "token_f1": 0.9645348483174069
+      },
+      "character_metrics": {
+        "original_characters": 1434,
+        "reconstructed_characters": 1484,
+        "edit_distance": 50,
+        "character_accuracy": 0.9663072776280324,
+        "character_precision": 0.9663072776280324,
+        "character_recall": 0.9651324965132496,
+        "character_f1": 0.9657195297955434,
+        "normalized_edit_distance": 0.03369272237196765
+      },
+      "normalized_edit_distance": 0.03369272237196765,
+      "token_compression_unique": 85.63636363636364,
+      "token_compression_stream": 85.63636363636364,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 1,
+        "precision": 0.9166666666666666,
+        "false_positive_rate": 0.0010438413361169101,
+        "recall": 1.0,
+        "f1": 0.9565217391304348
+      }
+    },
+    "cn_23": {
+      "original_size_bytes": 3445,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 42.53086419753087,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 928,
+        "reconstructed_tokens": 968,
+        "edit_distance": 40,
+        "token_accuracy": 0.9586776859504132,
+        "token_precision": 0.9586776859504132,
+        "token_recall": 0.9568965517241379,
+        "token_f1": 0.9577862907724923
+      },
+      "character_metrics": {
+        "original_characters": 1197,
+        "reconstructed_characters": 1246,
+        "edit_distance": 49,
+        "character_accuracy": 0.9606741573033708,
+        "character_precision": 0.9606741573033708,
+        "character_recall": 0.9590643274853801,
+        "character_f1": 0.9598685674190953,
+        "normalized_edit_distance": 0.03932584269662921
+      },
+      "normalized_edit_distance": 0.03932584269662921,
+      "token_compression_unique": 103.11111111111111,
+      "token_compression_stream": 103.11111111111111,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_24": {
+      "original_size_bytes": 3719,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 41.32222222222222,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 873,
+        "reconstructed_tokens": 934,
+        "edit_distance": 61,
+        "token_accuracy": 0.9346895074946466,
+        "token_precision": 0.9346895074946466,
+        "token_recall": 0.9301260022909508,
+        "token_f1": 0.9324021710750873
+      },
+      "character_metrics": {
+        "original_characters": 1265,
+        "reconstructed_characters": 1350,
+        "edit_distance": 85,
+        "character_accuracy": 0.937037037037037,
+        "character_precision": 0.937037037037037,
+        "character_recall": 0.9328063241106719,
+        "character_f1": 0.9349168943622825,
+        "normalized_edit_distance": 0.06296296296296296
+      },
+      "normalized_edit_distance": 0.06296296296296296,
+      "token_compression_unique": 87.3,
+      "token_compression_stream": 87.3,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_25": {
+      "original_size_bytes": 4345,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 43.888888888888886,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 860,
+        "reconstructed_tokens": 864,
+        "edit_distance": 4,
+        "token_accuracy": 0.9953703703703703,
+        "token_precision": 0.9953703703703703,
+        "token_recall": 0.9953488372093023,
+        "token_f1": 0.9953596036733766
+      },
+      "character_metrics": {
+        "original_characters": 1485,
+        "reconstructed_characters": 1488,
+        "edit_distance": 3,
+        "character_accuracy": 0.9979838709677419,
+        "character_precision": 0.9979838709677419,
+        "character_recall": 0.997979797979798,
+        "character_f1": 0.9979818344696142,
+        "normalized_edit_distance": 0.0020161290322580645
+      },
+      "normalized_edit_distance": 0.0020161290322580645,
+      "token_compression_unique": 78.18181818181819,
+      "token_compression_stream": 78.18181818181819,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_26": {
+      "original_size_bytes": 3297,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.7037037037037,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 704,
+        "reconstructed_tokens": 764,
+        "edit_distance": 60,
+        "token_accuracy": 0.9214659685863874,
+        "token_precision": 0.9214659685863874,
+        "token_recall": 0.9147727272727273,
+        "token_f1": 0.9181071492215724
+      },
+      "character_metrics": {
+        "original_characters": 1135,
+        "reconstructed_characters": 1236,
+        "edit_distance": 101,
+        "character_accuracy": 0.9182847896440129,
+        "character_precision": 0.9182847896440129,
+        "character_recall": 0.9110132158590308,
+        "character_f1": 0.9146345502716221,
+        "normalized_edit_distance": 0.08171521035598706
+      },
+      "normalized_edit_distance": 0.08171521035598706,
+      "token_compression_unique": 78.22222222222223,
+      "token_compression_stream": 78.22222222222223,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_27": {
+      "original_size_bytes": 3784,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.044444444444444,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 895,
+        "reconstructed_tokens": 941,
+        "edit_distance": 46,
+        "token_accuracy": 0.9511158342189161,
+        "token_precision": 0.9511158342189161,
+        "token_recall": 0.9486033519553072,
+        "token_f1": 0.9498579316396801
+      },
+      "character_metrics": {
+        "original_characters": 1344,
+        "reconstructed_characters": 1412,
+        "edit_distance": 68,
+        "character_accuracy": 0.9518413597733711,
+        "character_precision": 0.9518413597733711,
+        "character_recall": 0.9494047619047619,
+        "character_f1": 0.9506214994922463,
+        "normalized_edit_distance": 0.04815864022662889
+      },
+      "normalized_edit_distance": 0.04815864022662889,
+      "token_compression_unique": 89.5,
+      "token_compression_stream": 89.5,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_28": {
+      "original_size_bytes": 3083,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 42.81944444444444,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 855,
+        "reconstructed_tokens": 896,
+        "edit_distance": 41,
+        "token_accuracy": 0.9542410714285714,
+        "token_precision": 0.9542410714285714,
+        "token_recall": 0.952046783625731,
+        "token_f1": 0.9531426646279126
+      },
+      "character_metrics": {
+        "original_characters": 1134,
+        "reconstructed_characters": 1179,
+        "edit_distance": 45,
+        "character_accuracy": 0.9618320610687023,
+        "character_precision": 0.9618320610687023,
+        "character_recall": 0.9603174603174603,
+        "character_f1": 0.9610741639612947,
+        "normalized_edit_distance": 0.03816793893129771
+      },
+      "normalized_edit_distance": 0.03816793893129771,
+      "token_compression_unique": 106.875,
+      "token_compression_stream": 106.875,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_29": {
+      "original_size_bytes": 3010,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 41.80555555555556,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 588,
+        "reconstructed_tokens": 628,
+        "edit_distance": 40,
+        "token_accuracy": 0.9363057324840764,
+        "token_precision": 0.9363057324840764,
+        "token_recall": 0.9319727891156463,
+        "token_f1": 0.9341342362818313
+      },
+      "character_metrics": {
+        "original_characters": 1037,
+        "reconstructed_characters": 1101,
+        "edit_distance": 64,
+        "character_accuracy": 0.9418710263396912,
+        "character_precision": 0.9418710263396912,
+        "character_recall": 0.9382835101253616,
+        "character_f1": 0.940073845569033,
+        "normalized_edit_distance": 0.05812897366030881
+      },
+      "normalized_edit_distance": 0.05812897366030881,
+      "token_compression_unique": 73.5,
+      "token_compression_stream": 73.5,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_3": {
+      "original_size_bytes": 3747,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 41.63333333333333,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 815,
+        "reconstructed_tokens": 858,
+        "edit_distance": 43,
+        "token_accuracy": 0.9498834498834499,
+        "token_precision": 0.9498834498834499,
+        "token_recall": 0.947239263803681,
+        "token_f1": 0.9485595141267043
+      },
+      "character_metrics": {
+        "original_characters": 1291,
+        "reconstructed_characters": 1366,
+        "edit_distance": 75,
+        "character_accuracy": 0.945095168374817,
+        "character_precision": 0.945095168374817,
+        "character_recall": 0.9419054996127033,
+        "character_f1": 0.9434976381847483,
+        "normalized_edit_distance": 0.05490483162518302
+      },
+      "normalized_edit_distance": 0.05490483162518302,
+      "token_compression_unique": 81.5,
+      "token_compression_stream": 81.5,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_30": {
+      "original_size_bytes": 3989,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 40.292929292929294,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 999,
+        "reconstructed_tokens": 1090,
+        "edit_distance": 91,
+        "token_accuracy": 0.9165137614678899,
+        "token_precision": 0.9165137614678899,
+        "token_recall": 0.9089089089089089,
+        "token_f1": 0.9126954939853229
+      },
+      "character_metrics": {
+        "original_characters": 1361,
+        "reconstructed_characters": 1485,
+        "edit_distance": 124,
+        "character_accuracy": 0.9164983164983165,
+        "character_precision": 0.9164983164983165,
+        "character_recall": 0.9088905216752388,
+        "character_f1": 0.9126785653297973,
+        "normalized_edit_distance": 0.08350168350168351
+      },
+      "normalized_edit_distance": 0.08350168350168351,
+      "token_compression_unique": 90.81818181818181,
+      "token_compression_stream": 90.81818181818181,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 1,
+        "precision": 0.9166666666666666,
+        "false_positive_rate": 0.0010438413361169101,
+        "recall": 1.0,
+        "f1": 0.9565217391304348
+      }
+    },
+    "cn_31": {
+      "original_size_bytes": 3846,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.733333333333334,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 1195,
+        "reconstructed_tokens": 1234,
+        "edit_distance": 39,
+        "token_accuracy": 0.9683954619124797,
+        "token_precision": 0.9683954619124797,
+        "token_recall": 0.9673640167364017,
+        "token_f1": 0.9678794645281236
+      },
+      "character_metrics": {
+        "original_characters": 1324,
+        "reconstructed_characters": 1368,
+        "edit_distance": 44,
+        "character_accuracy": 0.9678362573099415,
+        "character_precision": 0.9678362573099415,
+        "character_recall": 0.9667673716012084,
+        "character_f1": 0.9673015191711454,
+        "normalized_edit_distance": 0.03216374269005848
+      },
+      "normalized_edit_distance": 0.03216374269005848,
+      "token_compression_unique": 119.5,
+      "token_compression_stream": 119.5,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_32": {
+      "original_size_bytes": 3111,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.208333333333336,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 597,
+        "reconstructed_tokens": 621,
+        "edit_distance": 24,
+        "token_accuracy": 0.961352657004831,
+        "token_precision": 0.961352657004831,
+        "token_recall": 0.9597989949748744,
+        "token_f1": 0.960575197755819
+      },
+      "character_metrics": {
+        "original_characters": 1111,
+        "reconstructed_characters": 1149,
+        "edit_distance": 38,
+        "character_accuracy": 0.9669277632724108,
+        "character_precision": 0.9669277632724108,
+        "character_recall": 0.9657965796579658,
+        "character_f1": 0.9663618404359926,
+        "normalized_edit_distance": 0.03307223672758921
+      },
+      "normalized_edit_distance": 0.03307223672758921,
+      "token_compression_unique": 74.625,
+      "token_compression_stream": 74.625,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 1,
+        "precision": 0.8888888888888888,
+        "false_positive_rate": 0.001040582726326743,
+        "recall": 1.0,
+        "f1": 0.9411764705882353
+      }
+    },
+    "cn_33": {
+      "original_size_bytes": 3562,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 43.97530864197531,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 879,
+        "reconstructed_tokens": 885,
+        "edit_distance": 6,
+        "token_accuracy": 0.9932203389830508,
+        "token_precision": 0.9932203389830508,
+        "token_recall": 0.9931740614334471,
+        "token_f1": 0.9931971996691789
+      },
+      "character_metrics": {
+        "original_characters": 1314,
+        "reconstructed_characters": 1322,
+        "edit_distance": 8,
+        "character_accuracy": 0.9939485627836612,
+        "character_precision": 0.9939485627836612,
+        "character_recall": 0.9939117199391172,
+        "character_f1": 0.993930141019968,
+        "normalized_edit_distance": 0.006051437216338881
+      },
+      "normalized_edit_distance": 0.006051437216338881,
+      "token_compression_unique": 97.66666666666667,
+      "token_compression_stream": 97.66666666666667,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 1,
+        "precision": 0.9,
+        "false_positive_rate": 0.0010416666666666667,
+        "recall": 1.0,
+        "f1": 0.9473684210526316
+      }
+    },
+    "cn_34": {
+      "original_size_bytes": 3268,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.34567901234568,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 959,
+        "reconstructed_tokens": 1054,
+        "edit_distance": 95,
+        "token_accuracy": 0.9098671726755219,
+        "token_precision": 0.9098671726755219,
+        "token_recall": 0.9009384775808134,
+        "token_f1": 0.9053808123859158
+      },
+      "character_metrics": {
+        "original_characters": 1206,
+        "reconstructed_characters": 1334,
+        "edit_distance": 128,
+        "character_accuracy": 0.904047976011994,
+        "character_precision": 0.904047976011994,
+        "character_recall": 0.8938640132669984,
+        "character_f1": 0.8989271519881845,
+        "normalized_edit_distance": 0.095952023988006
+      },
+      "normalized_edit_distance": 0.095952023988006,
+      "token_compression_unique": 106.55555555555556,
+      "token_compression_stream": 106.55555555555556,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_35": {
+      "original_size_bytes": 3903,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 43.36666666666667,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 980,
+        "reconstructed_tokens": 998,
+        "edit_distance": 18,
+        "token_accuracy": 0.9819639278557114,
+        "token_precision": 0.9819639278557114,
+        "token_recall": 0.9816326530612245,
+        "token_f1": 0.9817982625140851
+      },
+      "character_metrics": {
+        "original_characters": 1489,
+        "reconstructed_characters": 1514,
+        "edit_distance": 25,
+        "character_accuracy": 0.9834874504623514,
+        "character_precision": 0.9834874504623514,
+        "character_recall": 0.9832102081934184,
+        "character_f1": 0.9833488097866822,
+        "normalized_edit_distance": 0.016512549537648614
+      },
+      "normalized_edit_distance": 0.016512549537648614,
+      "token_compression_unique": 98.0,
+      "token_compression_stream": 98.0,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 1,
+        "precision": 0.9090909090909091,
+        "false_positive_rate": 0.0010427528675703858,
+        "recall": 1.0,
+        "f1": 0.9523809523809523
+      }
+    },
+    "cn_36": {
+      "original_size_bytes": 3956,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 43.955555555555556,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 1053,
+        "reconstructed_tokens": 1055,
+        "edit_distance": 2,
+        "token_accuracy": 0.9981042654028436,
+        "token_precision": 0.9981042654028436,
+        "token_recall": 0.9981006647673314,
+        "token_f1": 0.9981024650818402
+      },
+      "character_metrics": {
+        "original_characters": 1500,
+        "reconstructed_characters": 1504,
+        "edit_distance": 4,
+        "character_accuracy": 0.9973404255319149,
+        "character_precision": 0.9973404255319149,
+        "character_recall": 0.9973333333333333,
+        "character_f1": 0.9973368794200157,
+        "normalized_edit_distance": 0.0026595744680851063
+      },
+      "normalized_edit_distance": 0.0026595744680851063,
+      "token_compression_unique": 105.3,
+      "token_compression_stream": 105.3,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_37": {
+      "original_size_bytes": 3063,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 42.541666666666664,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 805,
+        "reconstructed_tokens": 845,
+        "edit_distance": 40,
+        "token_accuracy": 0.9526627218934911,
+        "token_precision": 0.9526627218934911,
+        "token_recall": 0.9503105590062112,
+        "token_f1": 0.951485186758855
+      },
+      "character_metrics": {
+        "original_characters": 1225,
+        "reconstructed_characters": 1282,
+        "edit_distance": 57,
+        "character_accuracy": 0.9555382215288611,
+        "character_precision": 0.9555382215288611,
+        "character_recall": 0.953469387755102,
+        "character_f1": 0.9545026836215198,
+        "normalized_edit_distance": 0.044461778471138844
+      },
+      "normalized_edit_distance": 0.044461778471138844,
+      "token_compression_unique": 100.625,
+      "token_compression_stream": 100.625,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_38": {
+      "original_size_bytes": 3294,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.666666666666664,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 591,
+        "reconstructed_tokens": 653,
+        "edit_distance": 62,
+        "token_accuracy": 0.9050535987748851,
+        "token_precision": 0.9050535987748851,
+        "token_recall": 0.8950930626057529,
+        "token_f1": 0.9000457739687182
+      },
+      "character_metrics": {
+        "original_characters": 1126,
+        "reconstructed_characters": 1228,
+        "edit_distance": 102,
+        "character_accuracy": 0.9169381107491856,
+        "character_precision": 0.9169381107491856,
+        "character_recall": 0.9094138543516874,
+        "character_f1": 0.9131604832284501,
+        "normalized_edit_distance": 0.08306188925081433
+      },
+      "normalized_edit_distance": 0.08306188925081433,
+      "token_compression_unique": 65.66666666666667,
+      "token_compression_stream": 65.66666666666667,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_39": {
+      "original_size_bytes": 2732,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 43.36507936507937,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 784,
+        "reconstructed_tokens": 805,
+        "edit_distance": 21,
+        "token_accuracy": 0.9739130434782609,
+        "token_precision": 0.9739130434782609,
+        "token_recall": 0.9732142857142857,
+        "token_f1": 0.9735635392160772
+      },
+      "character_metrics": {
+        "original_characters": 1150,
+        "reconstructed_characters": 1184,
+        "edit_distance": 34,
+        "character_accuracy": 0.9712837837837838,
+        "character_precision": 0.9712837837837838,
+        "character_recall": 0.9704347826086956,
+        "character_f1": 0.9708590975866958,
+        "normalized_edit_distance": 0.028716216216216218
+      },
+      "normalized_edit_distance": 0.028716216216216218,
+      "token_compression_unique": 112.0,
+      "token_compression_stream": 112.0,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 962,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_4": {
+      "original_size_bytes": 4879,
+      "compressed_size_bytes": 117,
+      "compression_ratio": 41.7008547008547,
+      "unique_signatures": 13,
+      "stream_windows": 13,
+      "token_metrics": {
+        "original_tokens": 981,
+        "reconstructed_tokens": 1035,
+        "edit_distance": 54,
+        "token_accuracy": 0.9478260869565217,
+        "token_precision": 0.9478260869565217,
+        "token_recall": 0.944954128440367,
+        "token_f1": 0.9463879288544212
+      },
+      "character_metrics": {
+        "original_characters": 1679,
+        "reconstructed_characters": 1763,
+        "edit_distance": 84,
+        "character_accuracy": 0.9523539421440727,
+        "character_precision": 0.9523539421440727,
+        "character_recall": 0.9499702203692674,
+        "character_f1": 0.9511605877863111,
+        "normalized_edit_distance": 0.0476460578559274
+      },
+      "normalized_edit_distance": 0.0476460578559274,
+      "token_compression_unique": 75.46153846153847,
+      "token_compression_stream": 75.46153846153847,
+      "verification": {
+        "positives": 13,
+        "true_positive": 13,
+        "negatives": 956,
+        "false_positive": 1,
+        "precision": 0.9285714285714286,
+        "false_positive_rate": 0.0010460251046025104,
+        "recall": 1.0,
+        "f1": 0.962962962962963
+      }
+    },
+    "cn_40": {
+      "original_size_bytes": 4289,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 43.323232323232325,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 1236,
+        "reconstructed_tokens": 1253,
+        "edit_distance": 17,
+        "token_accuracy": 0.9864325618515563,
+        "token_precision": 0.9864325618515563,
+        "token_recall": 0.9862459546925566,
+        "token_f1": 0.986339249445927
+      },
+      "character_metrics": {
+        "original_characters": 1529,
+        "reconstructed_characters": 1550,
+        "edit_distance": 21,
+        "character_accuracy": 0.9864516129032258,
+        "character_precision": 0.9864516129032258,
+        "character_recall": 0.9862655330281229,
+        "character_f1": 0.9863585641895253,
+        "normalized_edit_distance": 0.013548387096774193
+      },
+      "normalized_edit_distance": 0.013548387096774193,
+      "token_compression_unique": 112.36363636363636,
+      "token_compression_stream": 112.36363636363636,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_41": {
+      "original_size_bytes": 3012,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 41.833333333333336,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 733,
+        "reconstructed_tokens": 781,
+        "edit_distance": 48,
+        "token_accuracy": 0.93854033290653,
+        "token_precision": 0.93854033290653,
+        "token_recall": 0.9345156889495225,
+        "token_f1": 0.9365236870426775
+      },
+      "character_metrics": {
+        "original_characters": 1038,
+        "reconstructed_characters": 1108,
+        "edit_distance": 70,
+        "character_accuracy": 0.9368231046931408,
+        "character_precision": 0.9368231046931408,
+        "character_recall": 0.9325626204238922,
+        "character_f1": 0.9346880075609725,
+        "normalized_edit_distance": 0.0631768953068592
+      },
+      "normalized_edit_distance": 0.0631768953068592,
+      "token_compression_unique": 91.625,
+      "token_compression_stream": 91.625,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_42": {
+      "original_size_bytes": 3522,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 43.48148148148148,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 862,
+        "reconstructed_tokens": 878,
+        "edit_distance": 16,
+        "token_accuracy": 0.9817767653758542,
+        "token_precision": 0.9817767653758542,
+        "token_recall": 0.9814385150812065,
+        "token_f1": 0.9816076110892753
+      },
+      "character_metrics": {
+        "original_characters": 1224,
+        "reconstructed_characters": 1246,
+        "edit_distance": 22,
+        "character_accuracy": 0.9823434991974318,
+        "character_precision": 0.9823434991974318,
+        "character_recall": 0.9820261437908496,
+        "character_f1": 0.9821847958588296,
+        "normalized_edit_distance": 0.01765650080256822
+      },
+      "normalized_edit_distance": 0.01765650080256822,
+      "token_compression_unique": 95.77777777777777,
+      "token_compression_stream": 95.77777777777777,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_43": {
+      "original_size_bytes": 3945,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 43.833333333333336,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 1061,
+        "reconstructed_tokens": 1068,
+        "edit_distance": 7,
+        "token_accuracy": 0.9934456928838952,
+        "token_precision": 0.9934456928838952,
+        "token_recall": 0.9934024505183789,
+        "token_f1": 0.993424071230567
+      },
+      "character_metrics": {
+        "original_characters": 1357,
+        "reconstructed_characters": 1365,
+        "edit_distance": 8,
+        "character_accuracy": 0.9941391941391942,
+        "character_precision": 0.9941391941391942,
+        "character_recall": 0.9941046425939573,
+        "character_f1": 0.9941219180663587,
+        "normalized_edit_distance": 0.005860805860805861
+      },
+      "normalized_edit_distance": 0.005860805860805861,
+      "token_compression_unique": 106.1,
+      "token_compression_stream": 106.1,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 1,
+        "precision": 0.9090909090909091,
+        "false_positive_rate": 0.0010427528675703858,
+        "recall": 1.0,
+        "f1": 0.9523809523809523
+      }
+    },
+    "cn_44": {
+      "original_size_bytes": 2954,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 41.02777777777778,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 654,
+        "reconstructed_tokens": 720,
+        "edit_distance": 66,
+        "token_accuracy": 0.9083333333333333,
+        "token_precision": 0.9083333333333333,
+        "token_recall": 0.8990825688073394,
+        "token_f1": 0.9036842773148345
+      },
+      "character_metrics": {
+        "original_characters": 1057,
+        "reconstructed_characters": 1148,
+        "edit_distance": 91,
+        "character_accuracy": 0.9207317073170732,
+        "character_precision": 0.9207317073170732,
+        "character_recall": 0.9139072847682119,
+        "character_f1": 0.9173068034248235,
+        "normalized_edit_distance": 0.07926829268292683
+      },
+      "normalized_edit_distance": 0.07926829268292683,
+      "token_compression_unique": 81.75,
+      "token_compression_stream": 81.75,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 1,
+        "precision": 0.8888888888888888,
+        "false_positive_rate": 0.001040582726326743,
+        "recall": 1.0,
+        "f1": 0.9411764705882353
+      }
+    },
+    "cn_45": {
+      "original_size_bytes": 4354,
+      "compressed_size_bytes": 108,
+      "compression_ratio": 40.31481481481482,
+      "unique_signatures": 12,
+      "stream_windows": 12,
+      "token_metrics": {
+        "original_tokens": 813,
+        "reconstructed_tokens": 888,
+        "edit_distance": 75,
+        "token_accuracy": 0.9155405405405406,
+        "token_precision": 0.9155405405405406,
+        "token_recall": 0.9077490774907749,
+        "token_f1": 0.9116281613871474
+      },
+      "character_metrics": {
+        "original_characters": 1528,
+        "reconstructed_characters": 1660,
+        "edit_distance": 132,
+        "character_accuracy": 0.9204819277108434,
+        "character_precision": 0.9204819277108434,
+        "character_recall": 0.9136125654450262,
+        "character_f1": 0.9170343824266833,
+        "normalized_edit_distance": 0.07951807228915662
+      },
+      "normalized_edit_distance": 0.07951807228915662,
+      "token_compression_unique": 67.75,
+      "token_compression_stream": 67.75,
+      "verification": {
+        "positives": 12,
+        "true_positive": 12,
+        "negatives": 957,
+        "false_positive": 1,
+        "precision": 0.9230769230769231,
+        "false_positive_rate": 0.0010449320794148381,
+        "recall": 1.0,
+        "f1": 0.9600000000000001
+      }
+    },
+    "cn_46": {
+      "original_size_bytes": 3557,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 43.91358024691358,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 774,
+        "reconstructed_tokens": 782,
+        "edit_distance": 8,
+        "token_accuracy": 0.989769820971867,
+        "token_precision": 0.989769820971867,
+        "token_recall": 0.9896640826873385,
+        "token_f1": 0.9897169490054154
+      },
+      "character_metrics": {
+        "original_characters": 1219,
+        "reconstructed_characters": 1228,
+        "edit_distance": 9,
+        "character_accuracy": 0.992671009771987,
+        "character_precision": 0.992671009771987,
+        "character_recall": 0.992616899097621,
+        "character_f1": 0.9926439536973882,
+        "normalized_edit_distance": 0.007328990228013029
+      },
+      "normalized_edit_distance": 0.007328990228013029,
+      "token_compression_unique": 86.0,
+      "token_compression_stream": 86.0,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_47": {
+      "original_size_bytes": 3105,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.125,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 789,
+        "reconstructed_tokens": 820,
+        "edit_distance": 31,
+        "token_accuracy": 0.9621951219512195,
+        "token_precision": 0.9621951219512195,
+        "token_recall": 0.9607097591888466,
+        "token_f1": 0.9614518668800504
+      },
+      "character_metrics": {
+        "original_characters": 1152,
+        "reconstructed_characters": 1193,
+        "edit_distance": 41,
+        "character_accuracy": 0.9656328583403185,
+        "character_precision": 0.9656328583403185,
+        "character_recall": 0.9644097222222222,
+        "character_f1": 0.9650209027090016,
+        "normalized_edit_distance": 0.03436714165968147
+      },
+      "normalized_edit_distance": 0.03436714165968147,
+      "token_compression_unique": 98.625,
+      "token_compression_stream": 98.625,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_48": {
+      "original_size_bytes": 4228,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 42.707070707070706,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 1095,
+        "reconstructed_tokens": 1130,
+        "edit_distance": 35,
+        "token_accuracy": 0.9690265486725663,
+        "token_precision": 0.9690265486725663,
+        "token_recall": 0.9680365296803652,
+        "token_f1": 0.9685312861806765
+      },
+      "character_metrics": {
+        "original_characters": 1452,
+        "reconstructed_characters": 1494,
+        "edit_distance": 42,
+        "character_accuracy": 0.9718875502008032,
+        "character_precision": 0.9718875502008032,
+        "character_recall": 0.9710743801652892,
+        "character_f1": 0.971480795018748,
+        "normalized_edit_distance": 0.028112449799196786
+      },
+      "normalized_edit_distance": 0.028112449799196786,
+      "token_compression_unique": 99.54545454545455,
+      "token_compression_stream": 99.54545454545455,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_49": {
+      "original_size_bytes": 3050,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 42.361111111111114,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 644,
+        "reconstructed_tokens": 677,
+        "edit_distance": 33,
+        "token_accuracy": 0.9512555391432792,
+        "token_precision": 0.9512555391432792,
+        "token_recall": 0.9487577639751553,
+        "token_f1": 0.9500050097599783
+      },
+      "character_metrics": {
+        "original_characters": 1048,
+        "reconstructed_characters": 1100,
+        "edit_distance": 52,
+        "character_accuracy": 0.9527272727272728,
+        "character_precision": 0.9527272727272728,
+        "character_recall": 0.950381679389313,
+        "character_f1": 0.9515530305792779,
+        "normalized_edit_distance": 0.04727272727272727
+      },
+      "normalized_edit_distance": 0.04727272727272727,
+      "token_compression_unique": 80.5,
+      "token_compression_stream": 80.5,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_5": {
+      "original_size_bytes": 3857,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.855555555555554,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 844,
+        "reconstructed_tokens": 872,
+        "edit_distance": 28,
+        "token_accuracy": 0.9678899082568807,
+        "token_precision": 0.9678899082568807,
+        "token_recall": 0.966824644549763,
+        "token_f1": 0.9673569831335049
+      },
+      "character_metrics": {
+        "original_characters": 1315,
+        "reconstructed_characters": 1354,
+        "edit_distance": 39,
+        "character_accuracy": 0.9711964549483013,
+        "character_precision": 0.9711964549483013,
+        "character_recall": 0.9703422053231939,
+        "character_f1": 0.9707691422068546,
+        "normalized_edit_distance": 0.02880354505169867
+      },
+      "normalized_edit_distance": 0.02880354505169867,
+      "token_compression_unique": 84.4,
+      "token_compression_stream": 84.4,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_50": {
+      "original_size_bytes": 3968,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 44.08888888888889,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 865,
+        "reconstructed_tokens": 865,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 1374,
+        "reconstructed_characters": 1374,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 86.5,
+      "token_compression_stream": 86.5,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_51": {
+      "original_size_bytes": 3318,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.96296296296296,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 971,
+        "reconstructed_tokens": 1053,
+        "edit_distance": 82,
+        "token_accuracy": 0.9221272554605888,
+        "token_precision": 0.9221272554605888,
+        "token_recall": 0.9155509783728115,
+        "token_f1": 0.9188273500525291
+      },
+      "character_metrics": {
+        "original_characters": 1128,
+        "reconstructed_characters": 1220,
+        "edit_distance": 92,
+        "character_accuracy": 0.9245901639344263,
+        "character_precision": 0.9245901639344263,
+        "character_recall": 0.9184397163120568,
+        "character_f1": 0.921504677672708,
+        "normalized_edit_distance": 0.07540983606557378
+      },
+      "normalized_edit_distance": 0.07540983606557378,
+      "token_compression_unique": 107.88888888888889,
+      "token_compression_stream": 107.88888888888889,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 1,
+        "precision": 0.9,
+        "false_positive_rate": 0.0010416666666666667,
+        "recall": 1.0,
+        "f1": 0.9473684210526316
+      }
+    },
+    "cn_52": {
+      "original_size_bytes": 4441,
+      "compressed_size_bytes": 108,
+      "compression_ratio": 41.120370370370374,
+      "unique_signatures": 12,
+      "stream_windows": 12,
+      "token_metrics": {
+        "original_tokens": 1100,
+        "reconstructed_tokens": 1170,
+        "edit_distance": 70,
+        "token_accuracy": 0.9401709401709402,
+        "token_precision": 0.9401709401709402,
+        "token_recall": 0.9363636363636364,
+        "token_f1": 0.9382634259450955
+      },
+      "character_metrics": {
+        "original_characters": 1525,
+        "reconstructed_characters": 1626,
+        "edit_distance": 101,
+        "character_accuracy": 0.9378843788437884,
+        "character_precision": 0.9378843788437884,
+        "character_recall": 0.9337704918032786,
+        "character_f1": 0.9358229141730673,
+        "normalized_edit_distance": 0.06211562115621156
+      },
+      "normalized_edit_distance": 0.06211562115621156,
+      "token_compression_unique": 91.66666666666667,
+      "token_compression_stream": 91.66666666666667,
+      "verification": {
+        "positives": 12,
+        "true_positive": 12,
+        "negatives": 957,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_53": {
+      "original_size_bytes": 3016,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 41.888888888888886,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 748,
+        "reconstructed_tokens": 792,
+        "edit_distance": 44,
+        "token_accuracy": 0.9444444444444444,
+        "token_precision": 0.9444444444444444,
+        "token_recall": 0.9411764705882353,
+        "token_f1": 0.9428076256499133
+      },
+      "character_metrics": {
+        "original_characters": 1216,
+        "reconstructed_characters": 1290,
+        "edit_distance": 74,
+        "character_accuracy": 0.9426356589147287,
+        "character_precision": 0.9426356589147287,
+        "character_recall": 0.9391447368421053,
+        "character_f1": 0.9408869598446526,
+        "normalized_edit_distance": 0.05736434108527132
+      },
+      "normalized_edit_distance": 0.05736434108527132,
+      "token_compression_unique": 93.5,
+      "token_compression_stream": 93.5,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 1,
+        "precision": 0.8888888888888888,
+        "false_positive_rate": 0.001040582726326743,
+        "recall": 1.0,
+        "f1": 0.9411764705882353
+      }
+    },
+    "cn_54": {
+      "original_size_bytes": 4238,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 42.80808080808081,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 914,
+        "reconstructed_tokens": 945,
+        "edit_distance": 31,
+        "token_accuracy": 0.9671957671957672,
+        "token_precision": 0.9671957671957672,
+        "token_recall": 0.9660831509846827,
+        "token_f1": 0.9666391389308259
+      },
+      "character_metrics": {
+        "original_characters": 1545,
+        "reconstructed_characters": 1587,
+        "edit_distance": 42,
+        "character_accuracy": 0.9735349716446124,
+        "character_precision": 0.9735349716446124,
+        "character_recall": 0.9728155339805825,
+        "character_f1": 0.9731751198482237,
+        "normalized_edit_distance": 0.026465028355387523
+      },
+      "normalized_edit_distance": 0.026465028355387523,
+      "token_compression_unique": 83.0909090909091,
+      "token_compression_stream": 83.0909090909091,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 1,
+        "precision": 0.9166666666666666,
+        "false_positive_rate": 0.0010438413361169101,
+        "recall": 1.0,
+        "f1": 0.9565217391304348
+      }
+    },
+    "cn_55": {
+      "original_size_bytes": 3416,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 42.17283950617284,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 865,
+        "reconstructed_tokens": 909,
+        "edit_distance": 44,
+        "token_accuracy": 0.9515951595159516,
+        "token_precision": 0.9515951595159516,
+        "token_recall": 0.9491329479768786,
+        "token_f1": 0.9503624589665939
+      },
+      "character_metrics": {
+        "original_characters": 1164,
+        "reconstructed_characters": 1222,
+        "edit_distance": 58,
+        "character_accuracy": 0.9525368248772504,
+        "character_precision": 0.9525368248772504,
+        "character_recall": 0.9501718213058419,
+        "character_f1": 0.9513528532811513,
+        "normalized_edit_distance": 0.04746317512274959
+      },
+      "normalized_edit_distance": 0.04746317512274959,
+      "token_compression_unique": 96.11111111111111,
+      "token_compression_stream": 96.11111111111111,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_56": {
+      "original_size_bytes": 3115,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.263888888888886,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 614,
+        "reconstructed_tokens": 631,
+        "edit_distance": 17,
+        "token_accuracy": 0.9730586370839936,
+        "token_precision": 0.9730586370839936,
+        "token_recall": 0.9723127035830619,
+        "token_f1": 0.9726855273230967
+      },
+      "character_metrics": {
+        "original_characters": 1073,
+        "reconstructed_characters": 1104,
+        "edit_distance": 31,
+        "character_accuracy": 0.9719202898550725,
+        "character_precision": 0.9719202898550725,
+        "character_recall": 0.9711090400745573,
+        "character_f1": 0.9715144956091093,
+        "normalized_edit_distance": 0.028079710144927536
+      },
+      "normalized_edit_distance": 0.028079710144927536,
+      "token_compression_unique": 76.75,
+      "token_compression_stream": 76.75,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_57": {
+      "original_size_bytes": 3990,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 40.303030303030305,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 1057,
+        "reconstructed_tokens": 1154,
+        "edit_distance": 97,
+        "token_accuracy": 0.915944540727903,
+        "token_precision": 0.915944540727903,
+        "token_recall": 0.9082308420056764,
+        "token_f1": 0.9120713823132468
+      },
+      "character_metrics": {
+        "original_characters": 1457,
+        "reconstructed_characters": 1597,
+        "edit_distance": 140,
+        "character_accuracy": 0.9123356293049467,
+        "character_precision": 0.9123356293049467,
+        "character_recall": 0.9039121482498285,
+        "character_f1": 0.9081043553651619,
+        "normalized_edit_distance": 0.08766437069505323
+      },
+      "normalized_edit_distance": 0.08766437069505323,
+      "token_compression_unique": 96.0909090909091,
+      "token_compression_stream": 96.0909090909091,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 1,
+        "precision": 0.9166666666666666,
+        "false_positive_rate": 0.0010438413361169101,
+        "recall": 1.0,
+        "f1": 0.9565217391304348
+      }
+    },
+    "cn_58": {
+      "original_size_bytes": 3292,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.641975308641975,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 727,
+        "reconstructed_tokens": 792,
+        "edit_distance": 65,
+        "token_accuracy": 0.9179292929292929,
+        "token_precision": 0.9179292929292929,
+        "token_recall": 0.9105914718019257,
+        "token_f1": 0.9142456590931326
+      },
+      "character_metrics": {
+        "original_characters": 1124,
+        "reconstructed_characters": 1226,
+        "edit_distance": 102,
+        "character_accuracy": 0.9168026101141925,
+        "character_precision": 0.9168026101141925,
+        "character_recall": 0.9092526690391459,
+        "character_f1": 0.9130120317221625,
+        "normalized_edit_distance": 0.08319738988580751
+      },
+      "normalized_edit_distance": 0.08319738988580751,
+      "token_compression_unique": 80.77777777777777,
+      "token_compression_stream": 80.77777777777777,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_59": {
+      "original_size_bytes": 3080,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 42.77777777777778,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 710,
+        "reconstructed_tokens": 742,
+        "edit_distance": 32,
+        "token_accuracy": 0.9568733153638814,
+        "token_precision": 0.9568733153638814,
+        "token_recall": 0.9549295774647887,
+        "token_f1": 0.9559004583111591
+      },
+      "character_metrics": {
+        "original_characters": 1067,
+        "reconstructed_characters": 1108,
+        "edit_distance": 41,
+        "character_accuracy": 0.9629963898916968,
+        "character_precision": 0.9629963898916968,
+        "character_recall": 0.9615745079662605,
+        "character_f1": 0.9622849236824906,
+        "normalized_edit_distance": 0.03700361010830325
+      },
+      "normalized_edit_distance": 0.03700361010830325,
+      "token_compression_unique": 88.75,
+      "token_compression_stream": 88.75,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 2,
+        "precision": 0.8,
+        "false_positive_rate": 0.002081165452653486,
+        "recall": 1.0,
+        "f1": 0.888888888888889
+      }
+    },
+    "cn_6": {
+      "original_size_bytes": 3146,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.69444444444444,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 786,
+        "reconstructed_tokens": 799,
+        "edit_distance": 13,
+        "token_accuracy": 0.983729662077597,
+        "token_precision": 0.983729662077597,
+        "token_recall": 0.9834605597964376,
+        "token_f1": 0.9835950925310601
+      },
+      "character_metrics": {
+        "original_characters": 1120,
+        "reconstructed_characters": 1141,
+        "edit_distance": 21,
+        "character_accuracy": 0.9815950920245399,
+        "character_precision": 0.9815950920245399,
+        "character_recall": 0.98125,
+        "character_f1": 0.9814225156765839,
+        "normalized_edit_distance": 0.018404907975460124
+      },
+      "normalized_edit_distance": 0.018404907975460124,
+      "token_compression_unique": 98.25,
+      "token_compression_stream": 98.25,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_60": {
+      "original_size_bytes": 3818,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.422222222222224,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 894,
+        "reconstructed_tokens": 930,
+        "edit_distance": 36,
+        "token_accuracy": 0.9612903225806452,
+        "token_precision": 0.9612903225806452,
+        "token_recall": 0.9597315436241611,
+        "token_f1": 0.9605103006807015
+      },
+      "character_metrics": {
+        "original_characters": 1301,
+        "reconstructed_characters": 1353,
+        "edit_distance": 52,
+        "character_accuracy": 0.9615668883961567,
+        "character_precision": 0.9615668883961567,
+        "character_recall": 0.9600307455803229,
+        "character_f1": 0.9607982029848946,
+        "normalized_edit_distance": 0.038433111603843315
+      },
+      "normalized_edit_distance": 0.038433111603843315,
+      "token_compression_unique": 89.4,
+      "token_compression_stream": 89.4,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_61": {
+      "original_size_bytes": 4786,
+      "compressed_size_bytes": 117,
+      "compression_ratio": 40.9059829059829,
+      "unique_signatures": 13,
+      "stream_windows": 13,
+      "token_metrics": {
+        "original_tokens": 1179,
+        "reconstructed_tokens": 1255,
+        "edit_distance": 76,
+        "token_accuracy": 0.9394422310756972,
+        "token_precision": 0.9394422310756972,
+        "token_recall": 0.9355385920271416,
+        "token_f1": 0.9374863479371057
+      },
+      "character_metrics": {
+        "original_characters": 1878,
+        "reconstructed_characters": 1999,
+        "edit_distance": 121,
+        "character_accuracy": 0.9394697348674337,
+        "character_precision": 0.9394697348674337,
+        "character_recall": 0.935569755058573,
+        "character_f1": 0.9375156890904228,
+        "normalized_edit_distance": 0.060530265132566284
+      },
+      "normalized_edit_distance": 0.060530265132566284,
+      "token_compression_unique": 90.6923076923077,
+      "token_compression_stream": 90.6923076923077,
+      "verification": {
+        "positives": 13,
+        "true_positive": 13,
+        "negatives": 956,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_62": {
+      "original_size_bytes": 4877,
+      "compressed_size_bytes": 117,
+      "compression_ratio": 41.68376068376068,
+      "unique_signatures": 13,
+      "stream_windows": 13,
+      "token_metrics": {
+        "original_tokens": 1040,
+        "reconstructed_tokens": 1089,
+        "edit_distance": 49,
+        "token_accuracy": 0.9550045913682277,
+        "token_precision": 0.9550045913682277,
+        "token_recall": 0.9528846153846153,
+        "token_f1": 0.9539434255569351
+      },
+      "character_metrics": {
+        "original_characters": 1685,
+        "reconstructed_characters": 1768,
+        "edit_distance": 83,
+        "character_accuracy": 0.9530542986425339,
+        "character_precision": 0.9530542986425339,
+        "character_recall": 0.9507418397626113,
+        "character_f1": 0.9518966647806486,
+        "normalized_edit_distance": 0.04694570135746606
+      },
+      "normalized_edit_distance": 0.04694570135746606,
+      "token_compression_unique": 80.0,
+      "token_compression_stream": 80.0,
+      "verification": {
+        "positives": 13,
+        "true_positive": 13,
+        "negatives": 956,
+        "false_positive": 1,
+        "precision": 0.9285714285714286,
+        "false_positive_rate": 0.0010460251046025104,
+        "recall": 1.0,
+        "f1": 0.962962962962963
+      }
+    },
+    "cn_63": {
+      "original_size_bytes": 3195,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 44.375,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 738,
+        "reconstructed_tokens": 741,
+        "edit_distance": 3,
+        "token_accuracy": 0.9959514170040485,
+        "token_precision": 0.9959514170040485,
+        "token_recall": 0.9959349593495935,
+        "token_f1": 0.9959431881088316
+      },
+      "character_metrics": {
+        "original_characters": 1115,
+        "reconstructed_characters": 1118,
+        "edit_distance": 3,
+        "character_accuracy": 0.9973166368515206,
+        "character_precision": 0.9973166368515206,
+        "character_recall": 0.9973094170403587,
+        "character_f1": 0.9973130269328732,
+        "normalized_edit_distance": 0.0026833631484794273
+      },
+      "normalized_edit_distance": 0.0026833631484794273,
+      "token_compression_unique": 92.25,
+      "token_compression_stream": 92.25,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_64": {
+      "original_size_bytes": 2773,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 44.01587301587302,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 637,
+        "reconstructed_tokens": 648,
+        "edit_distance": 11,
+        "token_accuracy": 0.9830246913580247,
+        "token_precision": 0.9830246913580247,
+        "token_recall": 0.9827315541601256,
+        "token_f1": 0.9828781009024953
+      },
+      "character_metrics": {
+        "original_characters": 1091,
+        "reconstructed_characters": 1106,
+        "edit_distance": 15,
+        "character_accuracy": 0.9864376130198915,
+        "character_precision": 0.9864376130198915,
+        "character_recall": 0.9862511457378552,
+        "character_f1": 0.9863443705660165,
+        "normalized_edit_distance": 0.013562386980108499
+      },
+      "normalized_edit_distance": 0.013562386980108499,
+      "token_compression_unique": 91.0,
+      "token_compression_stream": 91.0,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 962,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_65": {
+      "original_size_bytes": 3249,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.111111111111114,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 784,
+        "reconstructed_tokens": 870,
+        "edit_distance": 86,
+        "token_accuracy": 0.9011494252873563,
+        "token_precision": 0.9011494252873563,
+        "token_recall": 0.8903061224489796,
+        "token_f1": 0.8956949577548702
+      },
+      "character_metrics": {
+        "original_characters": 1111,
+        "reconstructed_characters": 1226,
+        "edit_distance": 115,
+        "character_accuracy": 0.9061990212071778,
+        "character_precision": 0.9061990212071778,
+        "character_recall": 0.8964896489648965,
+        "character_f1": 0.9013181875013491,
+        "normalized_edit_distance": 0.09380097879282219
+      },
+      "normalized_edit_distance": 0.09380097879282219,
+      "token_compression_unique": 87.11111111111111,
+      "token_compression_stream": 87.11111111111111,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_66": {
+      "original_size_bytes": 3896,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 43.28888888888889,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 991,
+        "reconstructed_tokens": 1010,
+        "edit_distance": 19,
+        "token_accuracy": 0.9811881188118812,
+        "token_precision": 0.9811881188118812,
+        "token_recall": 0.9808274470232089,
+        "token_f1": 0.9810077497669062
+      },
+      "character_metrics": {
+        "original_characters": 1344,
+        "reconstructed_characters": 1369,
+        "edit_distance": 25,
+        "character_accuracy": 0.9817384952520087,
+        "character_precision": 0.9817384952520087,
+        "character_recall": 0.9813988095238095,
+        "character_f1": 0.9815686229996453,
+        "normalized_edit_distance": 0.018261504747991233
+      },
+      "normalized_edit_distance": 0.018261504747991233,
+      "token_compression_unique": 99.1,
+      "token_compression_stream": 99.1,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_67": {
+      "original_size_bytes": 5350,
+      "compressed_size_bytes": 126,
+      "compression_ratio": 42.46031746031746,
+      "unique_signatures": 14,
+      "stream_windows": 14,
+      "token_metrics": {
+        "original_tokens": 1172,
+        "reconstructed_tokens": 1204,
+        "edit_distance": 32,
+        "token_accuracy": 0.973421926910299,
+        "token_precision": 0.973421926910299,
+        "token_recall": 0.9726962457337884,
+        "token_f1": 0.97305895102369
+      },
+      "character_metrics": {
+        "original_characters": 1822,
+        "reconstructed_characters": 1876,
+        "edit_distance": 54,
+        "character_accuracy": 0.9712153518123667,
+        "character_precision": 0.9712153518123667,
+        "character_recall": 0.9703622392974753,
+        "character_f1": 0.9707886081297658,
+        "normalized_edit_distance": 0.028784648187633263
+      },
+      "normalized_edit_distance": 0.028784648187633263,
+      "token_compression_unique": 83.71428571428571,
+      "token_compression_stream": 83.71428571428571,
+      "verification": {
+        "positives": 14,
+        "true_positive": 14,
+        "negatives": 955,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_68": {
+      "original_size_bytes": 4093,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 41.343434343434346,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 881,
+        "reconstructed_tokens": 937,
+        "edit_distance": 56,
+        "token_accuracy": 0.9402347918890075,
+        "token_precision": 0.9402347918890075,
+        "token_recall": 0.9364358683314415,
+        "token_f1": 0.938331485050859
+      },
+      "character_metrics": {
+        "original_characters": 1399,
+        "reconstructed_characters": 1487,
+        "edit_distance": 88,
+        "character_accuracy": 0.9408204438466712,
+        "character_precision": 0.9408204438466712,
+        "character_recall": 0.9370979270907791,
+        "character_f1": 0.9389554959763562,
+        "normalized_edit_distance": 0.05917955615332885
+      },
+      "normalized_edit_distance": 0.05917955615332885,
+      "token_compression_unique": 80.0909090909091,
+      "token_compression_stream": 80.0909090909091,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_69": {
+      "original_size_bytes": 2802,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 44.476190476190474,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 599,
+        "reconstructed_tokens": 603,
+        "edit_distance": 4,
+        "token_accuracy": 0.9933665008291874,
+        "token_precision": 0.9933665008291874,
+        "token_recall": 0.993322203672788,
+        "token_f1": 0.9933443517571413
+      },
+      "character_metrics": {
+        "original_characters": 1042,
+        "reconstructed_characters": 1047,
+        "edit_distance": 5,
+        "character_accuracy": 0.9952244508118434,
+        "character_precision": 0.9952244508118434,
+        "character_recall": 0.9952015355086372,
+        "character_f1": 0.9952129930283311,
+        "normalized_edit_distance": 0.004775549188156638
+      },
+      "normalized_edit_distance": 0.004775549188156638,
+      "token_compression_unique": 85.57142857142857,
+      "token_compression_stream": 85.57142857142857,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 962,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_7": {
+      "original_size_bytes": 3148,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.72222222222222,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 674,
+        "reconstructed_tokens": 684,
+        "edit_distance": 10,
+        "token_accuracy": 0.9853801169590644,
+        "token_precision": 0.9853801169590644,
+        "token_recall": 0.9851632047477745,
+        "token_f1": 0.9852716489148574
+      },
+      "character_metrics": {
+        "original_characters": 1096,
+        "reconstructed_characters": 1114,
+        "edit_distance": 18,
+        "character_accuracy": 0.9838420107719928,
+        "character_precision": 0.9838420107719928,
+        "character_recall": 0.9835766423357665,
+        "character_f1": 0.9837093086572294,
+        "normalized_edit_distance": 0.01615798922800718
+      },
+      "normalized_edit_distance": 0.01615798922800718,
+      "token_compression_unique": 84.25,
+      "token_compression_stream": 84.25,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_70": {
+      "original_size_bytes": 3716,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 41.28888888888889,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 878,
+        "reconstructed_tokens": 945,
+        "edit_distance": 67,
+        "token_accuracy": 0.9291005291005291,
+        "token_precision": 0.9291005291005291,
+        "token_recall": 0.9236902050113895,
+        "token_f1": 0.9263874677270685
+      },
+      "character_metrics": {
+        "original_characters": 1268,
+        "reconstructed_characters": 1354,
+        "edit_distance": 86,
+        "character_accuracy": 0.9364844903988183,
+        "character_precision": 0.9364844903988183,
+        "character_recall": 0.9321766561514195,
+        "character_f1": 0.9343256078387857,
+        "normalized_edit_distance": 0.06351550960118169
+      },
+      "normalized_edit_distance": 0.06351550960118169,
+      "token_compression_unique": 87.8,
+      "token_compression_stream": 87.8,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 1,
+        "precision": 0.9090909090909091,
+        "false_positive_rate": 0.0010427528675703858,
+        "recall": 1.0,
+        "f1": 0.9523809523809523
+      }
+    },
+    "cn_71": {
+      "original_size_bytes": 3224,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 39.80246913580247,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 642,
+        "reconstructed_tokens": 718,
+        "edit_distance": 76,
+        "token_accuracy": 0.8941504178272981,
+        "token_precision": 0.8941504178272981,
+        "token_recall": 0.881619937694704,
+        "token_f1": 0.887840967953166
+      },
+      "character_metrics": {
+        "original_characters": 1098,
+        "reconstructed_characters": 1220,
+        "edit_distance": 122,
+        "character_accuracy": 0.9,
+        "character_precision": 0.9,
+        "character_recall": 0.8888888888888888,
+        "character_f1": 0.8944099378881988,
+        "normalized_edit_distance": 0.1
+      },
+      "normalized_edit_distance": 0.1,
+      "token_compression_unique": 71.33333333333333,
+      "token_compression_stream": 71.33333333333333,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_72": {
+      "original_size_bytes": 3118,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.30555555555556,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 647,
+        "reconstructed_tokens": 661,
+        "edit_distance": 14,
+        "token_accuracy": 0.9788199697428139,
+        "token_precision": 0.9788199697428139,
+        "token_recall": 0.9783616692426584,
+        "token_f1": 0.9785907658341119
+      },
+      "character_metrics": {
+        "original_characters": 1167,
+        "reconstructed_characters": 1195,
+        "edit_distance": 28,
+        "character_accuracy": 0.9765690376569037,
+        "character_precision": 0.9765690376569037,
+        "character_recall": 0.976006855184233,
+        "character_f1": 0.9762878654892372,
+        "normalized_edit_distance": 0.023430962343096235
+      },
+      "normalized_edit_distance": 0.023430962343096235,
+      "token_compression_unique": 80.875,
+      "token_compression_stream": 80.875,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_73": {
+      "original_size_bytes": 3177,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 44.125,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 775,
+        "reconstructed_tokens": 781,
+        "edit_distance": 6,
+        "token_accuracy": 0.9923175416133163,
+        "token_precision": 0.9923175416133163,
+        "token_recall": 0.9922580645161291,
+        "token_f1": 0.9922878021734679
+      },
+      "character_metrics": {
+        "original_characters": 1384,
+        "reconstructed_characters": 1392,
+        "edit_distance": 8,
+        "character_accuracy": 0.9942528735632183,
+        "character_precision": 0.9942528735632183,
+        "character_recall": 0.9942196531791907,
+        "character_f1": 0.9942362630937066,
+        "normalized_edit_distance": 0.005747126436781609
+      },
+      "normalized_edit_distance": 0.005747126436781609,
+      "token_compression_unique": 96.875,
+      "token_compression_stream": 96.875,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_74": {
+      "original_size_bytes": 5948,
+      "compressed_size_bytes": 144,
+      "compression_ratio": 41.30555555555556,
+      "unique_signatures": 16,
+      "stream_windows": 16,
+      "token_metrics": {
+        "original_tokens": 1428,
+        "reconstructed_tokens": 1506,
+        "edit_distance": 78,
+        "token_accuracy": 0.9482071713147411,
+        "token_precision": 0.9482071713147411,
+        "token_recall": 0.9453781512605042,
+        "token_f1": 0.946790548006966
+      },
+      "character_metrics": {
+        "original_characters": 2171,
+        "reconstructed_characters": 2285,
+        "edit_distance": 114,
+        "character_accuracy": 0.950109409190372,
+        "character_precision": 0.950109409190372,
+        "character_recall": 0.9474896361123906,
+        "character_f1": 0.9487977142580336,
+        "normalized_edit_distance": 0.04989059080962801
+      },
+      "normalized_edit_distance": 0.04989059080962801,
+      "token_compression_unique": 89.25,
+      "token_compression_stream": 89.25,
+      "verification": {
+        "positives": 16,
+        "true_positive": 16,
+        "negatives": 953,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_75": {
+      "original_size_bytes": 3997,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 40.37373737373738,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 867,
+        "reconstructed_tokens": 945,
+        "edit_distance": 78,
+        "token_accuracy": 0.9174603174603174,
+        "token_precision": 0.9174603174603174,
+        "token_recall": 0.9100346020761245,
+        "token_f1": 0.9137323732012551
+      },
+      "character_metrics": {
+        "original_characters": 1367,
+        "reconstructed_characters": 1490,
+        "edit_distance": 123,
+        "character_accuracy": 0.9174496644295302,
+        "character_precision": 0.9174496644295302,
+        "character_recall": 0.9100219458668617,
+        "character_f1": 0.9137207102480247,
+        "normalized_edit_distance": 0.0825503355704698
+      },
+      "normalized_edit_distance": 0.0825503355704698,
+      "token_compression_unique": 78.81818181818181,
+      "token_compression_stream": 78.81818181818181,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_76": {
+      "original_size_bytes": 3112,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 43.22222222222222,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 928,
+        "reconstructed_tokens": 959,
+        "edit_distance": 31,
+        "token_accuracy": 0.9676746611053181,
+        "token_precision": 0.9676746611053181,
+        "token_recall": 0.9665948275862069,
+        "token_f1": 0.9671344429295338
+      },
+      "character_metrics": {
+        "original_characters": 1108,
+        "reconstructed_characters": 1142,
+        "edit_distance": 34,
+        "character_accuracy": 0.9702276707530648,
+        "character_precision": 0.9702276707530648,
+        "character_recall": 0.9693140794223827,
+        "character_f1": 0.9697706599211465,
+        "normalized_edit_distance": 0.0297723292469352
+      },
+      "normalized_edit_distance": 0.0297723292469352,
+      "token_compression_unique": 116.0,
+      "token_compression_stream": 116.0,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_77": {
+      "original_size_bytes": 3954,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 43.93333333333333,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 817,
+        "reconstructed_tokens": 821,
+        "edit_distance": 4,
+        "token_accuracy": 0.9951278928136419,
+        "token_precision": 0.9951278928136419,
+        "token_recall": 0.9951040391676866,
+        "token_f1": 0.995115965847717
+      },
+      "character_metrics": {
+        "original_characters": 1348,
+        "reconstructed_characters": 1353,
+        "edit_distance": 5,
+        "character_accuracy": 0.9963045084996305,
+        "character_precision": 0.9963045084996305,
+        "character_recall": 0.9962908011869436,
+        "character_f1": 0.9962976547961399,
+        "normalized_edit_distance": 0.003695491500369549
+      },
+      "normalized_edit_distance": 0.003695491500369549,
+      "token_compression_unique": 81.7,
+      "token_compression_stream": 81.7,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_78": {
+      "original_size_bytes": 2941,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 40.84722222222222,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 729,
+        "reconstructed_tokens": 802,
+        "edit_distance": 73,
+        "token_accuracy": 0.9089775561097256,
+        "token_precision": 0.9089775561097256,
+        "token_recall": 0.8998628257887518,
+        "token_f1": 0.9043972264274226
+      },
+      "character_metrics": {
+        "original_characters": 1069,
+        "reconstructed_characters": 1170,
+        "edit_distance": 101,
+        "character_accuracy": 0.9136752136752136,
+        "character_precision": 0.9136752136752136,
+        "character_recall": 0.9055191768007483,
+        "character_f1": 0.9095789121622839,
+        "normalized_edit_distance": 0.08632478632478632
+      },
+      "normalized_edit_distance": 0.08632478632478632,
+      "token_compression_unique": 91.125,
+      "token_compression_stream": 91.125,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_79": {
+      "original_size_bytes": 2978,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 41.361111111111114,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 682,
+        "reconstructed_tokens": 751,
+        "edit_distance": 69,
+        "token_accuracy": 0.9081225033288948,
+        "token_precision": 0.9081225033288948,
+        "token_recall": 0.8988269794721407,
+        "token_f1": 0.9034508318323218
+      },
+      "character_metrics": {
+        "original_characters": 1176,
+        "reconstructed_characters": 1264,
+        "edit_distance": 88,
+        "character_accuracy": 0.930379746835443,
+        "character_precision": 0.930379746835443,
+        "character_recall": 0.9251700680272109,
+        "character_f1": 0.9277675940320672,
+        "normalized_edit_distance": 0.06962025316455696
+      },
+      "normalized_edit_distance": 0.06962025316455696,
+      "token_compression_unique": 85.25,
+      "token_compression_stream": 85.25,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_8": {
+      "original_size_bytes": 4191,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 42.333333333333336,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 951,
+        "reconstructed_tokens": 979,
+        "edit_distance": 28,
+        "token_accuracy": 0.9713993871297242,
+        "token_precision": 0.9713993871297242,
+        "token_recall": 0.9705573080967402,
+        "token_f1": 0.9709781650403922
+      },
+      "character_metrics": {
+        "original_characters": 1547,
+        "reconstructed_characters": 1605,
+        "edit_distance": 58,
+        "character_accuracy": 0.9638629283489096,
+        "character_precision": 0.9638629283489096,
+        "character_recall": 0.962508080155139,
+        "character_f1": 0.9631850278085925,
+        "normalized_edit_distance": 0.03613707165109034
+      },
+      "normalized_edit_distance": 0.03613707165109034,
+      "token_compression_unique": 86.45454545454545,
+      "token_compression_stream": 86.45454545454545,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 1,
+        "precision": 0.9166666666666666,
+        "false_positive_rate": 0.0010438413361169101,
+        "recall": 1.0,
+        "f1": 0.9565217391304348
+      }
+    },
+    "cn_80": {
+      "original_size_bytes": 2880,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 40.0,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 769,
+        "reconstructed_tokens": 864,
+        "edit_distance": 95,
+        "token_accuracy": 0.8900462962962963,
+        "token_precision": 0.8900462962962963,
+        "token_recall": 0.8764629388816645,
+        "token_f1": 0.8832023938035114
+      },
+      "character_metrics": {
+        "original_characters": 1129,
+        "reconstructed_characters": 1267,
+        "edit_distance": 138,
+        "character_accuracy": 0.8910812943962115,
+        "character_precision": 0.8910812943962115,
+        "character_recall": 0.8777679362267493,
+        "character_f1": 0.8843745133856974,
+        "normalized_edit_distance": 0.10891870560378848
+      },
+      "normalized_edit_distance": 0.10891870560378848,
+      "token_compression_unique": 96.125,
+      "token_compression_stream": 96.125,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_81": {
+      "original_size_bytes": 3288,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.592592592592595,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 688,
+        "reconstructed_tokens": 760,
+        "edit_distance": 72,
+        "token_accuracy": 0.9052631578947369,
+        "token_precision": 0.9052631578947369,
+        "token_recall": 0.8953488372093024,
+        "token_f1": 0.9002787030113522
+      },
+      "character_metrics": {
+        "original_characters": 1128,
+        "reconstructed_characters": 1229,
+        "edit_distance": 101,
+        "character_accuracy": 0.9178193653376729,
+        "character_precision": 0.9178193653376729,
+        "character_recall": 0.9104609929078014,
+        "character_f1": 0.9141253713158894,
+        "normalized_edit_distance": 0.0821806346623271
+      },
+      "normalized_edit_distance": 0.0821806346623271,
+      "token_compression_unique": 76.44444444444444,
+      "token_compression_stream": 76.44444444444444,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 2,
+        "precision": 0.8181818181818182,
+        "false_positive_rate": 0.0020833333333333333,
+        "recall": 1.0,
+        "f1": 0.9
+      }
+    },
+    "cn_82": {
+      "original_size_bytes": 4502,
+      "compressed_size_bytes": 108,
+      "compression_ratio": 41.68518518518518,
+      "unique_signatures": 12,
+      "stream_windows": 12,
+      "token_metrics": {
+        "original_tokens": 964,
+        "reconstructed_tokens": 1014,
+        "edit_distance": 50,
+        "token_accuracy": 0.9506903353057199,
+        "token_precision": 0.9506903353057199,
+        "token_recall": 0.9481327800829875,
+        "token_f1": 0.949409835288337
+      },
+      "character_metrics": {
+        "original_characters": 1538,
+        "reconstructed_characters": 1618,
+        "edit_distance": 80,
+        "character_accuracy": 0.9505562422744128,
+        "character_precision": 0.9505562422744128,
+        "character_recall": 0.9479843953185956,
+        "character_f1": 0.949268576827796,
+        "normalized_edit_distance": 0.049443757725587144
+      },
+      "normalized_edit_distance": 0.049443757725587144,
+      "token_compression_unique": 80.33333333333333,
+      "token_compression_stream": 80.33333333333333,
+      "verification": {
+        "positives": 12,
+        "true_positive": 12,
+        "negatives": 957,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_83": {
+      "original_size_bytes": 3264,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.2962962962963,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 627,
+        "reconstructed_tokens": 711,
+        "edit_distance": 84,
+        "token_accuracy": 0.8818565400843882,
+        "token_precision": 0.8818565400843882,
+        "token_recall": 0.8660287081339713,
+        "token_f1": 0.8738709602901431
+      },
+      "character_metrics": {
+        "original_characters": 1244,
+        "reconstructed_characters": 1419,
+        "edit_distance": 175,
+        "character_accuracy": 0.8766737138830162,
+        "character_precision": 0.8766737138830162,
+        "character_recall": 0.8593247588424437,
+        "character_f1": 0.8679125467009218,
+        "normalized_edit_distance": 0.12332628611698379
+      },
+      "normalized_edit_distance": 0.12332628611698379,
+      "token_compression_unique": 69.66666666666667,
+      "token_compression_stream": 69.66666666666667,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_84": {
+      "original_size_bytes": 3235,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 39.93827160493827,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 664,
+        "reconstructed_tokens": 740,
+        "edit_distance": 76,
+        "token_accuracy": 0.8972972972972972,
+        "token_precision": 0.8972972972972972,
+        "token_recall": 0.8855421686746988,
+        "token_f1": 0.891380979342843
+      },
+      "character_metrics": {
+        "original_characters": 1107,
+        "reconstructed_characters": 1230,
+        "edit_distance": 123,
+        "character_accuracy": 0.9,
+        "character_precision": 0.9,
+        "character_recall": 0.8888888888888888,
+        "character_f1": 0.8944099378881988,
+        "normalized_edit_distance": 0.1
+      },
+      "normalized_edit_distance": 0.1,
+      "token_compression_unique": 73.77777777777777,
+      "token_compression_stream": 73.77777777777777,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_85": {
+      "original_size_bytes": 2822,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 39.19444444444444,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 617,
+        "reconstructed_tokens": 737,
+        "edit_distance": 120,
+        "token_accuracy": 0.8371777476255088,
+        "token_precision": 0.8371777476255088,
+        "token_recall": 0.8055105348460292,
+        "token_f1": 0.8210389060989749
+      },
+      "character_metrics": {
+        "original_characters": 1082,
+        "reconstructed_characters": 1303,
+        "edit_distance": 221,
+        "character_accuracy": 0.8303914044512664,
+        "character_precision": 0.8303914044512664,
+        "character_recall": 0.7957486136783734,
+        "character_f1": 0.8127009993426697,
+        "normalized_edit_distance": 0.1696085955487337
+      },
+      "normalized_edit_distance": 0.1696085955487337,
+      "token_compression_unique": 77.125,
+      "token_compression_stream": 77.125,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_86": {
+      "original_size_bytes": 3406,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 42.04938271604938,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 639,
+        "reconstructed_tokens": 671,
+        "edit_distance": 32,
+        "token_accuracy": 0.9523099850968704,
+        "token_precision": 0.9523099850968704,
+        "token_recall": 0.9499217527386541,
+        "token_f1": 0.951114369717196
+      },
+      "character_metrics": {
+        "original_characters": 1164,
+        "reconstructed_characters": 1226,
+        "edit_distance": 62,
+        "character_accuracy": 0.9494290375203915,
+        "character_precision": 0.9494290375203915,
+        "character_recall": 0.9467353951890034,
+        "character_f1": 0.9480803030952554,
+        "normalized_edit_distance": 0.05057096247960848
+      },
+      "normalized_edit_distance": 0.05057096247960848,
+      "token_compression_unique": 71.0,
+      "token_compression_stream": 71.0,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 1,
+        "precision": 0.9,
+        "false_positive_rate": 0.0010416666666666667,
+        "recall": 1.0,
+        "f1": 0.9473684210526316
+      }
+    },
+    "cn_87": {
+      "original_size_bytes": 3915,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 43.5,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 1156,
+        "reconstructed_tokens": 1173,
+        "edit_distance": 17,
+        "token_accuracy": 0.9855072463768116,
+        "token_precision": 0.9855072463768116,
+        "token_recall": 0.9852941176470589,
+        "token_f1": 0.9854006704877258
+      },
+      "character_metrics": {
+        "original_characters": 1339,
+        "reconstructed_characters": 1357,
+        "edit_distance": 18,
+        "character_accuracy": 0.9867354458364038,
+        "character_precision": 0.9867354458364038,
+        "character_recall": 0.9865571321882002,
+        "character_f1": 0.9866462809557782,
+        "normalized_edit_distance": 0.013264554163596167
+      },
+      "normalized_edit_distance": 0.013264554163596167,
+      "token_compression_unique": 115.6,
+      "token_compression_stream": 115.6,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_88": {
+      "original_size_bytes": 2959,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 41.09722222222222,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 594,
+        "reconstructed_tokens": 643,
+        "edit_distance": 49,
+        "token_accuracy": 0.9237947122861586,
+        "token_precision": 0.9237947122861586,
+        "token_recall": 0.9175084175084175,
+        "token_f1": 0.9206408340454817
+      },
+      "character_metrics": {
+        "original_characters": 1041,
+        "reconstructed_characters": 1134,
+        "edit_distance": 93,
+        "character_accuracy": 0.917989417989418,
+        "character_precision": 0.917989417989418,
+        "character_recall": 0.9106628242074928,
+        "character_f1": 0.9143114439019916,
+        "normalized_edit_distance": 0.082010582010582
+      },
+      "normalized_edit_distance": 0.082010582010582,
+      "token_compression_unique": 74.25,
+      "token_compression_stream": 74.25,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_89": {
+      "original_size_bytes": 3796,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.17777777777778,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 854,
+        "reconstructed_tokens": 892,
+        "edit_distance": 38,
+        "token_accuracy": 0.9573991031390134,
+        "token_precision": 0.9573991031390134,
+        "token_recall": 0.955503512880562,
+        "token_f1": 0.9564503687924962
+      },
+      "character_metrics": {
+        "original_characters": 1288,
+        "reconstructed_characters": 1348,
+        "edit_distance": 60,
+        "character_accuracy": 0.9554896142433235,
+        "character_precision": 0.9554896142433235,
+        "character_recall": 0.953416149068323,
+        "character_f1": 0.9544517555505134,
+        "normalized_edit_distance": 0.04451038575667656
+      },
+      "normalized_edit_distance": 0.04451038575667656,
+      "token_compression_unique": 85.4,
+      "token_compression_stream": 85.4,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_9": {
+      "original_size_bytes": 3280,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.49382716049383,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 661,
+        "reconstructed_tokens": 734,
+        "edit_distance": 73,
+        "token_accuracy": 0.9005449591280654,
+        "token_precision": 0.9005449591280654,
+        "token_recall": 0.8895612708018155,
+        "token_f1": 0.8950194182470499
+      },
+      "character_metrics": {
+        "original_characters": 1146,
+        "reconstructed_characters": 1258,
+        "edit_distance": 112,
+        "character_accuracy": 0.9109697933227345,
+        "character_precision": 0.9109697933227345,
+        "character_recall": 0.9022687609075044,
+        "character_f1": 0.9065984006659302,
+        "normalized_edit_distance": 0.0890302066772655
+      },
+      "normalized_edit_distance": 0.0890302066772655,
+      "token_compression_unique": 73.44444444444444,
+      "token_compression_stream": 73.44444444444444,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_90": {
+      "original_size_bytes": 3433,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 42.382716049382715,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 636,
+        "reconstructed_tokens": 665,
+        "edit_distance": 29,
+        "token_accuracy": 0.956390977443609,
+        "token_precision": 0.956390977443609,
+        "token_recall": 0.9544025157232704,
+        "token_f1": 0.9553957119399716
+      },
+      "character_metrics": {
+        "original_characters": 1171,
+        "reconstructed_characters": 1223,
+        "edit_distance": 52,
+        "character_accuracy": 0.9574816026165167,
+        "character_precision": 0.9574816026165167,
+        "character_recall": 0.955593509820666,
+        "character_f1": 0.9565366245002331,
+        "normalized_edit_distance": 0.04251839738348324
+      },
+      "normalized_edit_distance": 0.04251839738348324,
+      "token_compression_unique": 70.66666666666667,
+      "token_compression_stream": 70.66666666666667,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 1,
+        "precision": 0.9,
+        "false_positive_rate": 0.0010416666666666667,
+        "recall": 1.0,
+        "f1": 0.9473684210526316
+      }
+    },
+    "cn_91": {
+      "original_size_bytes": 3806,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.28888888888889,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 864,
+        "reconstructed_tokens": 903,
+        "edit_distance": 39,
+        "token_accuracy": 0.9568106312292359,
+        "token_precision": 0.9568106312292359,
+        "token_recall": 0.9548611111111112,
+        "token_f1": 0.9558348771112547
+      },
+      "character_metrics": {
+        "original_characters": 1340,
+        "reconstructed_characters": 1400,
+        "edit_distance": 60,
+        "character_accuracy": 0.9571428571428572,
+        "character_precision": 0.9571428571428572,
+        "character_recall": 0.9552238805970149,
+        "character_f1": 0.9561824060653361,
+        "normalized_edit_distance": 0.04285714285714286
+      },
+      "normalized_edit_distance": 0.04285714285714286,
+      "token_compression_unique": 86.4,
+      "token_compression_stream": 86.4,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 1,
+        "precision": 0.9090909090909091,
+        "false_positive_rate": 0.0010427528675703858,
+        "recall": 1.0,
+        "f1": 0.9523809523809523
+      }
+    },
+    "cn_92": {
+      "original_size_bytes": 3244,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 40.04938271604938,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 652,
+        "reconstructed_tokens": 723,
+        "edit_distance": 71,
+        "token_accuracy": 0.9017980636237898,
+        "token_precision": 0.9017980636237898,
+        "token_recall": 0.8911042944785276,
+        "token_f1": 0.896419287549088
+      },
+      "character_metrics": {
+        "original_characters": 1126,
+        "reconstructed_characters": 1245,
+        "edit_distance": 119,
+        "character_accuracy": 0.9044176706827309,
+        "character_precision": 0.9044176706827309,
+        "character_recall": 0.894316163410302,
+        "character_f1": 0.8993385525249734,
+        "normalized_edit_distance": 0.09558232931726908
+      },
+      "normalized_edit_distance": 0.09558232931726908,
+      "token_compression_unique": 72.44444444444444,
+      "token_compression_stream": 72.44444444444444,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_93": {
+      "original_size_bytes": 3340,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 41.23456790123457,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 662,
+        "reconstructed_tokens": 711,
+        "edit_distance": 49,
+        "token_accuracy": 0.9310829817158931,
+        "token_precision": 0.9310829817158931,
+        "token_recall": 0.9259818731117825,
+        "token_f1": 0.9285254213825397
+      },
+      "character_metrics": {
+        "original_characters": 1158,
+        "reconstructed_characters": 1244,
+        "edit_distance": 86,
+        "character_accuracy": 0.9308681672025724,
+        "character_precision": 0.9308681672025724,
+        "character_recall": 0.92573402417962,
+        "character_f1": 0.9282939968562725,
+        "normalized_edit_distance": 0.06913183279742766
+      },
+      "normalized_edit_distance": 0.06913183279742766,
+      "token_compression_unique": 73.55555555555556,
+      "token_compression_stream": 73.55555555555556,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_94": {
+      "original_size_bytes": 2890,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 40.138888888888886,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 798,
+        "reconstructed_tokens": 886,
+        "edit_distance": 88,
+        "token_accuracy": 0.9006772009029346,
+        "token_precision": 0.9006772009029346,
+        "token_recall": 0.8897243107769424,
+        "token_f1": 0.8951672533542309
+      },
+      "character_metrics": {
+        "original_characters": 1044,
+        "reconstructed_characters": 1152,
+        "edit_distance": 108,
+        "character_accuracy": 0.90625,
+        "character_precision": 0.90625,
+        "character_recall": 0.896551724137931,
+        "character_f1": 0.9013747758517633,
+        "normalized_edit_distance": 0.09375
+      },
+      "normalized_edit_distance": 0.09375,
+      "token_compression_unique": 99.75,
+      "token_compression_stream": 99.75,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 961,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_95": {
+      "original_size_bytes": 3343,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 41.27160493827161,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 814,
+        "reconstructed_tokens": 873,
+        "edit_distance": 59,
+        "token_accuracy": 0.9324169530355098,
+        "token_precision": 0.9324169530355098,
+        "token_recall": 0.9275184275184275,
+        "token_f1": 0.9299612396355935
+      },
+      "character_metrics": {
+        "original_characters": 1174,
+        "reconstructed_characters": 1257,
+        "edit_distance": 83,
+        "character_accuracy": 0.933969769291965,
+        "character_precision": 0.933969769291965,
+        "character_recall": 0.9293015332197615,
+        "character_f1": 0.9316298033613573,
+        "normalized_edit_distance": 0.066030230708035
+      },
+      "normalized_edit_distance": 0.066030230708035,
+      "token_compression_unique": 90.44444444444444,
+      "token_compression_stream": 90.44444444444444,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_96": {
+      "original_size_bytes": 3655,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 40.611111111111114,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 827,
+        "reconstructed_tokens": 901,
+        "edit_distance": 74,
+        "token_accuracy": 0.9178690344062153,
+        "token_precision": 0.9178690344062153,
+        "token_recall": 0.9105199516324063,
+        "token_f1": 0.9141797234549488
+      },
+      "character_metrics": {
+        "original_characters": 1249,
+        "reconstructed_characters": 1355,
+        "edit_distance": 106,
+        "character_accuracy": 0.9217712177121771,
+        "character_precision": 0.9217712177121771,
+        "character_recall": 0.9151321056845476,
+        "character_f1": 0.9184396638408937,
+        "normalized_edit_distance": 0.07822878228782287
+      },
+      "normalized_edit_distance": 0.07822878228782287,
+      "token_compression_unique": 82.7,
+      "token_compression_stream": 82.7,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 959,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_97": {
+      "original_size_bytes": 2745,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 43.57142857142857,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 749,
+        "reconstructed_tokens": 772,
+        "edit_distance": 23,
+        "token_accuracy": 0.9702072538860104,
+        "token_precision": 0.9702072538860104,
+        "token_recall": 0.9692923898531375,
+        "token_f1": 0.9697496060984081
+      },
+      "character_metrics": {
+        "original_characters": 1039,
+        "reconstructed_characters": 1066,
+        "edit_distance": 27,
+        "character_accuracy": 0.974671669793621,
+        "character_precision": 0.974671669793621,
+        "character_recall": 0.9740134744947064,
+        "character_f1": 0.9743424609868911,
+        "normalized_edit_distance": 0.025328330206378986
+      },
+      "normalized_edit_distance": 0.025328330206378986,
+      "token_compression_unique": 107.0,
+      "token_compression_stream": 107.0,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 962,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_98": {
+      "original_size_bytes": 4129,
+      "compressed_size_bytes": 99,
+      "compression_ratio": 41.707070707070706,
+      "unique_signatures": 11,
+      "stream_windows": 11,
+      "token_metrics": {
+        "original_tokens": 879,
+        "reconstructed_tokens": 926,
+        "edit_distance": 47,
+        "token_accuracy": 0.949244060475162,
+        "token_precision": 0.949244060475162,
+        "token_recall": 0.9465301478953356,
+        "token_f1": 0.9478851616222952
+      },
+      "character_metrics": {
+        "original_characters": 1399,
+        "reconstructed_characters": 1474,
+        "edit_distance": 75,
+        "character_accuracy": 0.9491180461329715,
+        "character_precision": 0.9491180461329715,
+        "character_recall": 0.9463902787705504,
+        "character_f1": 0.9477521997289688,
+        "normalized_edit_distance": 0.05088195386702849
+      },
+      "normalized_edit_distance": 0.05088195386702849,
+      "token_compression_unique": 79.9090909090909,
+      "token_compression_stream": 79.9090909090909,
+      "verification": {
+        "positives": 11,
+        "true_positive": 11,
+        "negatives": 958,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "cn_99": {
+      "original_size_bytes": 3577,
+      "compressed_size_bytes": 81,
+      "compression_ratio": 44.160493827160494,
+      "unique_signatures": 9,
+      "stream_windows": 9,
+      "token_metrics": {
+        "original_tokens": 848,
+        "reconstructed_tokens": 851,
+        "edit_distance": 3,
+        "token_accuracy": 0.9964747356051704,
+        "token_precision": 0.9964747356051704,
+        "token_recall": 0.9964622641509434,
+        "token_f1": 0.9964684998390348
+      },
+      "character_metrics": {
+        "original_characters": 1265,
+        "reconstructed_characters": 1268,
+        "edit_distance": 3,
+        "character_accuracy": 0.9976340694006309,
+        "character_precision": 0.9976340694006309,
+        "character_recall": 0.9976284584980237,
+        "character_f1": 0.9976312639414381,
+        "normalized_edit_distance": 0.002365930599369085
+      },
+      "normalized_edit_distance": 0.002365930599369085,
+      "token_compression_unique": 94.22222222222223,
+      "token_compression_stream": 94.22222222222223,
+      "verification": {
+        "positives": 9,
+        "true_positive": 9,
+        "negatives": 960,
+        "false_positive": 1,
+        "precision": 0.9,
+        "false_positive_rate": 0.0010416666666666667,
+        "recall": 1.0,
+        "f1": 0.9473684210526316
+      }
+    }
+  },
+  "records": 969,
+  "negatives_evaluated": 95931,
+  "token_metrics": {
+    "text_tokens_total": 85347,
+    "reconstructed_tokens_total": 89892,
+    "token_edit_distance_total": 4545,
+    "manifold_tokens_stream": 969,
+    "manifold_tokens_unique": 969,
+    "token_compression_stream": 88.07739938080495,
+    "token_compression_unique": 88.07739938080495,
+    "token_accuracy": 0.9494393271926311,
+    "token_precision": 0.9494393271926311,
+    "token_recall": 0.946746810081198,
+    "token_f1": 0.9480911569974788
+  },
+  "character_metrics": {
+    "original_characters_total": 130124,
+    "reconstructed_characters_total": 136914,
+    "character_edit_distance_total": 6790,
+    "character_accuracy": 0.9504068247220883,
+    "character_precision": 0.9504068247220883,
+    "character_recall": 0.94781900341213,
+    "character_f1": 0.9491111500991364,
+    "normalized_edit_distance": 0.04959317527791168
+  },
+  "use_native": true
+}

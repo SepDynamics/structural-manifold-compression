@@ -1,0 +1,5825 @@
+{
+  "text_root": "data/benchmark_corpus/omnidocbench/text",
+  "documents": 148,
+  "window_bytes": 512,
+  "stride_bytes": 384,
+  "precision": 3,
+  "tokenizer_name": "external/DeepSeek-OCR/weights",
+  "tokenizer_trust_remote_code": true,
+  "signature_storage_bytes": 9,
+  "original_size_bytes": 107163,
+  "compressed_size_bytes": 2889,
+  "compression_ratio": 37.09345794392523,
+  "unique_signatures": 321,
+  "shared_signatures": 52,
+  "verification": {
+    "positives": 322,
+    "true_positive": 322,
+    "negatives": 47978,
+    "false_positive": 153,
+    "precision": 0.6778947368421052,
+    "recall": 1.0,
+    "false_positive_rate": 0.0031889616074033933,
+    "f1": 0.8080301129234629
+  },
+  "per_document": {
+    "PPT_1001115_eng_page_003": {
+      "original_size_bytes": 374,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 41.55555555555556,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 95,
+        "reconstructed_tokens": 95,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 364,
+        "reconstructed_characters": 364,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 95.0,
+      "token_compression_stream": 95.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_1001115_eng_page_005": {
+      "original_size_bytes": 478,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 53.111111111111114,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 101,
+        "reconstructed_tokens": 101,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 458,
+        "reconstructed_characters": 458,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 101.0,
+      "token_compression_stream": 101.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_1001115_eng_page_011": {
+      "original_size_bytes": 631,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 35.05555555555556,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 149,
+        "reconstructed_tokens": 215,
+        "edit_distance": 66,
+        "token_accuracy": 0.6930232558139535,
+        "token_precision": 0.6930232558139535,
+        "token_recall": 0.5570469798657718,
+        "token_f1": 0.6176397143285222
+      },
+      "character_metrics": {
+        "original_characters": 605,
+        "reconstructed_characters": 858,
+        "edit_distance": 253,
+        "character_accuracy": 0.7051282051282051,
+        "character_precision": 0.7051282051282051,
+        "character_recall": 0.5818181818181818,
+        "character_f1": 0.6375656583952182,
+        "normalized_edit_distance": 0.2948717948717949
+      },
+      "normalized_edit_distance": 0.2948717948717949,
+      "token_compression_unique": 74.5,
+      "token_compression_stream": 74.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 4,
+        "precision": 0.3333333333333333,
+        "false_positive_rate": 0.0125,
+        "recall": 1.0,
+        "f1": 0.5
+      }
+    },
+    "PPT_1001115_eng_page_015": {
+      "original_size_bytes": 152,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 16.88888888888889,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 39,
+        "reconstructed_tokens": 39,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 144,
+        "reconstructed_characters": 144,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 39.0,
+      "token_compression_stream": 39.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_11.2013EvaluatingTraineeteacherproficiency_page_010": {
+      "original_size_bytes": 509,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 56.55555555555556,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 94,
+        "reconstructed_tokens": 94,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 502,
+        "reconstructed_characters": 502,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 94.0,
+      "token_compression_stream": 94.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_11.2013EvaluatingTraineeteacherproficiency_page_029": {
+      "original_size_bytes": 314,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 34.888888888888886,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 55,
+        "reconstructed_tokens": 55,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 314,
+        "reconstructed_characters": 314,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 55.0,
+      "token_compression_stream": 55.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_13 fallacies LALT2012_page_001": {
+      "original_size_bytes": 238,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 26.444444444444443,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 53,
+        "reconstructed_tokens": 53,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 236,
+        "reconstructed_characters": 236,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 53.0,
+      "token_compression_stream": 53.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_13 fallacies LALT2012_page_009": {
+      "original_size_bytes": 615,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 34.166666666666664,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 132,
+        "reconstructed_tokens": 185,
+        "edit_distance": 53,
+        "token_accuracy": 0.7135135135135136,
+        "token_precision": 0.7135135135135136,
+        "token_recall": 0.5984848484848485,
+        "token_f1": 0.6509566465869722
+      },
+      "character_metrics": {
+        "original_characters": 615,
+        "reconstructed_characters": 896,
+        "edit_distance": 281,
+        "character_accuracy": 0.6863839285714286,
+        "character_precision": 0.6863839285714286,
+        "character_recall": 0.5430894308943089,
+        "character_f1": 0.6063862291491079,
+        "normalized_edit_distance": 0.31361607142857145
+      },
+      "normalized_edit_distance": 0.31361607142857145,
+      "token_compression_unique": 66.0,
+      "token_compression_stream": 66.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 2,
+        "precision": 0.5,
+        "false_positive_rate": 0.00625,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_13 fallacies LALT2012_page_010": {
+      "original_size_bytes": 1462,
+      "compressed_size_bytes": 36,
+      "compression_ratio": 40.611111111111114,
+      "unique_signatures": 4,
+      "stream_windows": 4,
+      "token_metrics": {
+        "original_tokens": 445,
+        "reconstructed_tokens": 503,
+        "edit_distance": 58,
+        "token_accuracy": 0.8846918489065606,
+        "token_precision": 0.8846918489065606,
+        "token_recall": 0.8696629213483146,
+        "token_f1": 0.8771130114136995
+      },
+      "character_metrics": {
+        "original_characters": 1459,
+        "reconstructed_characters": 1661,
+        "edit_distance": 202,
+        "character_accuracy": 0.8783865141481035,
+        "character_precision": 0.8783865141481035,
+        "character_recall": 0.8615490061686086,
+        "character_f1": 0.8698862911407835,
+        "normalized_edit_distance": 0.12161348585189645
+      },
+      "normalized_edit_distance": 0.12161348585189645,
+      "token_compression_unique": 111.25,
+      "token_compression_stream": 111.25,
+      "verification": {
+        "positives": 4,
+        "true_positive": 4,
+        "negatives": 318,
+        "false_positive": 3,
+        "precision": 0.5714285714285714,
+        "false_positive_rate": 0.009433962264150943,
+        "recall": 1.0,
+        "f1": 0.7272727272727273
+      }
+    },
+    "PPT_1637904769_page_001": {
+      "original_size_bytes": 123,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 13.666666666666666,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 38,
+        "reconstructed_tokens": 38,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 123,
+        "reconstructed_characters": 123,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 38.0,
+      "token_compression_stream": 38.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_1637904769_page_002": {
+      "original_size_bytes": 187,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 20.77777777777778,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 45,
+        "reconstructed_tokens": 45,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 179,
+        "reconstructed_characters": 179,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 45.0,
+      "token_compression_stream": 45.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_1637904769_page_008": {
+      "original_size_bytes": 203,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 22.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 38,
+        "reconstructed_tokens": 38,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 191,
+        "reconstructed_characters": 191,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 38.0,
+      "token_compression_stream": 38.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_1637904769_page_017": {
+      "original_size_bytes": 958,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 35.48148148148148,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 192,
+        "reconstructed_tokens": 255,
+        "edit_distance": 63,
+        "token_accuracy": 0.7529411764705882,
+        "token_precision": 0.7529411764705882,
+        "token_recall": 0.671875,
+        "token_f1": 0.7101019223326023
+      },
+      "character_metrics": {
+        "original_characters": 958,
+        "reconstructed_characters": 1280,
+        "edit_distance": 322,
+        "character_accuracy": 0.7484375,
+        "character_precision": 0.7484375,
+        "character_recall": 0.6638830897703549,
+        "character_f1": 0.703629195239294,
+        "normalized_edit_distance": 0.2515625
+      },
+      "normalized_edit_distance": 0.2515625,
+      "token_compression_unique": 64.0,
+      "token_compression_stream": 64.0,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 3,
+        "precision": 0.5,
+        "false_positive_rate": 0.009404388714733543,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_8076_MEYER_Chapter_2_-_Language_Change_page_012": {
+      "original_size_bytes": 120,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 13.333333333333334,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 30,
+        "reconstructed_tokens": 30,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 120,
+        "reconstructed_characters": 120,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 30.0,
+      "token_compression_stream": 30.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_8076_MEYER_Chapter_2_-_Language_Change_page_014": {
+      "original_size_bytes": 297,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 33.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 70,
+        "reconstructed_tokens": 70,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 297,
+        "reconstructed_characters": 297,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 70.0,
+      "token_compression_stream": 70.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_8076_MEYER_Chapter_2_-_Language_Change_page_017": {
+      "original_size_bytes": 303,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 33.666666666666664,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 87,
+        "reconstructed_tokens": 87,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 281,
+        "reconstructed_characters": 281,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 87.0,
+      "token_compression_stream": 87.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_8076_MEYER_Chapter_2_-_Language_Change_page_021": {
+      "original_size_bytes": 142,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 15.777777777777779,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 41,
+        "reconstructed_tokens": 41,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 142,
+        "reconstructed_characters": 142,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 41.0,
+      "token_compression_stream": 41.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_B14_Claeys_Consistent Presentation of Images_v2_page_006": {
+      "original_size_bytes": 139,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 15.444444444444445,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 28,
+        "reconstructed_tokens": 28,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 137,
+        "reconstructed_characters": 137,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 28.0,
+      "token_compression_stream": 28.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_B14_Claeys_Consistent Presentation of Images_v2_page_010": {
+      "original_size_bytes": 90,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 10.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 17,
+        "reconstructed_tokens": 17,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 90,
+        "reconstructed_characters": 90,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 17.0,
+      "token_compression_stream": 17.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_B14_Claeys_Consistent Presentation of Images_v2_page_013": {
+      "original_size_bytes": 266,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 29.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 63,
+        "reconstructed_tokens": 63,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 254,
+        "reconstructed_characters": 254,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 63.0,
+      "token_compression_stream": 63.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_B14_Claeys_Consistent Presentation of Images_v2_page_024": {
+      "original_size_bytes": 402,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 44.666666666666664,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 81,
+        "reconstructed_tokens": 81,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 390,
+        "reconstructed_characters": 390,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 81.0,
+      "token_compression_stream": 81.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 2,
+        "precision": 0.3333333333333333,
+        "false_positive_rate": 0.006230529595015576,
+        "recall": 1.0,
+        "f1": 0.5
+      }
+    },
+    "PPT_BaharMartonosi_page_002": {
+      "original_size_bytes": 304,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 33.77777777777778,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 73,
+        "reconstructed_tokens": 73,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 298,
+        "reconstructed_characters": 298,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 73.0,
+      "token_compression_stream": 73.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 2,
+        "precision": 0.3333333333333333,
+        "false_positive_rate": 0.006230529595015576,
+        "recall": 1.0,
+        "f1": 0.5
+      }
+    },
+    "PPT_BaharMartonosi_page_005": {
+      "original_size_bytes": 221,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 24.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 58,
+        "reconstructed_tokens": 58,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 219,
+        "reconstructed_characters": 219,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 58.0,
+      "token_compression_stream": 58.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_BaharMartonosi_page_006": {
+      "original_size_bytes": 425,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 47.22222222222222,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 110,
+        "reconstructed_tokens": 110,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 411,
+        "reconstructed_characters": 411,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 110.0,
+      "token_compression_stream": 110.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_BaharMartonosi_page_007": {
+      "original_size_bytes": 330,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 36.666666666666664,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 89,
+        "reconstructed_tokens": 89,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 324,
+        "reconstructed_characters": 324,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 89.0,
+      "token_compression_stream": 89.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_BaharMartonosi_page_008": {
+      "original_size_bytes": 369,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 41.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 83,
+        "reconstructed_tokens": 83,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 355,
+        "reconstructed_characters": 355,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 83.0,
+      "token_compression_stream": 83.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_BaharMartonosi_page_010": {
+      "original_size_bytes": 284,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 31.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 58,
+        "reconstructed_tokens": 58,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 284,
+        "reconstructed_characters": 284,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 58.0,
+      "token_compression_stream": 58.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_CalculusReview_page_002": {
+      "original_size_bytes": 318,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 35.333333333333336,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 101,
+        "reconstructed_tokens": 101,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 306,
+        "reconstructed_characters": 306,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 101.0,
+      "token_compression_stream": 101.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_CalculusReview_page_004": {
+      "original_size_bytes": 365,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 40.55555555555556,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 150,
+        "reconstructed_tokens": 150,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 349,
+        "reconstructed_characters": 349,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 150.0,
+      "token_compression_stream": 150.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_CalculusReview_page_009": {
+      "original_size_bytes": 94,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 10.444444444444445,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 28,
+        "reconstructed_tokens": 28,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 90,
+        "reconstructed_characters": 90,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 28.0,
+      "token_compression_stream": 28.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_CalculusReview_page_014": {
+      "original_size_bytes": 68,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 7.555555555555555,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 25,
+        "reconstructed_tokens": 25,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 64,
+        "reconstructed_characters": 64,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 25.0,
+      "token_compression_stream": 25.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_CalculusReview_page_033": {
+      "original_size_bytes": 17,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 1.8888888888888888,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 3,
+        "reconstructed_tokens": 3,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 17,
+        "reconstructed_characters": 17,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 3.0,
+      "token_compression_stream": 3.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_Catalysis.ppt_page_003": {
+      "original_size_bytes": 346,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 38.44444444444444,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 70,
+        "reconstructed_tokens": 70,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 338,
+        "reconstructed_characters": 338,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 70.0,
+      "token_compression_stream": 70.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_Catalysis.ppt_page_016": {
+      "original_size_bytes": 38,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 4.222222222222222,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 5,
+        "reconstructed_tokens": 5,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 38,
+        "reconstructed_characters": 38,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 5.0,
+      "token_compression_stream": 5.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_EnglishtoAmericanTransition_page_003": {
+      "original_size_bytes": 294,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 32.666666666666664,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 77,
+        "reconstructed_tokens": 77,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 282,
+        "reconstructed_characters": 282,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 77.0,
+      "token_compression_stream": 77.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_EnglishtoAmericanTransition_page_005": {
+      "original_size_bytes": 292,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 32.44444444444444,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 62,
+        "reconstructed_tokens": 62,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 286,
+        "reconstructed_characters": 286,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 62.0,
+      "token_compression_stream": 62.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_EnglishtoAmericanTransition_page_009": {
+      "original_size_bytes": 221,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 24.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 67,
+        "reconstructed_tokens": 67,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 205,
+        "reconstructed_characters": 205,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 67.0,
+      "token_compression_stream": 67.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_EnglishtoAmericanTransition_page_012": {
+      "original_size_bytes": 158,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 17.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 45,
+        "reconstructed_tokens": 45,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 150,
+        "reconstructed_characters": 150,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 45.0,
+      "token_compression_stream": 45.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_EnglishtoAmericanTransition_page_016": {
+      "original_size_bytes": 541,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 30.055555555555557,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 151,
+        "reconstructed_tokens": 255,
+        "edit_distance": 104,
+        "token_accuracy": 0.592156862745098,
+        "token_precision": 0.592156862745098,
+        "token_recall": 0.3112582781456954,
+        "token_f1": 0.40803771632265856
+      },
+      "character_metrics": {
+        "original_characters": 531,
+        "reconstructed_characters": 880,
+        "edit_distance": 349,
+        "character_accuracy": 0.6034090909090909,
+        "character_precision": 0.6034090909090909,
+        "character_recall": 0.3427495291902072,
+        "character_f1": 0.4371744386717663,
+        "normalized_edit_distance": 0.3965909090909091
+      },
+      "normalized_edit_distance": 0.3965909090909091,
+      "token_compression_unique": 75.5,
+      "token_compression_stream": 75.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_EnglishtoAmericanTransition_page_017": {
+      "original_size_bytes": 842,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 46.77777777777778,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 230,
+        "reconstructed_tokens": 245,
+        "edit_distance": 15,
+        "token_accuracy": 0.9387755102040817,
+        "token_precision": 0.9387755102040817,
+        "token_recall": 0.9347826086956522,
+        "token_f1": 0.9367748046412503
+      },
+      "character_metrics": {
+        "original_characters": 832,
+        "reconstructed_characters": 886,
+        "edit_distance": 54,
+        "character_accuracy": 0.9390519187358917,
+        "character_precision": 0.9390519187358917,
+        "character_recall": 0.9350961538461539,
+        "character_f1": 0.9370698615739628,
+        "normalized_edit_distance": 0.060948081264108354
+      },
+      "normalized_edit_distance": 0.060948081264108354,
+      "token_compression_unique": 115.0,
+      "token_compression_stream": 115.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_Keuk Chan Narith_page_005": {
+      "original_size_bytes": 174,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 19.333333333333332,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 32,
+        "reconstructed_tokens": 32,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 172,
+        "reconstructed_characters": 172,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 32.0,
+      "token_compression_stream": 32.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_Keuk Chan Narith_page_009": {
+      "original_size_bytes": 333,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 37.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 63,
+        "reconstructed_tokens": 63,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 331,
+        "reconstructed_characters": 331,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 63.0,
+      "token_compression_stream": 63.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_Keuk Chan Narith_page_019": {
+      "original_size_bytes": 239,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 26.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 49,
+        "reconstructed_tokens": 49,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 237,
+        "reconstructed_characters": 237,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 49.0,
+      "token_compression_stream": 49.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_LEP power point presentation-English-FINAL-10-31-07_page_004": {
+      "original_size_bytes": 659,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 36.611111111111114,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 133,
+        "reconstructed_tokens": 183,
+        "edit_distance": 50,
+        "token_accuracy": 0.7267759562841529,
+        "token_precision": 0.7267759562841529,
+        "token_recall": 0.6240601503759399,
+        "token_f1": 0.6715128657460915
+      },
+      "character_metrics": {
+        "original_characters": 659,
+        "reconstructed_characters": 896,
+        "edit_distance": 237,
+        "character_accuracy": 0.7354910714285714,
+        "character_precision": 0.7354910714285714,
+        "character_recall": 0.6403641881638846,
+        "character_f1": 0.6846390847779338,
+        "normalized_edit_distance": 0.26450892857142855
+      },
+      "normalized_edit_distance": 0.26450892857142855,
+      "token_compression_unique": 66.5,
+      "token_compression_stream": 66.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 1,
+        "precision": 0.6666666666666666,
+        "false_positive_rate": 0.003125,
+        "recall": 1.0,
+        "f1": 0.8
+      }
+    },
+    "PPT_LEP power point presentation-English-FINAL-10-31-07_page_006": {
+      "original_size_bytes": 755,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 41.94444444444444,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 141,
+        "reconstructed_tokens": 164,
+        "edit_distance": 23,
+        "token_accuracy": 0.8597560975609756,
+        "token_precision": 0.8597560975609756,
+        "token_recall": 0.8368794326241135,
+        "token_f1": 0.8481635357989448
+      },
+      "character_metrics": {
+        "original_characters": 755,
+        "reconstructed_characters": 896,
+        "edit_distance": 141,
+        "character_accuracy": 0.8426339285714286,
+        "character_precision": 0.8426339285714286,
+        "character_recall": 0.8132450331125828,
+        "character_f1": 0.8276786806276553,
+        "normalized_edit_distance": 0.15736607142857142
+      },
+      "normalized_edit_distance": 0.15736607142857142,
+      "token_compression_unique": 70.5,
+      "token_compression_stream": 70.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_LEP power point presentation-English-FINAL-10-31-07_page_008": {
+      "original_size_bytes": 567,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 31.5,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 133,
+        "reconstructed_tokens": 208,
+        "edit_distance": 75,
+        "token_accuracy": 0.6394230769230769,
+        "token_precision": 0.6394230769230769,
+        "token_recall": 0.43609022556390975,
+        "token_f1": 0.5185359459550297
+      },
+      "character_metrics": {
+        "original_characters": 565,
+        "reconstructed_characters": 894,
+        "edit_distance": 329,
+        "character_accuracy": 0.6319910514541387,
+        "character_precision": 0.6319910514541387,
+        "character_recall": 0.41769911504424784,
+        "character_f1": 0.5029714697411776,
+        "normalized_edit_distance": 0.3680089485458613
+      },
+      "normalized_edit_distance": 0.3680089485458613,
+      "token_compression_unique": 66.5,
+      "token_compression_stream": 66.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 2,
+        "precision": 0.5,
+        "false_positive_rate": 0.00625,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_LEP power point presentation-English-FINAL-10-31-07_page_015": {
+      "original_size_bytes": 97,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 10.777777777777779,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 21,
+        "reconstructed_tokens": 21,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 97,
+        "reconstructed_characters": 97,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 21.0,
+      "token_compression_stream": 21.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_MMAT5390Lecture1_page_023": {
+      "original_size_bytes": 479,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 53.22222222222222,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 138,
+        "reconstructed_tokens": 138,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 477,
+        "reconstructed_characters": 477,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 138.0,
+      "token_compression_stream": 138.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_MMAT5390Lecture1_page_024": {
+      "original_size_bytes": 367,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 40.77777777777778,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 100,
+        "reconstructed_tokens": 100,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 365,
+        "reconstructed_characters": 365,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 100.0,
+      "token_compression_stream": 100.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_PresentationSpecification_page_007": {
+      "original_size_bytes": 339,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 37.666666666666664,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 97,
+        "reconstructed_tokens": 97,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 327,
+        "reconstructed_characters": 327,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 97.0,
+      "token_compression_stream": 97.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_PresentationSpecification_page_010": {
+      "original_size_bytes": 280,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 31.11111111111111,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 83,
+        "reconstructed_tokens": 83,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 276,
+        "reconstructed_characters": 276,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 83.0,
+      "token_compression_stream": 83.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_PresentationSpecification_page_025": {
+      "original_size_bytes": 387,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 43.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 92,
+        "reconstructed_tokens": 92,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 383,
+        "reconstructed_characters": 383,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 92.0,
+      "token_compression_stream": 92.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_StewartCalcET7e_03_02_page_007": {
+      "original_size_bytes": 116,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 12.88888888888889,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 37,
+        "reconstructed_tokens": 37,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 116,
+        "reconstructed_characters": 116,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 37.0,
+      "token_compression_stream": 37.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_StewartCalcET7e_03_02_page_010": {
+      "original_size_bytes": 146,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 16.22222222222222,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 56,
+        "reconstructed_tokens": 56,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 146,
+        "reconstructed_characters": 146,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 56.0,
+      "token_compression_stream": 56.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_StewartCalcET7e_03_02_page_012": {
+      "original_size_bytes": 147,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 16.333333333333332,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 33,
+        "reconstructed_tokens": 33,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 145,
+        "reconstructed_characters": 145,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 33.0,
+      "token_compression_stream": 33.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 2,
+        "precision": 0.3333333333333333,
+        "false_positive_rate": 0.006230529595015576,
+        "recall": 1.0,
+        "f1": 0.5
+      }
+    },
+    "PPT_StewartCalcET7e_03_02_page_014": {
+      "original_size_bytes": 313,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 34.77777777777778,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 86,
+        "reconstructed_tokens": 86,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 313,
+        "reconstructed_characters": 313,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 86.0,
+      "token_compression_stream": 86.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_StewartCalcET7e_03_02_page_015": {
+      "original_size_bytes": 169,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 18.77777777777778,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 54,
+        "reconstructed_tokens": 54,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 169,
+        "reconstructed_characters": 169,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 54.0,
+      "token_compression_stream": 54.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_StewartCalcET7e_04_09_page_018": {
+      "original_size_bytes": 263,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 29.22222222222222,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 103,
+        "reconstructed_tokens": 103,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 261,
+        "reconstructed_characters": 261,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 103.0,
+      "token_compression_stream": 103.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_The Right Moves_page_010": {
+      "original_size_bytes": 323,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 35.888888888888886,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 69,
+        "reconstructed_tokens": 69,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 321,
+        "reconstructed_characters": 321,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 69.0,
+      "token_compression_stream": 69.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_The Right Moves_page_016": {
+      "original_size_bytes": 164,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 18.22222222222222,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 30,
+        "reconstructed_tokens": 30,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 164,
+        "reconstructed_characters": 164,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 30.0,
+      "token_compression_stream": 30.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_The Right Moves_page_024": {
+      "original_size_bytes": 413,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 45.888888888888886,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 77,
+        "reconstructed_tokens": 77,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 413,
+        "reconstructed_characters": 413,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 77.0,
+      "token_compression_stream": 77.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_Transfer-Orientation-2012_page_004": {
+      "original_size_bytes": 704,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 39.111111111111114,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 157,
+        "reconstructed_tokens": 205,
+        "edit_distance": 48,
+        "token_accuracy": 0.7658536585365854,
+        "token_precision": 0.7658536585365854,
+        "token_recall": 0.694267515923567,
+        "token_f1": 0.7283057411584457
+      },
+      "character_metrics": {
+        "original_characters": 704,
+        "reconstructed_characters": 896,
+        "edit_distance": 192,
+        "character_accuracy": 0.7857142857142857,
+        "character_precision": 0.7857142857142857,
+        "character_recall": 0.7272727272727273,
+        "character_f1": 0.7553648068669527,
+        "normalized_edit_distance": 0.21428571428571427
+      },
+      "normalized_edit_distance": 0.21428571428571427,
+      "token_compression_unique": 78.5,
+      "token_compression_stream": 78.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_all655920_page_001": {
+      "original_size_bytes": 413,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 45.888888888888886,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 97,
+        "reconstructed_tokens": 97,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 411,
+        "reconstructed_characters": 411,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 97.0,
+      "token_compression_stream": 97.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_all655920_page_002": {
+      "original_size_bytes": 436,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 48.44444444444444,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 97,
+        "reconstructed_tokens": 97,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 436,
+        "reconstructed_characters": 436,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 97.0,
+      "token_compression_stream": 97.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_all655920_page_003": {
+      "original_size_bytes": 306,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 34.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 75,
+        "reconstructed_tokens": 75,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 306,
+        "reconstructed_characters": 306,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 75.0,
+      "token_compression_stream": 75.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_all655920_page_008": {
+      "original_size_bytes": 238,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 26.444444444444443,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 73,
+        "reconstructed_tokens": 73,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 238,
+        "reconstructed_characters": 238,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 73.0,
+      "token_compression_stream": 73.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_ch7_page_020": {
+      "original_size_bytes": 657,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 36.5,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 164,
+        "reconstructed_tokens": 233,
+        "edit_distance": 69,
+        "token_accuracy": 0.703862660944206,
+        "token_precision": 0.703862660944206,
+        "token_recall": 0.5792682926829269,
+        "token_f1": 0.6355163060104833
+      },
+      "character_metrics": {
+        "original_characters": 657,
+        "reconstructed_characters": 896,
+        "edit_distance": 239,
+        "character_accuracy": 0.7332589285714286,
+        "character_precision": 0.7332589285714286,
+        "character_recall": 0.6362252663622527,
+        "character_f1": 0.6813044778007807,
+        "normalized_edit_distance": 0.26674107142857145
+      },
+      "normalized_edit_distance": 0.26674107142857145,
+      "token_compression_unique": 82.0,
+      "token_compression_stream": 82.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_ch7_page_021": {
+      "original_size_bytes": 683,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 37.94444444444444,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 166,
+        "reconstructed_tokens": 213,
+        "edit_distance": 47,
+        "token_accuracy": 0.7793427230046949,
+        "token_precision": 0.7793427230046949,
+        "token_recall": 0.7168674698795181,
+        "token_f1": 0.7468007485397804
+      },
+      "character_metrics": {
+        "original_characters": 683,
+        "reconstructed_characters": 896,
+        "edit_distance": 213,
+        "character_accuracy": 0.7622767857142857,
+        "character_precision": 0.7622767857142857,
+        "character_recall": 0.6881405563689604,
+        "character_f1": 0.7233139817194283,
+        "normalized_edit_distance": 0.23772321428571427
+      },
+      "normalized_edit_distance": 0.23772321428571427,
+      "token_compression_unique": 83.0,
+      "token_compression_stream": 83.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 2,
+        "precision": 0.5,
+        "false_positive_rate": 0.00625,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_ch7_page_028": {
+      "original_size_bytes": 203,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 22.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 50,
+        "reconstructed_tokens": 50,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 203,
+        "reconstructed_characters": 203,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 50.0,
+      "token_compression_stream": 50.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_ch7_page_030": {
+      "original_size_bytes": 655,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 36.388888888888886,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 164,
+        "reconstructed_tokens": 229,
+        "edit_distance": 65,
+        "token_accuracy": 0.7161572052401747,
+        "token_precision": 0.7161572052401747,
+        "token_recall": 0.6036585365853658,
+        "token_f1": 0.6551132810135776
+      },
+      "character_metrics": {
+        "original_characters": 655,
+        "reconstructed_characters": 896,
+        "edit_distance": 241,
+        "character_accuracy": 0.7310267857142857,
+        "character_precision": 0.7310267857142857,
+        "character_recall": 0.6320610687022901,
+        "character_f1": 0.6779512706117361,
+        "normalized_edit_distance": 0.2689732142857143
+      },
+      "normalized_edit_distance": 0.2689732142857143,
+      "token_compression_unique": 82.0,
+      "token_compression_stream": 82.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 1,
+        "precision": 0.6666666666666666,
+        "false_positive_rate": 0.003125,
+        "recall": 1.0,
+        "f1": 0.8
+      }
+    },
+    "PPT_ch7_page_034": {
+      "original_size_bytes": 448,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 49.77777777777778,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 113,
+        "reconstructed_tokens": 113,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 448,
+        "reconstructed_characters": 448,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 113.0,
+      "token_compression_stream": 113.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_ch7_page_035": {
+      "original_size_bytes": 730,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 40.55555555555556,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 186,
+        "reconstructed_tokens": 229,
+        "edit_distance": 43,
+        "token_accuracy": 0.8122270742358079,
+        "token_precision": 0.8122270742358079,
+        "token_recall": 0.7688172043010753,
+        "token_f1": 0.789926198714046
+      },
+      "character_metrics": {
+        "original_characters": 730,
+        "reconstructed_characters": 896,
+        "edit_distance": 166,
+        "character_accuracy": 0.8147321428571428,
+        "character_precision": 0.8147321428571428,
+        "character_recall": 0.7726027397260273,
+        "character_f1": 0.7931083637372331,
+        "normalized_edit_distance": 0.18526785714285715
+      },
+      "normalized_edit_distance": 0.18526785714285715,
+      "token_compression_unique": 93.0,
+      "token_compression_stream": 93.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 1,
+        "precision": 0.6666666666666666,
+        "false_positive_rate": 0.003125,
+        "recall": 1.0,
+        "f1": 0.8
+      }
+    },
+    "PPT_ch7_page_053": {
+      "original_size_bytes": 378,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 42.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 92,
+        "reconstructed_tokens": 92,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 378,
+        "reconstructed_characters": 378,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 92.0,
+      "token_compression_stream": 92.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_ch7_page_057": {
+      "original_size_bytes": 845,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 46.94444444444444,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 240,
+        "reconstructed_tokens": 254,
+        "edit_distance": 14,
+        "token_accuracy": 0.9448818897637795,
+        "token_precision": 0.9448818897637795,
+        "token_recall": 0.9416666666666667,
+        "token_f1": 0.9432715383812738
+      },
+      "character_metrics": {
+        "original_characters": 845,
+        "reconstructed_characters": 896,
+        "edit_distance": 51,
+        "character_accuracy": 0.9430803571428571,
+        "character_precision": 0.9430803571428571,
+        "character_recall": 0.9396449704142011,
+        "character_f1": 0.94135952952368,
+        "normalized_edit_distance": 0.056919642857142856
+      },
+      "normalized_edit_distance": 0.056919642857142856,
+      "token_compression_unique": 120.0,
+      "token_compression_stream": 120.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 2,
+        "precision": 0.5,
+        "false_positive_rate": 0.00625,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_ch7_page_090": {
+      "original_size_bytes": 435,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 48.333333333333336,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 125,
+        "reconstructed_tokens": 125,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 435,
+        "reconstructed_characters": 435,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 125.0,
+      "token_compression_stream": 125.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_ch7_page_132": {
+      "original_size_bytes": 574,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 31.88888888888889,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 144,
+        "reconstructed_tokens": 230,
+        "edit_distance": 86,
+        "token_accuracy": 0.6260869565217391,
+        "token_precision": 0.6260869565217391,
+        "token_recall": 0.4027777777777778,
+        "token_f1": 0.4901983800915601
+      },
+      "character_metrics": {
+        "original_characters": 574,
+        "reconstructed_characters": 896,
+        "edit_distance": 322,
+        "character_accuracy": 0.640625,
+        "character_precision": 0.640625,
+        "character_recall": 0.4390243902439024,
+        "character_f1": 0.5210024708789268,
+        "normalized_edit_distance": 0.359375
+      },
+      "normalized_edit_distance": 0.359375,
+      "token_compression_unique": 72.0,
+      "token_compression_stream": 72.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_ch7_page_136": {
+      "original_size_bytes": 774,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 43.0,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 221,
+        "reconstructed_tokens": 254,
+        "edit_distance": 33,
+        "token_accuracy": 0.8700787401574803,
+        "token_precision": 0.8700787401574803,
+        "token_recall": 0.8506787330316742,
+        "token_f1": 0.860269377698177
+      },
+      "character_metrics": {
+        "original_characters": 774,
+        "reconstructed_characters": 896,
+        "edit_distance": 122,
+        "character_accuracy": 0.8638392857142857,
+        "character_precision": 0.8638392857142857,
+        "character_recall": 0.8423772609819121,
+        "character_f1": 0.852973290919724,
+        "normalized_edit_distance": 0.13616071428571427
+      },
+      "normalized_edit_distance": 0.13616071428571427,
+      "token_compression_unique": 110.5,
+      "token_compression_stream": 110.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 2,
+        "precision": 0.5,
+        "false_positive_rate": 0.00625,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_ch7_page_142": {
+      "original_size_bytes": 838,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 46.55555555555556,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 259,
+        "reconstructed_tokens": 279,
+        "edit_distance": 20,
+        "token_accuracy": 0.9283154121863799,
+        "token_precision": 0.9283154121863799,
+        "token_recall": 0.9227799227799228,
+        "token_f1": 0.9255393908583903
+      },
+      "character_metrics": {
+        "original_characters": 838,
+        "reconstructed_characters": 896,
+        "edit_distance": 58,
+        "character_accuracy": 0.9352678571428571,
+        "character_precision": 0.9352678571428571,
+        "character_recall": 0.9307875894988067,
+        "character_f1": 0.9330223449173664,
+        "normalized_edit_distance": 0.06473214285714286
+      },
+      "normalized_edit_distance": 0.06473214285714286,
+      "token_compression_unique": 129.5,
+      "token_compression_stream": 129.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 1,
+        "precision": 0.6666666666666666,
+        "false_positive_rate": 0.003125,
+        "recall": 1.0,
+        "f1": 0.8
+      }
+    },
+    "PPT_english-guidelines-for-humanities-students.zp199743_page_002": {
+      "original_size_bytes": 572,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 31.77777777777778,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 133,
+        "reconstructed_tokens": 208,
+        "edit_distance": 75,
+        "token_accuracy": 0.6394230769230769,
+        "token_precision": 0.6394230769230769,
+        "token_recall": 0.43609022556390975,
+        "token_f1": 0.5185359459550297
+      },
+      "character_metrics": {
+        "original_characters": 572,
+        "reconstructed_characters": 896,
+        "edit_distance": 324,
+        "character_accuracy": 0.6383928571428572,
+        "character_precision": 0.6383928571428572,
+        "character_recall": 0.43356643356643354,
+        "character_f1": 0.5164108687421731,
+        "normalized_edit_distance": 0.36160714285714285
+      },
+      "normalized_edit_distance": 0.36160714285714285,
+      "token_compression_unique": 66.5,
+      "token_compression_stream": 66.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 3,
+        "precision": 0.4,
+        "false_positive_rate": 0.009375,
+        "recall": 1.0,
+        "f1": 0.5714285714285715
+      }
+    },
+    "PPT_english-guidelines-for-humanities-students.zp199743_page_008": {
+      "original_size_bytes": 339,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 37.666666666666664,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 97,
+        "reconstructed_tokens": 97,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 335,
+        "reconstructed_characters": 335,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 97.0,
+      "token_compression_stream": 97.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_english-guidelines-for-humanities-students.zp199743_page_011": {
+      "original_size_bytes": 370,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 41.111111111111114,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 79,
+        "reconstructed_tokens": 79,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 368,
+        "reconstructed_characters": 368,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 79.0,
+      "token_compression_stream": 79.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_english-studies-s6-on-the-road-resource-3_page_002": {
+      "original_size_bytes": 701,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 38.94444444444444,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 125,
+        "reconstructed_tokens": 156,
+        "edit_distance": 31,
+        "token_accuracy": 0.8012820512820513,
+        "token_precision": 0.8012820512820513,
+        "token_recall": 0.752,
+        "token_f1": 0.7758592228201658
+      },
+      "character_metrics": {
+        "original_characters": 701,
+        "reconstructed_characters": 896,
+        "edit_distance": 195,
+        "character_accuracy": 0.7823660714285714,
+        "character_precision": 0.7823660714285714,
+        "character_recall": 0.7218259629101285,
+        "character_f1": 0.75087772035094,
+        "normalized_edit_distance": 0.21763392857142858
+      },
+      "normalized_edit_distance": 0.21763392857142858,
+      "token_compression_unique": 62.5,
+      "token_compression_stream": 62.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 1,
+        "precision": 0.6666666666666666,
+        "false_positive_rate": 0.003125,
+        "recall": 1.0,
+        "f1": 0.8
+      }
+    },
+    "PPT_english-studies-s6-on-the-road-resource-3_page_003": {
+      "original_size_bytes": 426,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 47.333333333333336,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 92,
+        "reconstructed_tokens": 92,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 426,
+        "reconstructed_characters": 426,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 92.0,
+      "token_compression_stream": 92.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_english-studies-s6-on-the-road-resource-3_page_005": {
+      "original_size_bytes": 266,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 29.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 67,
+        "reconstructed_tokens": 67,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 262,
+        "reconstructed_characters": 262,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 67.0,
+      "token_compression_stream": 67.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_esea-app101_page_003": {
+      "original_size_bytes": 276,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 30.666666666666668,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 50,
+        "reconstructed_tokens": 50,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 270,
+        "reconstructed_characters": 270,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 50.0,
+      "token_compression_stream": 50.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_esea-app101_page_015": {
+      "original_size_bytes": 136,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 15.11111111111111,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 46,
+        "reconstructed_tokens": 46,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 136,
+        "reconstructed_characters": 136,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 46.0,
+      "token_compression_stream": 46.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_fundamental_theorem_of_calculus___page_002": {
+      "original_size_bytes": 162,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 18.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 58,
+        "reconstructed_tokens": 58,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 162,
+        "reconstructed_characters": 162,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 58.0,
+      "token_compression_stream": 58.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_fundamental_theorem_of_calculus___page_005": {
+      "original_size_bytes": 291,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 32.333333333333336,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 81,
+        "reconstructed_tokens": 81,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 291,
+        "reconstructed_characters": 291,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 81.0,
+      "token_compression_stream": 81.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_fundamental_theorem_of_calculus___page_006": {
+      "original_size_bytes": 212,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 23.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 45,
+        "reconstructed_tokens": 45,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 210,
+        "reconstructed_characters": 210,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 45.0,
+      "token_compression_stream": 45.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_fundamental_theorem_of_calculus___page_013": {
+      "original_size_bytes": 85,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 9.444444444444445,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 49,
+        "reconstructed_tokens": 49,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 85,
+        "reconstructed_characters": 85,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 49.0,
+      "token_compression_stream": 49.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_lay_linalg5_01_05_page_003": {
+      "original_size_bytes": 323,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 35.888888888888886,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 88,
+        "reconstructed_tokens": 88,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 318,
+        "reconstructed_characters": 318,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 88.0,
+      "token_compression_stream": 88.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_lay_linalg5_01_05_page_004": {
+      "original_size_bytes": 239,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 26.555555555555557,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 81,
+        "reconstructed_tokens": 81,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 235,
+        "reconstructed_characters": 235,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 81.0,
+      "token_compression_stream": 81.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_lay_linalg5_01_05_page_005": {
+      "original_size_bytes": 256,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 28.444444444444443,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 98,
+        "reconstructed_tokens": 98,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 255,
+        "reconstructed_characters": 255,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 98.0,
+      "token_compression_stream": 98.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_lay_linalg5_01_05_page_008": {
+      "original_size_bytes": 373,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 41.44444444444444,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 91,
+        "reconstructed_tokens": 91,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 368,
+        "reconstructed_characters": 368,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 91.0,
+      "token_compression_stream": 91.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_lay_linalg5_01_05_page_009": {
+      "original_size_bytes": 198,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 22.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 81,
+        "reconstructed_tokens": 81,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 193,
+        "reconstructed_characters": 193,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 81.0,
+      "token_compression_stream": 81.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_lecture1_page_005": {
+      "original_size_bytes": 409,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 45.44444444444444,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 168,
+        "reconstructed_tokens": 168,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 409,
+        "reconstructed_characters": 409,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 168.0,
+      "token_compression_stream": 168.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_lecture1_page_007": {
+      "original_size_bytes": 391,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 43.44444444444444,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 163,
+        "reconstructed_tokens": 163,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 391,
+        "reconstructed_characters": 391,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 163.0,
+      "token_compression_stream": 163.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_lecture1_page_009": {
+      "original_size_bytes": 189,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 21.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 54,
+        "reconstructed_tokens": 54,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 189,
+        "reconstructed_characters": 189,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 54.0,
+      "token_compression_stream": 54.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_lecture1_page_022": {
+      "original_size_bytes": 16,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 1.7777777777777777,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 4,
+        "reconstructed_tokens": 4,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 16,
+        "reconstructed_characters": 16,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 4.0,
+      "token_compression_stream": 4.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_linear-algebra primer_page_007": {
+      "original_size_bytes": 191,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 21.22222222222222,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 59,
+        "reconstructed_tokens": 59,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 191,
+        "reconstructed_characters": 191,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 59.0,
+      "token_compression_stream": 59.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "PPT_linear-algebra primer_page_008": {
+      "original_size_bytes": 347,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 38.55555555555556,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 96,
+        "reconstructed_tokens": 96,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 347,
+        "reconstructed_characters": 347,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 96.0,
+      "token_compression_stream": 96.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 4,
+        "precision": 0.2,
+        "false_positive_rate": 0.012461059190031152,
+        "recall": 1.0,
+        "f1": 0.33333333333333337
+      }
+    },
+    "PPT_linear-algebra primer_page_016": {
+      "original_size_bytes": 249,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 27.666666666666668,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 78,
+        "reconstructed_tokens": 78,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 247,
+        "reconstructed_characters": 247,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 78.0,
+      "token_compression_stream": 78.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_session 10_page_022": {
+      "original_size_bytes": 39,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 4.333333333333333,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 22,
+        "reconstructed_tokens": 22,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 39,
+        "reconstructed_characters": 39,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 22.0,
+      "token_compression_stream": 22.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_session 10_page_023": {
+      "original_size_bytes": 39,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 4.333333333333333,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 22,
+        "reconstructed_tokens": 22,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 39,
+        "reconstructed_characters": 39,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 22.0,
+      "token_compression_stream": 22.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_session 10_page_028": {
+      "original_size_bytes": 45,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 5.0,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 24,
+        "reconstructed_tokens": 24,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 45,
+        "reconstructed_characters": 45,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 24.0,
+      "token_compression_stream": 24.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "PPT_sociolinguistics_page_015": {
+      "original_size_bytes": 563,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 31.27777777777778,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 122,
+        "reconstructed_tokens": 195,
+        "edit_distance": 73,
+        "token_accuracy": 0.6256410256410256,
+        "token_precision": 0.6256410256410256,
+        "token_recall": 0.4016393442622951,
+        "token_f1": 0.4892180531118295
+      },
+      "character_metrics": {
+        "original_characters": 563,
+        "reconstructed_characters": 896,
+        "edit_distance": 333,
+        "character_accuracy": 0.6283482142857143,
+        "character_precision": 0.6283482142857143,
+        "character_recall": 0.4085257548845471,
+        "character_f1": 0.49513525501434863,
+        "normalized_edit_distance": 0.3716517857142857
+      },
+      "normalized_edit_distance": 0.3716517857142857,
+      "token_compression_unique": 61.0,
+      "token_compression_stream": 61.0,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 1,
+        "precision": 0.6666666666666666,
+        "false_positive_rate": 0.003125,
+        "recall": 1.0,
+        "f1": 0.8
+      }
+    },
+    "book_en_40.Puzzles.and.Problems.in.Probability.and.Mathematical.Statistics,.Schwarz,.Springer,.2008_page_064": {
+      "original_size_bytes": 1559,
+      "compressed_size_bytes": 36,
+      "compression_ratio": 43.30555555555556,
+      "unique_signatures": 4,
+      "stream_windows": 4,
+      "token_metrics": {
+        "original_tokens": 438,
+        "reconstructed_tokens": 472,
+        "edit_distance": 34,
+        "token_accuracy": 0.9279661016949152,
+        "token_precision": 0.9279661016949152,
+        "token_recall": 0.9223744292237444,
+        "token_f1": 0.9251618165277676
+      },
+      "character_metrics": {
+        "original_characters": 1559,
+        "reconstructed_characters": 1664,
+        "edit_distance": 105,
+        "character_accuracy": 0.9368990384615384,
+        "character_precision": 0.9368990384615384,
+        "character_recall": 0.932649134060295,
+        "character_f1": 0.9347692557655903,
+        "normalized_edit_distance": 0.06310096153846154
+      },
+      "normalized_edit_distance": 0.06310096153846154,
+      "token_compression_unique": 109.5,
+      "token_compression_stream": 109.5,
+      "verification": {
+        "positives": 4,
+        "true_positive": 4,
+        "negatives": 318,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_40.Puzzles.and.Problems.in.Probability.and.Mathematical.Statistics,.Schwarz,.Springer,.2008_page_115": {
+      "original_size_bytes": 2081,
+      "compressed_size_bytes": 54,
+      "compression_ratio": 38.53703703703704,
+      "unique_signatures": 6,
+      "stream_windows": 6,
+      "token_metrics": {
+        "original_tokens": 501,
+        "reconstructed_tokens": 591,
+        "edit_distance": 90,
+        "token_accuracy": 0.8477157360406091,
+        "token_precision": 0.8477157360406091,
+        "token_recall": 0.8203592814371258,
+        "token_f1": 0.8338131856117206
+      },
+      "character_metrics": {
+        "original_characters": 2077,
+        "reconstructed_characters": 2428,
+        "edit_distance": 351,
+        "character_accuracy": 0.8554365733113674,
+        "character_precision": 0.8554365733113674,
+        "character_recall": 0.8310062590274434,
+        "character_f1": 0.8430444637567394,
+        "normalized_edit_distance": 0.14456342668863262
+      },
+      "normalized_edit_distance": 0.14456342668863262,
+      "token_compression_unique": 83.5,
+      "token_compression_stream": 83.5,
+      "verification": {
+        "positives": 6,
+        "true_positive": 6,
+        "negatives": 316,
+        "false_positive": 7,
+        "precision": 0.46153846153846156,
+        "false_positive_rate": 0.022151898734177215,
+        "recall": 1.0,
+        "f1": 0.631578947368421
+      }
+    },
+    "book_en_5.Advanced.Modern.Algebra.-.J.Rotman.2003_page_572": {
+      "original_size_bytes": 2558,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 40.6031746031746,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 880,
+        "reconstructed_tokens": 975,
+        "edit_distance": 95,
+        "token_accuracy": 0.9025641025641026,
+        "token_precision": 0.9025641025641026,
+        "token_recall": 0.8920454545454546,
+        "token_f1": 0.89727395236317
+      },
+      "character_metrics": {
+        "original_characters": 2552,
+        "reconstructed_characters": 2810,
+        "edit_distance": 258,
+        "character_accuracy": 0.9081850533807829,
+        "character_precision": 0.9081850533807829,
+        "character_recall": 0.8989028213166144,
+        "character_f1": 0.9035200979346614,
+        "normalized_edit_distance": 0.09181494661921709
+      },
+      "normalized_edit_distance": 0.09181494661921709,
+      "token_compression_unique": 125.71428571428571,
+      "token_compression_stream": 125.71428571428571,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 315,
+        "false_positive": 1,
+        "precision": 0.875,
+        "false_positive_rate": 0.0031746031746031746,
+        "recall": 1.0,
+        "f1": 0.9333333333333333
+      }
+    },
+    "book_en_5.Advanced.Modern.Algebra.-.J.Rotman.2003_page_887": {
+      "original_size_bytes": 1967,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 43.71111111111111,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 633,
+        "reconstructed_tokens": 660,
+        "edit_distance": 27,
+        "token_accuracy": 0.9590909090909091,
+        "token_precision": 0.9590909090909091,
+        "token_recall": 0.957345971563981,
+        "token_f1": 0.9582176459347355
+      },
+      "character_metrics": {
+        "original_characters": 1961,
+        "reconstructed_characters": 2042,
+        "edit_distance": 81,
+        "character_accuracy": 0.9603330068560235,
+        "character_precision": 0.9603330068560235,
+        "character_recall": 0.958694543600204,
+        "character_f1": 0.9595130757692029,
+        "normalized_edit_distance": 0.039666993143976495
+      },
+      "normalized_edit_distance": 0.039666993143976495,
+      "token_compression_unique": 126.6,
+      "token_compression_stream": 126.6,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 1,
+        "precision": 0.8333333333333334,
+        "false_positive_rate": 0.0031545741324921135,
+        "recall": 1.0,
+        "f1": 0.9090909090909091
+      }
+    },
+    "book_en_6.Complex.Analysis.-.Elias.M..Stein_page_051": {
+      "original_size_bytes": 1844,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 40.977777777777774,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 372,
+        "reconstructed_tokens": 416,
+        "edit_distance": 44,
+        "token_accuracy": 0.8942307692307693,
+        "token_precision": 0.8942307692307693,
+        "token_recall": 0.8817204301075269,
+        "token_f1": 0.8879315363567563
+      },
+      "character_metrics": {
+        "original_characters": 1836,
+        "reconstructed_characters": 2036,
+        "edit_distance": 200,
+        "character_accuracy": 0.9017681728880157,
+        "character_precision": 0.9017681728880157,
+        "character_recall": 0.8910675381263616,
+        "character_f1": 0.8963859218549307,
+        "normalized_edit_distance": 0.09823182711198428
+      },
+      "normalized_edit_distance": 0.09823182711198428,
+      "token_compression_unique": 74.4,
+      "token_compression_stream": 74.4,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 5,
+        "precision": 0.5,
+        "false_positive_rate": 0.015772870662460567,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "book_en_6.Complex.Analysis.-.Elias.M..Stein_page_205": {
+      "original_size_bytes": 1028,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 38.074074074074076,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 305,
+        "reconstructed_tokens": 391,
+        "edit_distance": 86,
+        "token_accuracy": 0.7800511508951407,
+        "token_precision": 0.7800511508951407,
+        "token_recall": 0.7180327868852459,
+        "token_f1": 0.7477582365914002
+      },
+      "character_metrics": {
+        "original_characters": 1028,
+        "reconstructed_characters": 1280,
+        "edit_distance": 252,
+        "character_accuracy": 0.803125,
+        "character_precision": 0.803125,
+        "character_recall": 0.754863813229572,
+        "character_f1": 0.7782469230228909,
+        "normalized_edit_distance": 0.196875
+      },
+      "normalized_edit_distance": 0.196875,
+      "token_compression_unique": 101.66666666666667,
+      "token_compression_stream": 101.66666666666667,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 2,
+        "precision": 0.6,
+        "false_positive_rate": 0.006269592476489028,
+        "recall": 1.0,
+        "f1": 0.7499999999999999
+      }
+    },
+    "book_en_A.Concise.Introduction.to.Linear.Algebra,.Geza.Schay,.Birkhauser,.2012_page_065": {
+      "original_size_bytes": 347,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 38.55555555555556,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 120,
+        "reconstructed_tokens": 120,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 347,
+        "reconstructed_characters": 347,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 120.0,
+      "token_compression_stream": 120.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_A.Concise.Introduction.to.Linear.Algebra,.Geza.Schay,.Birkhauser,.2012_page_194": {
+      "original_size_bytes": 1793,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 39.84444444444444,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 600,
+        "reconstructed_tokens": 696,
+        "edit_distance": 96,
+        "token_accuracy": 0.8620689655172413,
+        "token_precision": 0.8620689655172413,
+        "token_recall": 0.84,
+        "token_f1": 0.8508914100486222
+      },
+      "character_metrics": {
+        "original_characters": 1793,
+        "reconstructed_characters": 2048,
+        "edit_distance": 255,
+        "character_accuracy": 0.87548828125,
+        "character_precision": 0.87548828125,
+        "character_recall": 0.8577802565532626,
+        "character_f1": 0.8665438114416875,
+        "normalized_edit_distance": 0.12451171875
+      },
+      "normalized_edit_distance": 0.12451171875,
+      "token_compression_unique": 120.0,
+      "token_compression_stream": 120.0,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 4,
+        "precision": 0.5555555555555556,
+        "false_positive_rate": 0.012618296529968454,
+        "recall": 1.0,
+        "f1": 0.7142857142857143
+      }
+    },
+    "book_en_A.Course.in.Abstract.Harmonic.Analysis.-.Gerald.B.Folland.0849384907_page_119": {
+      "original_size_bytes": 2648,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 42.03174603174603,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 908,
+        "reconstructed_tokens": 974,
+        "edit_distance": 66,
+        "token_accuracy": 0.9322381930184804,
+        "token_precision": 0.9322381930184804,
+        "token_recall": 0.9273127753303965,
+        "token_f1": 0.9297689611643638
+      },
+      "character_metrics": {
+        "original_characters": 2648,
+        "reconstructed_characters": 2816,
+        "edit_distance": 168,
+        "character_accuracy": 0.9403409090909091,
+        "character_precision": 0.9403409090909091,
+        "character_recall": 0.9365558912386707,
+        "character_f1": 0.938444583662961,
+        "normalized_edit_distance": 0.05965909090909091
+      },
+      "normalized_edit_distance": 0.05965909090909091,
+      "token_compression_unique": 129.71428571428572,
+      "token_compression_stream": 129.71428571428572,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 315,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_[\u642c\u4e66\u5320#20][HTML5 Canvas].2011.\u82f1\u6587\u7248_page_208": {
+      "original_size_bytes": 1257,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 46.55555555555556,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 469,
+        "reconstructed_tokens": 477,
+        "edit_distance": 8,
+        "token_accuracy": 0.9832285115303984,
+        "token_precision": 0.9832285115303984,
+        "token_recall": 0.9829424307036247,
+        "token_f1": 0.9830854503044164
+      },
+      "character_metrics": {
+        "original_characters": 1257,
+        "reconstructed_characters": 1280,
+        "edit_distance": 23,
+        "character_accuracy": 0.98203125,
+        "character_precision": 0.98203125,
+        "character_recall": 0.9817024661893397,
+        "character_f1": 0.9818668305708784,
+        "normalized_edit_distance": 0.01796875
+      },
+      "normalized_edit_distance": 0.01796875,
+      "token_compression_unique": 156.33333333333334,
+      "token_compression_stream": 156.33333333333334,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_[\u642c\u4e66\u5320#375][High Performance MySQL 3rd Edition].2012.\u82f1\u6587\u7248_page_153": {
+      "original_size_bytes": 1860,
+      "compressed_size_bytes": 36,
+      "compression_ratio": 51.666666666666664,
+      "unique_signatures": 4,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 473,
+        "reconstructed_tokens": 535,
+        "edit_distance": 90,
+        "token_accuracy": 0.8317757009345794,
+        "token_precision": 0.8317757009345794,
+        "token_recall": 0.8097251585623679,
+        "token_f1": 0.8206023255254099
+      },
+      "character_metrics": {
+        "original_characters": 1852,
+        "reconstructed_characters": 2040,
+        "edit_distance": 266,
+        "character_accuracy": 0.8696078431372549,
+        "character_precision": 0.8696078431372549,
+        "character_recall": 0.8563714902807775,
+        "character_f1": 0.8629389126143555,
+        "normalized_edit_distance": 0.1303921568627451
+      },
+      "normalized_edit_distance": 0.1303921568627451,
+      "token_compression_unique": 118.25,
+      "token_compression_stream": 94.6,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 5,
+        "precision": 0.5,
+        "false_positive_rate": 0.015772870662460567,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "book_en_[\u642c\u4e66\u5320#893][Pyomo\u2014Optimization Modeling in Python].2012.\u82f1\u6587\u7248_page_016": {
+      "original_size_bytes": 1834,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 40.75555555555555,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 594,
+        "reconstructed_tokens": 659,
+        "edit_distance": 65,
+        "token_accuracy": 0.9013657056145675,
+        "token_precision": 0.9013657056145675,
+        "token_recall": 0.8905723905723906,
+        "token_f1": 0.8959365426040742
+      },
+      "character_metrics": {
+        "original_characters": 1834,
+        "reconstructed_characters": 2048,
+        "edit_distance": 214,
+        "character_accuracy": 0.8955078125,
+        "character_precision": 0.8955078125,
+        "character_recall": 0.8833151581243184,
+        "character_f1": 0.889369699023366,
+        "normalized_edit_distance": 0.1044921875
+      },
+      "normalized_edit_distance": 0.1044921875,
+      "token_compression_unique": 118.8,
+      "token_compression_stream": 118.8,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_[\u642c\u4e66\u5320#893][Pyomo\u2014Optimization Modeling in Python].2012.\u82f1\u6587\u7248_page_188": {
+      "original_size_bytes": 1787,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 39.71111111111111,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 331,
+        "reconstructed_tokens": 384,
+        "edit_distance": 53,
+        "token_accuracy": 0.8619791666666666,
+        "token_precision": 0.8619791666666666,
+        "token_recall": 0.8398791540785498,
+        "token_f1": 0.8507856670657796
+      },
+      "character_metrics": {
+        "original_characters": 1787,
+        "reconstructed_characters": 2048,
+        "edit_distance": 261,
+        "character_accuracy": 0.87255859375,
+        "character_precision": 0.87255859375,
+        "character_recall": 0.8539451594851707,
+        "character_f1": 0.8631515409147286,
+        "normalized_edit_distance": 0.12744140625
+      },
+      "normalized_edit_distance": 0.12744140625,
+      "token_compression_unique": 66.2,
+      "token_compression_stream": 66.2,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 2,
+        "precision": 0.7142857142857143,
+        "false_positive_rate": 0.006309148264984227,
+        "recall": 1.0,
+        "f1": 0.8333333333333333
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0035": {
+      "original_size_bytes": 2886,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 40.083333333333336,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 831,
+        "reconstructed_tokens": 899,
+        "edit_distance": 68,
+        "token_accuracy": 0.9243604004449388,
+        "token_precision": 0.9243604004449388,
+        "token_recall": 0.9181708784596871,
+        "token_f1": 0.9212552433784866
+      },
+      "character_metrics": {
+        "original_characters": 2878,
+        "reconstructed_characters": 3192,
+        "edit_distance": 314,
+        "character_accuracy": 0.9016290726817042,
+        "character_precision": 0.9016290726817042,
+        "character_recall": 0.8908964558721334,
+        "character_f1": 0.8962306338939072,
+        "normalized_edit_distance": 0.09837092731829573
+      },
+      "normalized_edit_distance": 0.09837092731829573,
+      "token_compression_unique": 103.875,
+      "token_compression_stream": 103.875,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 314,
+        "false_positive": 5,
+        "precision": 0.6153846153846154,
+        "false_positive_rate": 0.01592356687898089,
+        "recall": 1.0,
+        "f1": 0.761904761904762
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0085": {
+      "original_size_bytes": 1020,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 37.77777777777778,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 362,
+        "reconstructed_tokens": 471,
+        "edit_distance": 109,
+        "token_accuracy": 0.7685774946921444,
+        "token_precision": 0.7685774946921444,
+        "token_recall": 0.6988950276243093,
+        "token_f1": 0.7320818362395937
+      },
+      "character_metrics": {
+        "original_characters": 1020,
+        "reconstructed_characters": 1280,
+        "edit_distance": 260,
+        "character_accuracy": 0.796875,
+        "character_precision": 0.796875,
+        "character_recall": 0.7450980392156863,
+        "character_f1": 0.7701172263063779,
+        "normalized_edit_distance": 0.203125
+      },
+      "normalized_edit_distance": 0.203125,
+      "token_compression_unique": 120.66666666666667,
+      "token_compression_stream": 120.66666666666667,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0092": {
+      "original_size_bytes": 733,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 40.72222222222222,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 257,
+        "reconstructed_tokens": 315,
+        "edit_distance": 58,
+        "token_accuracy": 0.8158730158730159,
+        "token_precision": 0.8158730158730159,
+        "token_recall": 0.77431906614786,
+        "token_f1": 0.7945531095126384
+      },
+      "character_metrics": {
+        "original_characters": 733,
+        "reconstructed_characters": 896,
+        "edit_distance": 163,
+        "character_accuracy": 0.8180803571428572,
+        "character_precision": 0.8180803571428572,
+        "character_recall": 0.7776261937244202,
+        "character_f1": 0.7973404808546491,
+        "normalized_edit_distance": 0.18191964285714285
+      },
+      "normalized_edit_distance": 0.18191964285714285,
+      "token_compression_unique": 128.5,
+      "token_compression_stream": 128.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 1,
+        "precision": 0.6666666666666666,
+        "false_positive_rate": 0.003125,
+        "recall": 1.0,
+        "f1": 0.8
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0100": {
+      "original_size_bytes": 1766,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 39.24444444444445,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 585,
+        "reconstructed_tokens": 674,
+        "edit_distance": 89,
+        "token_accuracy": 0.8679525222551929,
+        "token_precision": 0.8679525222551929,
+        "token_recall": 0.8478632478632478,
+        "token_f1": 0.8577902795002136
+      },
+      "character_metrics": {
+        "original_characters": 1760,
+        "reconstructed_characters": 2042,
+        "edit_distance": 282,
+        "character_accuracy": 0.861900097943193,
+        "character_precision": 0.861900097943193,
+        "character_recall": 0.8397727272727273,
+        "character_f1": 0.8506925481336814,
+        "normalized_edit_distance": 0.13809990205680706
+      },
+      "normalized_edit_distance": 0.13809990205680706,
+      "token_compression_unique": 117.0,
+      "token_compression_stream": 117.0,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 1,
+        "precision": 0.8333333333333334,
+        "false_positive_rate": 0.0031545741324921135,
+        "recall": 1.0,
+        "f1": 0.9090909090909091
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0119": {
+      "original_size_bytes": 2628,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 41.714285714285715,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 734,
+        "reconstructed_tokens": 776,
+        "edit_distance": 42,
+        "token_accuracy": 0.9458762886597938,
+        "token_precision": 0.9458762886597938,
+        "token_recall": 0.9427792915531336,
+        "token_f1": 0.944325250895191
+      },
+      "character_metrics": {
+        "original_characters": 2624,
+        "reconstructed_characters": 2812,
+        "edit_distance": 188,
+        "character_accuracy": 0.9331436699857752,
+        "character_precision": 0.9331436699857752,
+        "character_recall": 0.9283536585365854,
+        "character_f1": 0.9307425014240567,
+        "normalized_edit_distance": 0.06685633001422475
+      },
+      "normalized_edit_distance": 0.06685633001422475,
+      "token_compression_unique": 104.85714285714286,
+      "token_compression_stream": 104.85714285714286,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 315,
+        "false_positive": 1,
+        "precision": 0.875,
+        "false_positive_rate": 0.0031746031746031746,
+        "recall": 1.0,
+        "f1": 0.9333333333333333
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0242": {
+      "original_size_bytes": 375,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 41.666666666666664,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 110,
+        "reconstructed_tokens": 110,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 374,
+        "reconstructed_characters": 374,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 110.0,
+      "token_compression_stream": 110.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0451": {
+      "original_size_bytes": 1002,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 37.111111111111114,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 413,
+        "reconstructed_tokens": 542,
+        "edit_distance": 129,
+        "token_accuracy": 0.7619926199261993,
+        "token_precision": 0.7619926199261993,
+        "token_recall": 0.6876513317191284,
+        "token_f1": 0.7229157742598544
+      },
+      "character_metrics": {
+        "original_characters": 998,
+        "reconstructed_characters": 1276,
+        "edit_distance": 278,
+        "character_accuracy": 0.7821316614420063,
+        "character_precision": 0.7821316614420063,
+        "character_recall": 0.7214428857715431,
+        "character_f1": 0.7505624831568414,
+        "normalized_edit_distance": 0.21786833855799373
+      },
+      "normalized_edit_distance": 0.21786833855799373,
+      "token_compression_unique": 137.66666666666666,
+      "token_compression_stream": 137.66666666666666,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-An Excursion through Elementary Mathematics\uff08\u521d\u7b49\u6570\u5b66\u6f2b\u6e38\uff09-An excursion through elementary mathematics, Vol.3 (Caminha Muniz Neto A)_0596": {
+      "original_size_bytes": 3813,
+      "compressed_size_bytes": 90,
+      "compression_ratio": 42.36666666666667,
+      "unique_signatures": 10,
+      "stream_windows": 10,
+      "token_metrics": {
+        "original_tokens": 1462,
+        "reconstructed_tokens": 1525,
+        "edit_distance": 63,
+        "token_accuracy": 0.958688524590164,
+        "token_precision": 0.958688524590164,
+        "token_recall": 0.9569083447332422,
+        "token_f1": 0.9577976074938439
+      },
+      "character_metrics": {
+        "original_characters": 3807,
+        "reconstructed_characters": 3962,
+        "edit_distance": 155,
+        "character_accuracy": 0.9608783442705704,
+        "character_precision": 0.9608783442705704,
+        "character_recall": 0.9592855266614132,
+        "character_f1": 0.960081274827602,
+        "normalized_edit_distance": 0.039121655729429584
+      },
+      "normalized_edit_distance": 0.039121655729429584,
+      "token_compression_unique": 146.2,
+      "token_compression_stream": 146.2,
+      "verification": {
+        "positives": 10,
+        "true_positive": 10,
+        "negatives": 312,
+        "false_positive": 1,
+        "precision": 0.9090909090909091,
+        "false_positive_rate": 0.003205128205128205,
+        "recall": 1.0,
+        "f1": 0.9523809523809523
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0007": {
+      "original_size_bytes": 3076,
+      "compressed_size_bytes": 72,
+      "compression_ratio": 42.72222222222222,
+      "unique_signatures": 8,
+      "stream_windows": 8,
+      "token_metrics": {
+        "original_tokens": 718,
+        "reconstructed_tokens": 742,
+        "edit_distance": 24,
+        "token_accuracy": 0.967654986522911,
+        "token_precision": 0.967654986522911,
+        "token_recall": 0.9665738161559888,
+        "token_f1": 0.9671140991700891
+      },
+      "character_metrics": {
+        "original_characters": 3060,
+        "reconstructed_characters": 3184,
+        "edit_distance": 124,
+        "character_accuracy": 0.9610552763819096,
+        "character_precision": 0.9610552763819096,
+        "character_recall": 0.9594771241830066,
+        "character_f1": 0.9602655518777861,
+        "normalized_edit_distance": 0.038944723618090454
+      },
+      "normalized_edit_distance": 0.038944723618090454,
+      "token_compression_unique": 89.75,
+      "token_compression_stream": 89.75,
+      "verification": {
+        "positives": 8,
+        "true_positive": 8,
+        "negatives": 314,
+        "false_positive": 7,
+        "precision": 0.5333333333333333,
+        "false_positive_rate": 0.022292993630573247,
+        "recall": 1.0,
+        "f1": 0.6956521739130436
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0017": {
+      "original_size_bytes": 1029,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 38.111111111111114,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 283,
+        "reconstructed_tokens": 341,
+        "edit_distance": 58,
+        "token_accuracy": 0.8299120234604106,
+        "token_precision": 0.8299120234604106,
+        "token_recall": 0.7950530035335689,
+        "token_f1": 0.8121086127514124
+      },
+      "character_metrics": {
+        "original_characters": 1029,
+        "reconstructed_characters": 1280,
+        "edit_distance": 251,
+        "character_accuracy": 0.80390625,
+        "character_precision": 0.80390625,
+        "character_recall": 0.7560738581146744,
+        "character_f1": 0.7792567313368839,
+        "normalized_edit_distance": 0.19609375
+      },
+      "normalized_edit_distance": 0.19609375,
+      "token_compression_unique": 94.33333333333333,
+      "token_compression_stream": 94.33333333333333,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 1,
+        "precision": 0.75,
+        "false_positive_rate": 0.003134796238244514,
+        "recall": 1.0,
+        "f1": 0.8571428571428571
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0035": {
+      "original_size_bytes": 1327,
+      "compressed_size_bytes": 36,
+      "compression_ratio": 36.861111111111114,
+      "unique_signatures": 4,
+      "stream_windows": 4,
+      "token_metrics": {
+        "original_tokens": 355,
+        "reconstructed_tokens": 447,
+        "edit_distance": 92,
+        "token_accuracy": 0.7941834451901566,
+        "token_precision": 0.7941834451901566,
+        "token_recall": 0.7408450704225352,
+        "token_f1": 0.7665875707142447
+      },
+      "character_metrics": {
+        "original_characters": 1327,
+        "reconstructed_characters": 1664,
+        "edit_distance": 337,
+        "character_accuracy": 0.7974759615384616,
+        "character_precision": 0.7974759615384616,
+        "character_recall": 0.746043707611153,
+        "character_f1": 0.7709029369281771,
+        "normalized_edit_distance": 0.20252403846153846
+      },
+      "normalized_edit_distance": 0.20252403846153846,
+      "token_compression_unique": 88.75,
+      "token_compression_stream": 88.75,
+      "verification": {
+        "positives": 4,
+        "true_positive": 4,
+        "negatives": 318,
+        "false_positive": 4,
+        "precision": 0.5,
+        "false_positive_rate": 0.012578616352201259,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0085": {
+      "original_size_bytes": 1455,
+      "compressed_size_bytes": 36,
+      "compression_ratio": 40.416666666666664,
+      "unique_signatures": 4,
+      "stream_windows": 4,
+      "token_metrics": {
+        "original_tokens": 466,
+        "reconstructed_tokens": 544,
+        "edit_distance": 78,
+        "token_accuracy": 0.8566176470588236,
+        "token_precision": 0.8566176470588236,
+        "token_recall": 0.8326180257510729,
+        "token_f1": 0.8444473504768488
+      },
+      "character_metrics": {
+        "original_characters": 1455,
+        "reconstructed_characters": 1664,
+        "edit_distance": 209,
+        "character_accuracy": 0.8743990384615384,
+        "character_precision": 0.8743990384615384,
+        "character_recall": 0.8563573883161513,
+        "character_f1": 0.8652841790305341,
+        "normalized_edit_distance": 0.12560096153846154
+      },
+      "normalized_edit_distance": 0.12560096153846154,
+      "token_compression_unique": 116.5,
+      "token_compression_stream": 116.5,
+      "verification": {
+        "positives": 4,
+        "true_positive": 4,
+        "negatives": 318,
+        "false_positive": 1,
+        "precision": 0.8,
+        "false_positive_rate": 0.0031446540880503146,
+        "recall": 1.0,
+        "f1": 0.888888888888889
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0092": {
+      "original_size_bytes": 1793,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 39.84444444444444,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 506,
+        "reconstructed_tokens": 574,
+        "edit_distance": 68,
+        "token_accuracy": 0.8815331010452961,
+        "token_precision": 0.8815331010452961,
+        "token_recall": 0.8656126482213439,
+        "token_f1": 0.8735003389509861
+      },
+      "character_metrics": {
+        "original_characters": 1791,
+        "reconstructed_characters": 2046,
+        "edit_distance": 255,
+        "character_accuracy": 0.875366568914956,
+        "character_precision": 0.875366568914956,
+        "character_recall": 0.8576214405360134,
+        "character_f1": 0.8664031530925052,
+        "normalized_edit_distance": 0.12463343108504399
+      },
+      "normalized_edit_distance": 0.12463343108504399,
+      "token_compression_unique": 101.2,
+      "token_compression_stream": 101.2,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 3,
+        "precision": 0.625,
+        "false_positive_rate": 0.00946372239747634,
+        "recall": 1.0,
+        "f1": 0.7692307692307693
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0100": {
+      "original_size_bytes": 901,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 33.370370370370374,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 287,
+        "reconstructed_tokens": 417,
+        "edit_distance": 130,
+        "token_accuracy": 0.6882494004796162,
+        "token_precision": 0.6882494004796162,
+        "token_recall": 0.5470383275261324,
+        "token_f1": 0.6095726403225151
+      },
+      "character_metrics": {
+        "original_characters": 897,
+        "reconstructed_characters": 1276,
+        "edit_distance": 379,
+        "character_accuracy": 0.7029780564263323,
+        "character_precision": 0.7029780564263323,
+        "character_recall": 0.5774804905239688,
+        "character_f1": 0.634079273896902,
+        "normalized_edit_distance": 0.29702194357366773
+      },
+      "normalized_edit_distance": 0.29702194357366773,
+      "token_compression_unique": 95.66666666666667,
+      "token_compression_stream": 95.66666666666667,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 4,
+        "precision": 0.42857142857142855,
+        "false_positive_rate": 0.012539184952978056,
+        "recall": 1.0,
+        "f1": 0.6
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0119": {
+      "original_size_bytes": 1140,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 42.22222222222222,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 387,
+        "reconstructed_tokens": 439,
+        "edit_distance": 52,
+        "token_accuracy": 0.8815489749430524,
+        "token_precision": 0.8815489749430524,
+        "token_recall": 0.8656330749354005,
+        "token_f1": 0.8735185322436109
+      },
+      "character_metrics": {
+        "original_characters": 1140,
+        "reconstructed_characters": 1280,
+        "edit_distance": 140,
+        "character_accuracy": 0.890625,
+        "character_precision": 0.890625,
+        "character_recall": 0.8771929824561404,
+        "character_f1": 0.8838579624748023,
+        "normalized_edit_distance": 0.109375
+      },
+      "normalized_edit_distance": 0.109375,
+      "token_compression_unique": 129.0,
+      "token_compression_stream": 129.0,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0242": {
+      "original_size_bytes": 737,
+      "compressed_size_bytes": 18,
+      "compression_ratio": 40.94444444444444,
+      "unique_signatures": 2,
+      "stream_windows": 2,
+      "token_metrics": {
+        "original_tokens": 215,
+        "reconstructed_tokens": 251,
+        "edit_distance": 36,
+        "token_accuracy": 0.8565737051792829,
+        "token_precision": 0.8565737051792829,
+        "token_recall": 0.8325581395348838,
+        "token_f1": 0.8443951993329969
+      },
+      "character_metrics": {
+        "original_characters": 737,
+        "reconstructed_characters": 896,
+        "edit_distance": 159,
+        "character_accuracy": 0.8225446428571428,
+        "character_precision": 0.8225446428571428,
+        "character_recall": 0.7842605156037992,
+        "character_f1": 0.8029464958055976,
+        "normalized_edit_distance": 0.17745535714285715
+      },
+      "normalized_edit_distance": 0.17745535714285715,
+      "token_compression_unique": 107.5,
+      "token_compression_stream": 107.5,
+      "verification": {
+        "positives": 2,
+        "true_positive": 2,
+        "negatives": 320,
+        "false_positive": 2,
+        "precision": 0.5,
+        "false_positive_rate": 0.00625,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0363": {
+      "original_size_bytes": 1044,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 38.666666666666664,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 314,
+        "reconstructed_tokens": 387,
+        "edit_distance": 73,
+        "token_accuracy": 0.8113695090439277,
+        "token_precision": 0.8113695090439277,
+        "token_recall": 0.7675159235668789,
+        "token_f1": 0.7888336990456731
+      },
+      "character_metrics": {
+        "original_characters": 1042,
+        "reconstructed_characters": 1278,
+        "edit_distance": 236,
+        "character_accuracy": 0.8153364632237872,
+        "character_precision": 0.8153364632237872,
+        "character_recall": 0.7735124760076775,
+        "character_f1": 0.7938739937764435,
+        "normalized_edit_distance": 0.18466353677621283
+      },
+      "normalized_edit_distance": 0.18466353677621283,
+      "token_compression_unique": 104.66666666666667,
+      "token_compression_stream": 104.66666666666667,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 0,
+        "precision": 1.0,
+        "false_positive_rate": 0.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u6570\u8bba-Melvyn B. Nathanson\u2014Elementary Methods in Number Theory_0451": {
+      "original_size_bytes": 350,
+      "compressed_size_bytes": 9,
+      "compression_ratio": 38.888888888888886,
+      "unique_signatures": 1,
+      "stream_windows": 1,
+      "token_metrics": {
+        "original_tokens": 102,
+        "reconstructed_tokens": 102,
+        "edit_distance": 0,
+        "token_accuracy": 1.0,
+        "token_precision": 1.0,
+        "token_recall": 1.0,
+        "token_f1": 1.0
+      },
+      "character_metrics": {
+        "original_characters": 350,
+        "reconstructed_characters": 350,
+        "edit_distance": 0,
+        "character_accuracy": 1.0,
+        "character_precision": 1.0,
+        "character_recall": 1.0,
+        "character_f1": 1.0,
+        "normalized_edit_distance": 0.0
+      },
+      "normalized_edit_distance": 0.0,
+      "token_compression_unique": 102.0,
+      "token_compression_stream": 102.0,
+      "verification": {
+        "positives": 1,
+        "true_positive": 1,
+        "negatives": 321,
+        "false_positive": 1,
+        "precision": 0.5,
+        "false_positive_rate": 0.003115264797507788,
+        "recall": 1.0,
+        "f1": 0.6666666666666666
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0007": {
+      "original_size_bytes": 2116,
+      "compressed_size_bytes": 54,
+      "compression_ratio": 39.18518518518518,
+      "unique_signatures": 6,
+      "stream_windows": 6,
+      "token_metrics": {
+        "original_tokens": 455,
+        "reconstructed_tokens": 531,
+        "edit_distance": 76,
+        "token_accuracy": 0.856873822975518,
+        "token_precision": 0.856873822975518,
+        "token_recall": 0.832967032967033,
+        "token_f1": 0.8447513189671644
+      },
+      "character_metrics": {
+        "original_characters": 2112,
+        "reconstructed_characters": 2424,
+        "edit_distance": 312,
+        "character_accuracy": 0.8712871287128713,
+        "character_precision": 0.8712871287128713,
+        "character_recall": 0.8522727272727273,
+        "character_f1": 0.8616750440629283,
+        "normalized_edit_distance": 0.12871287128712872
+      },
+      "normalized_edit_distance": 0.12871287128712872,
+      "token_compression_unique": 75.83333333333333,
+      "token_compression_stream": 75.83333333333333,
+      "verification": {
+        "positives": 6,
+        "true_positive": 6,
+        "negatives": 316,
+        "false_positive": 8,
+        "precision": 0.42857142857142855,
+        "false_positive_rate": 0.02531645569620253,
+        "recall": 1.0,
+        "f1": 0.6
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0017": {
+      "original_size_bytes": 1859,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 41.31111111111111,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 449,
+        "reconstructed_tokens": 516,
+        "edit_distance": 67,
+        "token_accuracy": 0.8701550387596899,
+        "token_precision": 0.8701550387596899,
+        "token_recall": 0.8507795100222717,
+        "token_f1": 0.8603582025165971
+      },
+      "character_metrics": {
+        "original_characters": 1857,
+        "reconstructed_characters": 2046,
+        "edit_distance": 189,
+        "character_accuracy": 0.907624633431085,
+        "character_precision": 0.907624633431085,
+        "character_recall": 0.8982229402261712,
+        "character_f1": 0.9028993130478924,
+        "normalized_edit_distance": 0.09237536656891496
+      },
+      "normalized_edit_distance": 0.09237536656891496,
+      "token_compression_unique": 89.8,
+      "token_compression_stream": 89.8,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 4,
+        "precision": 0.5555555555555556,
+        "false_positive_rate": 0.012618296529968454,
+        "recall": 1.0,
+        "f1": 0.7142857142857143
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0035": {
+      "original_size_bytes": 1923,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 42.733333333333334,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 588,
+        "reconstructed_tokens": 621,
+        "edit_distance": 33,
+        "token_accuracy": 0.9468599033816425,
+        "token_precision": 0.9468599033816425,
+        "token_recall": 0.9438775510204082,
+        "token_f1": 0.94536637509614
+      },
+      "character_metrics": {
+        "original_characters": 1921,
+        "reconstructed_characters": 2046,
+        "edit_distance": 125,
+        "character_accuracy": 0.9389051808406648,
+        "character_precision": 0.9389051808406648,
+        "character_recall": 0.9349297241020302,
+        "character_f1": 0.9369132353825743,
+        "normalized_edit_distance": 0.06109481915933529
+      },
+      "normalized_edit_distance": 0.06109481915933529,
+      "token_compression_unique": 117.6,
+      "token_compression_stream": 117.6,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 1,
+        "precision": 0.8333333333333334,
+        "false_positive_rate": 0.0031545741324921135,
+        "recall": 1.0,
+        "f1": 0.9090909090909091
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0085": {
+      "original_size_bytes": 923,
+      "compressed_size_bytes": 27,
+      "compression_ratio": 34.18518518518518,
+      "unique_signatures": 3,
+      "stream_windows": 3,
+      "token_metrics": {
+        "original_tokens": 297,
+        "reconstructed_tokens": 397,
+        "edit_distance": 100,
+        "token_accuracy": 0.7481108312342569,
+        "token_precision": 0.7481108312342569,
+        "token_recall": 0.6632996632996633,
+        "token_f1": 0.7031571104087299
+      },
+      "character_metrics": {
+        "original_characters": 923,
+        "reconstructed_characters": 1280,
+        "edit_distance": 357,
+        "character_accuracy": 0.72109375,
+        "character_precision": 0.72109375,
+        "character_recall": 0.6132177681473456,
+        "character_f1": 0.662794997998616,
+        "normalized_edit_distance": 0.27890625
+      },
+      "normalized_edit_distance": 0.27890625,
+      "token_compression_unique": 99.0,
+      "token_compression_stream": 99.0,
+      "verification": {
+        "positives": 3,
+        "true_positive": 3,
+        "negatives": 319,
+        "false_positive": 2,
+        "precision": 0.6,
+        "false_positive_rate": 0.006269592476489028,
+        "recall": 1.0,
+        "f1": 0.7499999999999999
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0092": {
+      "original_size_bytes": 1720,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 38.22222222222222,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 611,
+        "reconstructed_tokens": 726,
+        "edit_distance": 115,
+        "token_accuracy": 0.8415977961432507,
+        "token_precision": 0.8415977961432507,
+        "token_recall": 0.8117839607201309,
+        "token_f1": 0.8264220763903755
+      },
+      "character_metrics": {
+        "original_characters": 1716,
+        "reconstructed_characters": 2044,
+        "edit_distance": 328,
+        "character_accuracy": 0.8395303326810176,
+        "character_precision": 0.8395303326810176,
+        "character_recall": 0.8088578088578089,
+        "character_f1": 0.8239086999595968,
+        "normalized_edit_distance": 0.16046966731898238
+      },
+      "normalized_edit_distance": 0.16046966731898238,
+      "token_compression_unique": 122.2,
+      "token_compression_stream": 122.2,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 4,
+        "precision": 0.5555555555555556,
+        "false_positive_rate": 0.012618296529968454,
+        "recall": 1.0,
+        "f1": 0.7142857142857143
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0100": {
+      "original_size_bytes": 2381,
+      "compressed_size_bytes": 54,
+      "compression_ratio": 44.092592592592595,
+      "unique_signatures": 6,
+      "stream_windows": 6,
+      "token_metrics": {
+        "original_tokens": 643,
+        "reconstructed_tokens": 656,
+        "edit_distance": 13,
+        "token_accuracy": 0.9801829268292683,
+        "token_precision": 0.9801829268292683,
+        "token_recall": 0.9797822706065319,
+        "token_f1": 0.9799825577668136
+      },
+      "character_metrics": {
+        "original_characters": 2367,
+        "reconstructed_characters": 2418,
+        "edit_distance": 51,
+        "character_accuracy": 0.9789081885856079,
+        "character_precision": 0.9789081885856079,
+        "character_recall": 0.9784537389100126,
+        "character_f1": 0.97868091099198,
+        "normalized_edit_distance": 0.02109181141439206
+      },
+      "normalized_edit_distance": 0.02109181141439206,
+      "token_compression_unique": 107.16666666666667,
+      "token_compression_stream": 107.16666666666667,
+      "verification": {
+        "positives": 6,
+        "true_positive": 6,
+        "negatives": 316,
+        "false_positive": 5,
+        "precision": 0.5454545454545454,
+        "false_positive_rate": 0.015822784810126583,
+        "recall": 1.0,
+        "f1": 0.7058823529411764
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0119": {
+      "original_size_bytes": 1493,
+      "compressed_size_bytes": 36,
+      "compression_ratio": 41.47222222222222,
+      "unique_signatures": 4,
+      "stream_windows": 4,
+      "token_metrics": {
+        "original_tokens": 458,
+        "reconstructed_tokens": 525,
+        "edit_distance": 67,
+        "token_accuracy": 0.8723809523809524,
+        "token_precision": 0.8723809523809524,
+        "token_recall": 0.8537117903930131,
+        "token_f1": 0.8629454099494266
+      },
+      "character_metrics": {
+        "original_characters": 1477,
+        "reconstructed_characters": 1648,
+        "edit_distance": 171,
+        "character_accuracy": 0.8962378640776699,
+        "character_precision": 0.8962378640776699,
+        "character_recall": 0.8842247799593771,
+        "character_f1": 0.8901907948582047,
+        "normalized_edit_distance": 0.10376213592233009
+      },
+      "normalized_edit_distance": 0.10376213592233009,
+      "token_compression_unique": 114.5,
+      "token_compression_stream": 114.5,
+      "verification": {
+        "positives": 4,
+        "true_positive": 4,
+        "negatives": 318,
+        "false_positive": 3,
+        "precision": 0.5714285714285714,
+        "false_positive_rate": 0.009433962264150943,
+        "recall": 1.0,
+        "f1": 0.7272727272727273
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0242": {
+      "original_size_bytes": 1425,
+      "compressed_size_bytes": 36,
+      "compression_ratio": 39.583333333333336,
+      "unique_signatures": 4,
+      "stream_windows": 4,
+      "token_metrics": {
+        "original_tokens": 446,
+        "reconstructed_tokens": 527,
+        "edit_distance": 81,
+        "token_accuracy": 0.8462998102466793,
+        "token_precision": 0.8462998102466793,
+        "token_recall": 0.8183856502242153,
+        "token_f1": 0.8321086919296344
+      },
+      "character_metrics": {
+        "original_characters": 1415,
+        "reconstructed_characters": 1654,
+        "edit_distance": 239,
+        "character_accuracy": 0.8555018137847642,
+        "character_precision": 0.8555018137847642,
+        "character_recall": 0.831095406360424,
+        "character_f1": 0.8431220199785728,
+        "normalized_edit_distance": 0.1444981862152358
+      },
+      "normalized_edit_distance": 0.1444981862152358,
+      "token_compression_unique": 111.5,
+      "token_compression_stream": 111.5,
+      "verification": {
+        "positives": 4,
+        "true_positive": 4,
+        "negatives": 318,
+        "false_positive": 1,
+        "precision": 0.8,
+        "false_positive_rate": 0.0031446540880503146,
+        "recall": 1.0,
+        "f1": 0.888888888888889
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0363": {
+      "original_size_bytes": 2171,
+      "compressed_size_bytes": 54,
+      "compression_ratio": 40.2037037037037,
+      "unique_signatures": 6,
+      "stream_windows": 6,
+      "token_metrics": {
+        "original_tokens": 593,
+        "reconstructed_tokens": 669,
+        "edit_distance": 76,
+        "token_accuracy": 0.8863976083707026,
+        "token_precision": 0.8863976083707026,
+        "token_recall": 0.8718381112984823,
+        "token_f1": 0.8790575781122316
+      },
+      "character_metrics": {
+        "original_characters": 2159,
+        "reconstructed_characters": 2420,
+        "edit_distance": 261,
+        "character_accuracy": 0.8921487603305785,
+        "character_precision": 0.8921487603305785,
+        "character_recall": 0.8791106993978693,
+        "character_f1": 0.8855817439432592,
+        "normalized_edit_distance": 0.10785123966942149
+      },
+      "normalized_edit_distance": 0.10785123966942149,
+      "token_compression_unique": 98.83333333333333,
+      "token_compression_stream": 98.83333333333333,
+      "verification": {
+        "positives": 6,
+        "true_positive": 6,
+        "negatives": 316,
+        "false_positive": 7,
+        "precision": 0.46153846153846156,
+        "false_positive_rate": 0.022151898734177215,
+        "recall": 1.0,
+        "f1": 0.631578947368421
+      }
+    },
+    "book_en_\u56fd\u5916\u6570\u5b66\u6559\u6750-\u975e\u6570\u5b66\u4e13\u4e1a\u6559\u6750-\u7ebf\u6027\u4ee3\u6570-Gilbert Strang\u2014Linear Algebra and Its Applications 4e_0451": {
+      "original_size_bytes": 1797,
+      "compressed_size_bytes": 45,
+      "compression_ratio": 39.93333333333333,
+      "unique_signatures": 5,
+      "stream_windows": 5,
+      "token_metrics": {
+        "original_tokens": 595,
+        "reconstructed_tokens": 695,
+        "edit_distance": 100,
+        "token_accuracy": 0.8561151079136691,
+        "token_precision": 0.8561151079136691,
+        "token_recall": 0.8319327731092436,
+        "token_f1": 0.8438507270252846
+      },
+      "character_metrics": {
+        "original_characters": 1793,
+        "reconstructed_characters": 2044,
+        "edit_distance": 251,
+        "character_accuracy": 0.87720156555773,
+        "character_precision": 0.87720156555773,
+        "character_recall": 0.8600111544896821,
+        "character_f1": 0.8685213070450817,
+        "normalized_edit_distance": 0.12279843444227005
+      },
+      "normalized_edit_distance": 0.12279843444227005,
+      "token_compression_unique": 119.0,
+      "token_compression_stream": 119.0,
+      "verification": {
+        "positives": 5,
+        "true_positive": 5,
+        "negatives": 317,
+        "false_positive": 2,
+        "precision": 0.7142857142857143,
+        "false_positive_rate": 0.006309148264984227,
+        "recall": 1.0,
+        "f1": 0.8333333333333333
+      }
+    },
+    "book_en_\u642c\u4e66\u5320-2253-The Well-Grounded Rubyist 3rd Edition-2019-\u82f1\u6587\u7248_page_194": {
+      "original_size_bytes": 2437,
+      "compressed_size_bytes": 63,
+      "compression_ratio": 38.682539682539684,
+      "unique_signatures": 7,
+      "stream_windows": 7,
+      "token_metrics": {
+        "original_tokens": 537,
+        "reconstructed_tokens": 622,
+        "edit_distance": 85,
+        "token_accuracy": 0.8633440514469454,
+        "token_precision": 0.8633440514469454,
+        "token_recall": 0.8417132216014898,
+        "token_f1": 0.85239142916843
+      },
+      "character_metrics": {
+        "original_characters": 2415,
+        "reconstructed_characters": 2794,
+        "edit_distance": 379,
+        "character_accuracy": 0.8643521832498211,
+        "character_precision": 0.8643521832498211,
+        "character_recall": 0.843064182194617,
+        "character_f1": 0.8535754737362627,
+        "normalized_edit_distance": 0.13564781675017895
+      },
+      "normalized_edit_distance": 0.13564781675017895,
+      "token_compression_unique": 76.71428571428571,
+      "token_compression_stream": 76.71428571428571,
+      "verification": {
+        "positives": 7,
+        "true_positive": 7,
+        "negatives": 315,
+        "false_positive": 3,
+        "precision": 0.7,
+        "false_positive_rate": 0.009523809523809525,
+        "recall": 1.0,
+        "f1": 0.8235294117647058
+      }
+    }
+  },
+  "records": 322,
+  "negatives_evaluated": 47978,
+  "token_metrics": {
+    "text_tokens_total": 30284,
+    "reconstructed_tokens_total": 34103,
+    "token_edit_distance_total": 3847,
+    "manifold_tokens_stream": 322,
+    "manifold_tokens_unique": 321,
+    "token_compression_stream": 94.04968944099379,
+    "token_compression_unique": 94.34267912772586,
+    "token_accuracy": 0.8871946749552825,
+    "token_precision": 0.8871946749552825,
+    "token_recall": 0.8729692246730947,
+    "token_f1": 0.8800244655549746
+  },
+  "character_metrics": {
+    "original_characters_total": 106616,
+    "reconstructed_characters_total": 119989,
+    "character_edit_distance_total": 13451,
+    "character_accuracy": 0.8878980573219212,
+    "character_precision": 0.8878980573219212,
+    "character_recall": 0.8738369475500862,
+    "character_f1": 0.8808113887732029,
+    "normalized_edit_distance": 0.11210194267807883
+  },
+  "use_native": false
+}

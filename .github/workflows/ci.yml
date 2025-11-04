@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: nvidia/cuda:12.4.1-devel-ubuntu22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          apt-get update && apt-get install -y python3-pip git make
+          pip install --no-cache-dir -r requirements.txt
+      - name: Build native kernel
+        run: make native || true
+      - name: Run tests
+        run: pytest -v
+      - name: Build Docker image
+        run: docker build -t manifold-compression .
+      - name: Push Docker image
+        if: github.ref == 'refs/heads/main'
+        env:
+          GHCR_USER: ${{ secrets.DOCKER_USER }}
+          GHCR_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          if [ -n "$GHCR_USER" ] && [ -n "$GHCR_PASSWORD" ]; then \
+            echo "$GHCR_PASSWORD" | docker login ghcr.io -u "$GHCR_USER" --password-stdin; \
+            docker tag manifold-compression ghcr.io/$GHCR_USER/manifold-compression:latest; \
+            docker push ghcr.io/$GHCR_USER/manifold-compression:latest; \
+          else \
+            echo "Docker credentials not provided; skipping push."; \
+          fi

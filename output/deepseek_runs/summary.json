@@ -1,0 +1,57 @@
+{
+  "model_name": "external/DeepSeek-OCR/weights",
+  "prompt": "<image>\\nFree OCR.",
+  "base_size": 1024,
+  "image_size": 640,
+  "crop_mode": false,
+  "attn_impl": "eager",
+  "dtype": "bfloat16",
+  "device": "cuda",
+  "eval_mode": true,
+  "records": {
+    "fox": {
+      "records": 150,
+      "token_metrics": {
+        "text_tokens_total": 221135,
+        "reconstructed_tokens_total": 228991,
+        "token_edit_distance_total": 72178,
+        "token_accuracy": 0.6847998392949941,
+        "token_precision": 0.6847998392949941,
+        "token_recall": 0.6736020982657653,
+        "token_f1": 0.6791548155025131
+      },
+      "character_metrics": {
+        "original_characters_total": 523456,
+        "reconstructed_characters_total": 543841,
+        "character_edit_distance_total": 72334,
+        "character_accuracy": 0.8669942133822202,
+        "character_precision": 0.8669942133822202,
+        "character_recall": 0.8618145555691406,
+        "character_f1": 0.8643966251284516,
+        "normalized_edit_distance": 0.13300578661777984
+      }
+    },
+    "omnidoc": {
+      "records": 150,
+      "token_metrics": {
+        "text_tokens_total": 57612,
+        "reconstructed_tokens_total": 75794,
+        "token_edit_distance_total": 36463,
+        "token_accuracy": 0.5189197034066021,
+        "token_precision": 0.5189197034066021,
+        "token_recall": 0.36709366104283825,
+        "token_f1": 0.42999833039575697
+      },
+      "character_metrics": {
+        "original_characters_total": 89999,
+        "reconstructed_characters_total": 104396,
+        "character_edit_distance_total": 45747,
+        "character_accuracy": 0.5617935553086325,
+        "character_precision": 0.5617935553086325,
+        "character_recall": 0.49169435215946844,
+        "character_f1": 0.5244117493265231,
+        "normalized_edit_distance": 0.4382064446913675
+      }
+    }
+  }
+}
