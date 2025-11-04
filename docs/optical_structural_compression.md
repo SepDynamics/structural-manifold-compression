@@ -1,7 +1,7 @@
 # Manifold Compression for Long-Context Agents
 
 ## Scope and Intent
-- **Objective:** Prove that SEP's QFH/QBSA manifold signatures alone can act as a high-ratio compression medium for long textual contexts while preserving verification power.
+- **Objective:** Prove that SEP's manifold signatures alone can act as a high-ratio compression medium for long textual contexts while preserving verification power.
 - **Deliverable:** A reproducible, citable paper and code bundle that quantifies compression, verification accuracy, and operational envelopes using only structural signatures—no optical or vision components.
 - **Hypotheses to Validate:**
   1. Structural signatures (coherence, stability, entropy buckets) compress long contexts by ≥10× relative to raw UTF-8 bytes when stored as deduplicated repetitions.
@@ -17,7 +17,7 @@
 3. **Related Work**
    - Token-level compression techniques (e.g., LongT5, FlashAttention).
    - Optical compression (DeepSeek-OCR) as an external reference point.
-   - Structural reliability metrics (QFH/QBSA, STM guardrails)【score/docs/whitepaper/QFH_Manifold_Foundation.tex:16】.
+   - Structural reliability metrics (manifold hazard / stability guards, STM guardrails)【score/docs/whitepaper/QFH_Manifold_Foundation.tex:16】.
 4. **Methodology**
    - Window construction: byte windows, stride, signature precision.
    - Compression scheme: per-document signature deduplication, hazard and repetition summaries.

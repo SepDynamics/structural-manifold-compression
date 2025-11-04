@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Compute QFH/QBSA structural metrics for text transcripts referenced in a manifest.
+Compute manifold structural metrics for text transcripts referenced in a manifest.
 
 Usage (from repository root):
     PYTHONPATH=score/src python scripts/experiments/run_structural_metrics.py \
@@ -126,7 +126,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True, help="Destination JSONL metrics file")
     parser.add_argument("--window-bytes", type=int, default=2048, help="Window size in bytes")
     parser.add_argument("--stride-bytes", type=int, default=1024, help="Stride in bytes")
-    parser.add_argument("--use-native", action="store_true", help="Prefer native QFH/QBSA kernel")
+    parser.add_argument("--use-native", action="store_true", help="Prefer the native manifold kernel when available")
     parser.add_argument("--decoded", type=Path, help="Optional JSONL with decoded OCR outputs")
     parser.add_argument(
         "--decoded-field",

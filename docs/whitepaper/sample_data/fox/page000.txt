@@ -6,7 +6,7 @@ hazard, and repetition even when the raw text is no longer stored verbatim.
 The objective of this sample is to provide enough variation for sliding windows to encounter different
 structural regimes: sections with repeated phrases, sections with numerical references, and a closing
 paragraph that revisits earlier themes. By emphasising coherence across the narrative we ensure the
-QFH/QBSA metrics expose useful signatures for later verification.
+manifold metrics expose useful signatures for later verification.
 
 Repeated motifs such as "structural manifold" and "compression benchmark" encourage windows to
 share signatures. Short sentences like "Signals repeat." raise rupture scores, while longer explanatory

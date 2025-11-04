@@ -93,7 +93,7 @@ def main() -> None:
         action="store_true",
         help="Allow remote code when loading the tokenizer (required for some custom tokenizers).",
     )
-    parser.add_argument("--use-native", action="store_true", help="Use native QFH/QBSA kernel if available.")
+    parser.add_argument("--use-native", action="store_true", help="Use the native manifold kernel if available.")
     parser.add_argument("--max-documents", type=int, help="Optional cap on number of documents per dataset.")
     args = parser.parse_args()
 
