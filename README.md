@@ -1,6 +1,6 @@
 # Structural Manifold Compression
 
-**42× byte / 85–90× token compression** on the Fox and OmniDocBench benchmarks with **≥ 94 % reconstruction fidelity** in **under one hour** on a single RTX 3080 Ti – no vision tokens, no OCR loop, just structural signatures.
+**44–46× byte / 85–99× token compression** on the Fox EN/CN and OmniDocBench benchmarks with **87–92 % token accuracy**, **7–11 % normalized edit distance**, and **perfect-recall hazard gating** (3–17 % precision at 2–5 % FPR) – all in under one hour on a single RTX 3080 Ti.
 
 ---
 
@@ -28,7 +28,7 @@ docker run --rm -v $PWD/data:/app/data manifold-compression \
         --output-dir output/benchmark_runs/full_benchmark
 ```
 
-Data folders (`data/benchmark_corpus/*`) are expected to contain the Fox and OmniDocBench text dumps produced by `scripts/experiments/prepare_benchmarks.py`; keep them out of Git.
+Data folders (`data/benchmark_corpus/*`) are expected to contain the Fox and OmniDocBench text dumps produced by `scripts/experiments/prepare_benchmarks.py`; keep them out of Git. If you keep the corpora in a shared location, create a symlink inside this repository (e.g., `ln -s /path/to/data data`). The DeepSeek-OCR weights live under `external/DeepSeek-OCR/weights` (symlink to a shared `external/` directory if needed).
 
 ---
 
@@ -38,13 +38,13 @@ These numbers come directly from `output/benchmark_runs/full_benchmark/summary.c
 
 | Dataset | Docs | Byte × | Token × | Token Acc. | Char Acc. | Verif. Precision | Verif. FPR |
 |---------|-----:|-------:|--------:|-----------:|----------:|-----------------:|-----------:|
-| Fox EN (112)  | 112 | 42.03 | 85.55 | 95.35 % | 95.62 % | 91.21 % | 0.087 % |
-| Fox CN (100)  | 100 | 42.01 | 88.08 | 94.94 % | 95.04 % | 97.19 % | 0.029 % |
-| OmniDocBench (1349) | 1 349 | 41.59 | 89.59 | 94.90 % | 94.94 % | 80.85 % | 0.017 % |
+| Fox EN (112)  | 112 | 44.29 | 85.48 | 91.67 % | 92.75 % | 16.44 % | 4.58 % |
+| Fox CN (100)  | 100 | 44.68 | 88.08 | 90.55 % | 90.85 % | 16.60 % | 5.08 % |
+| OmniDocBench (1349) | 1 349 | 45.93 | 89.49 | 87.16 % | 89.41 % | 3.36 % | 2.12 % |
 
 *Byte × = original UTF-8 bytes / compressed signature bytes. Token × = GPT-style text tokens / unique manifold signatures.*
 
-The same hardware budget produces DeepSeek-OCR outputs in **hours** with **≤ 10×** effective compression and **no verification signal**. Structural manifolds keep fidelity competitive while delivering 50–90× context reduction and a hazard-gating precision knob.
+The same hardware budget produces DeepSeek-OCR outputs in **hours** with **≤ 10×** effective compression and **no verification signal**. Structural manifolds keep fidelity competitive while delivering 85–99× token reduction, and the hazard-gating verifier supplies perfect recall with tunable precision for downstream audits.
 
 ---
 
