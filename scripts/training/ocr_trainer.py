@@ -16,12 +16,16 @@ import numpy as np
 import torch
 from PIL import Image
 from torch.utils.data import Dataset
+import inspect
+
 from transformers import (
     AutoModelForVision2Seq,
     AutoProcessor,
+    AutoTokenizer,
     EarlyStoppingCallback,
     Trainer,
     TrainingArguments,
+    TrOCRProcessor,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -307,8 +311,12 @@ def prepare_model_and_processor(
     trust_remote_code: bool,
     torch_dtype: Optional[torch.dtype],
     gradient_checkpointing: bool,
-) -> Tuple[AutoModelForVision2Seq, AutoProcessor]:
-    processor = AutoProcessor.from_pretrained(processor_id or model_id, trust_remote_code=trust_remote_code)
+) -> Tuple[AutoModelForVision2Seq, AutoProcessor, Optional[int]]:
+    processor_name = processor_id or model_id
+    try:
+        processor = TrOCRProcessor.from_pretrained(processor_name, trust_remote_code=trust_remote_code)
+    except Exception:
+        processor = AutoProcessor.from_pretrained(processor_name, trust_remote_code=trust_remote_code)
     model = AutoModelForVision2Seq.from_pretrained(
         model_id,
         trust_remote_code=trust_remote_code,
@@ -316,7 +324,13 @@ def prepare_model_and_processor(
     )
     tokenizer = getattr(processor, "tokenizer", None)
     if tokenizer is None:
-        raise RuntimeError("Loaded processor does not expose a tokenizer; choose a processor that supports text decoding.")
+        try:
+            tokenizer = AutoTokenizer.from_pretrained(processor_id or model_id, trust_remote_code=trust_remote_code)
+        except Exception as exc:
+            raise RuntimeError(
+                "Loaded processor does not expose a tokenizer and a fallback tokenizer could not be loaded."
+            ) from exc
+        setattr(processor, "tokenizer", tokenizer)
     if tokenizer.pad_token_id is None:
         if tokenizer.eos_token_id is not None:
             tokenizer.pad_token = tokenizer.eos_token
@@ -332,7 +346,11 @@ def prepare_model_and_processor(
     if gradient_checkpointing:
         model.gradient_checkpointing_enable()
         model.config.use_cache = False
-    return model, processor
+    decoder_config = getattr(model.config, "decoder", None)
+    max_decoder_positions = None
+    if decoder_config is not None:
+        max_decoder_positions = getattr(decoder_config, "max_position_embeddings", None)
+    return model, processor, max_decoder_positions
 
 
 def maybe_wrap_with_lora(
@@ -473,13 +491,29 @@ def main() -> None:
     print(f"[data] training samples: {len(train_records)}")
     print(f"[data] validation samples: {len(val_records)}")
 
-    model, processor = prepare_model_and_processor(
+    model, processor, decoder_max_positions = prepare_model_and_processor(
         model_id=args.model_id,
         processor_id=args.processor_id,
         trust_remote_code=args.trust_remote_code,
         torch_dtype=torch.float16 if args.fp16 else (torch.bfloat16 if args.bf16 else None),
         gradient_checkpointing=args.gradient_checkpointing,
     )
+
+    target_length = args.max_target_length
+    generation_length = args.generation_max_length
+    if decoder_max_positions is not None:
+        if target_length > decoder_max_positions:
+            print(
+                f"[warn] max_target_length {target_length} exceeds decoder limit {decoder_max_positions}; clamping.",
+                flush=True,
+            )
+            target_length = decoder_max_positions
+        if generation_length > decoder_max_positions:
+            print(
+                f"[warn] generation_max_length {generation_length} exceeds decoder limit {decoder_max_positions}; clamping.",
+                flush=True,
+            )
+            generation_length = decoder_max_positions
     model = maybe_wrap_with_lora(
         model,
         lora_rank=args.lora_rank,
@@ -493,7 +527,7 @@ def main() -> None:
     eval_dataset = OCRManifestDataset(val_records) if val_records else None
     collator = VisionSeqCollator(
         processor=processor,
-        max_target_length=args.max_target_length,
+        max_target_length=target_length,
         pad_to_max=True,
         ignore_pad_token_for_loss=True,
     )
@@ -510,37 +544,51 @@ def main() -> None:
         load_best_model = True
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    training_args = TrainingArguments(
-        do_eval=eval_dataset is not None,
-        evaluation_strategy=evaluation_strategy,
-        save_strategy="steps",
-        save_steps=args.save_steps,
-        eval_steps=eval_steps,
-        logging_steps=args.logging_steps,
-        learning_rate=args.learning_rate,
-        weight_decay=args.weight_decay,
-        warmup_ratio=args.warmup_ratio,
-        lr_scheduler_type=args.scheduler,
-        per_device_train_batch_size=args.train_batch_size,
-        per_device_eval_batch_size=args.eval_batch_size,
-        gradient_accumulation_steps=args.gradient_accumulation,
-        num_train_epochs=args.epochs,
-        output_dir=str(args.output_dir),
-        fp16=args.fp16,
-        bf16=args.bf16,
-        dataloader_num_workers=args.dataloader_workers,
-        report_to=None if args.report_to.lower() == "none" else args.report_to,
-        save_total_limit=args.save_total_limit,
-        remove_unused_columns=False,
-        gradient_checkpointing=args.gradient_checkpointing,
-        predict_with_generate=eval_dataset is not None,
-        generation_max_length=args.generation_max_length,
-        metric_for_best_model=args.metric_for_best_model,
-        greater_is_better=args.greater_is_better,
-        load_best_model_at_end=load_best_model,
-        max_grad_norm=args.max_grad_norm,
-        seed=args.seed,
-    )
+    training_args_kwargs = {
+        "do_eval": eval_dataset is not None,
+        "save_strategy": "steps",
+        "save_steps": args.save_steps,
+        "eval_steps": eval_steps,
+        "logging_steps": args.logging_steps,
+        "learning_rate": args.learning_rate,
+        "weight_decay": args.weight_decay,
+        "warmup_ratio": args.warmup_ratio,
+        "lr_scheduler_type": args.scheduler,
+        "per_device_train_batch_size": args.train_batch_size,
+        "per_device_eval_batch_size": args.eval_batch_size,
+        "gradient_accumulation_steps": args.gradient_accumulation,
+        "num_train_epochs": args.epochs,
+        "output_dir": str(args.output_dir),
+        "fp16": args.fp16,
+        "bf16": args.bf16,
+        "dataloader_num_workers": args.dataloader_workers,
+        "report_to": None if args.report_to.lower() == "none" else args.report_to,
+        "save_total_limit": args.save_total_limit,
+        "remove_unused_columns": False,
+        "gradient_checkpointing": args.gradient_checkpointing,
+        "metric_for_best_model": args.metric_for_best_model,
+        "greater_is_better": args.greater_is_better,
+        "load_best_model_at_end": load_best_model,
+        "max_grad_norm": args.max_grad_norm,
+        "seed": args.seed,
+    }
+
+    training_args_sig = inspect.signature(TrainingArguments.__init__).parameters
+
+    training_args_sig = inspect.signature(TrainingArguments.__init__).parameters
+    if "evaluation_strategy" in training_args_sig:
+        training_args_kwargs["evaluation_strategy"] = evaluation_strategy
+    elif "eval_strategy" in training_args_sig:
+        training_args_kwargs["eval_strategy"] = evaluation_strategy
+    else:
+        training_args_kwargs["eval_strategy"] = evaluation_strategy
+
+    if "predict_with_generate" in training_args_sig:
+        training_args_kwargs["predict_with_generate"] = eval_dataset is not None
+    if "generation_max_length" in training_args_sig:
+        training_args_kwargs["generation_max_length"] = generation_length
+
+    training_args = TrainingArguments(**training_args_kwargs)
 
     callbacks = []
     if args.early_stopping_patience > 0 and eval_dataset:
