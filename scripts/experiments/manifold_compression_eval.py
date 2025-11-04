@@ -14,10 +14,20 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-SCORE_SRC = REPO_ROOT / "score" / "src"
 
-if SCORE_SRC.exists():
-    sys.path.insert(0, str(SCORE_SRC))
+def _maybe_extend_sys_path() -> None:
+    candidates = [
+        REPO_ROOT / "score" / "src",
+        REPO_ROOT.parent / "score" / "src",
+    ]
+    for path in candidates:
+        if path.exists():
+            path_str = str(path)
+            if path_str not in sys.path:
+                sys.path.insert(0, path_str)
+
+
+_maybe_extend_sys_path()
 
 from sep_text_manifold import encode, native  # type: ignore  # noqa: E402
 

@@ -41,9 +41,15 @@ scripts/
     benchmark_eval.py       # Structural manifold benchmark
     deepseek_ocr_runner.py  # Optical baseline (DeepSeek-OCR)
     plot_manifold_sweep.py  # Curves for the report
+  data/
+    download_corpora.py     # Fox + OmniDocBench downloader + manifest builder
+  training/
+    ocr_trainer.py          # LoRA-ready OCR finetuning harness
+    run_pipeline.py         # Stageable download/train orchestrator
 src/                        # Encoder + manifold helpers
 output/                     # Generated summaries/plots
 Makefile                    # install | native | full-run | report
+docs/03_training_playbook.md# Deployment + training roadmap
 ```
 
 ---
@@ -64,6 +70,16 @@ make native             # optional, builds CUDA kernel if nvcc is present
 2. **OmniDocBench** page-level text → `data/benchmark_corpus/omnidocbench/text`.
 3. Keep datasets outside Git; symlink them in if needed: `ln -s /data/share benchmark_corpus/data`.
 4. Place the DeepSeek-OCR weights under `external/DeepSeek-OCR/weights` (symlink `external` if you reuse a global models directory).
+
+To pull the corpora automatically (Fox + OmniDoc) and regenerate manifests, run:
+
+```bash
+./scripts/training/run_pipeline.py download
+# or with filters, e.g.:
+# ./scripts/training/run_pipeline.py download --datasets fox
+```
+
+The helper wraps `scripts/data/download_corpora.py`, which uses Hugging Face snapshots. Set `HF_TOKEN=...` when downloading from private mirrors.
 
 ---
 
@@ -130,5 +146,40 @@ The PDF includes methodology, metric definitions, full benchmark tables, DeepSee
   howpublished = {\url{https://github.com/SepDynamics/structural-manifold-compression}}
 }
 ```
+
+## 9. OCR Fine‑Tuning & Deployment
+
+- Read `docs/03_training_playbook.md` for the end-to-end plan (production integration → language expansion → hardware scaling → robustness).
+- Spin up finetuning runs with `scripts/training/ocr_trainer.py`, which consumes the existing Fox/OmniDoc manifests and supports mixed precision, gradient checkpointing, LoRA, and token/character F1 tracking.
+- Example (single RTX 3080 Ti, English Fox pages):
+
+  ```bash
+  python scripts/training/ocr_trainer.py \
+    --train-dataset fox_en=data/benchmark_corpus/fox/metadata/text_manifest.jsonl:data/benchmark_corpus/fox/raw \
+    --include-language english \
+    --val-split 0.08 \
+    --model-id microsoft/trocr-base-printed \
+    --output-dir output/training_runs/trocr_fox_en \
+    --epochs 3 \
+    --train-batch-size 1 \
+    --gradient-accumulation 8 \
+    --learning-rate 1e-4 \
+    --gradient-checkpointing \
+    --fp16 \
+    --lora-rank 8
+  ```
+
+- TensorBoard logs, checkpoints, and eval summaries will land in `output/training_runs/<run-name>`; feed the resulting adapters back into the benchmarking scripts to compare against DeepSeek-OCR and the manifold baselines.
+
+- ### One-Command Pipeline + Resume
+
+- `./scripts/training/run_pipeline.py all` → downloads (if needed), prepares manifests, and launches training with the default Fox+OmniDoc mix.
+- `./scripts/training/run_pipeline.py train` → starts (or resumes) training only. Pass `RESUME_FROM=output/training_runs/<run>/checkpoint-XXXX` to pick up after an interruption.
+- Tweak env vars instead of editing the script:
+  - `RUN_NAME=my_run` (changes output directory).
+  - `TRAIN_DATASETS="fox_en=...:...,omnidoc=..."` (choose subsets).
+  - `INCLUDE_LANGUAGES=english,chinese` (language filters) or leave unset for all text.
+  - `PRECISION=bf16`, `LORA_RANK=4`, `VAL_DATASETS=...` etc.
+- Any extra CLI flags appended after the stage name are forwarded straight to `ocr_trainer.py`.
 
 Questions or reproducibility issues? File an issue or ping **@alexandernagy**. Every figure and table is derived directly from the scripts and datasets above. Happy verifying!
