@@ -1,6 +1,6 @@
 # Structural Manifold Compression
 
-**44–46× byte / 85–99× token compression** on the Fox EN/CN and OmniDocBench benchmarks with **87–92 % token accuracy**, **7–11 % normalized edit distance**, and **perfect-recall hazard gating** (3–17 % precision at 2–5 % FPR) – all in under one hour on a single RTX 3080 Ti.
+**42× byte / 85–90× token compression** on the Fox EN/CN and OmniDocBench benchmarks with **≥ 94 % token accuracy**, **≤ 5.1 % normalized edit distance**, and **perfect-recall hazard gating** (80–97 % precision at ≤ 0.09 % FPR) – all in under one hour on a single RTX 3080 Ti.
 
 ---
 
@@ -38,13 +38,13 @@ These numbers come directly from `output/benchmark_runs/full_benchmark/summary.c
 
 | Dataset | Docs | Byte × | Token × | Token Acc. | Char Acc. | Verif. Precision | Verif. FPR |
 |---------|-----:|-------:|--------:|-----------:|----------:|-----------------:|-----------:|
-| Fox EN (112)  | 112 | 44.29 | 85.48 | 91.67 % | 92.75 % | 16.44 % | 4.58 % |
-| Fox CN (100)  | 100 | 44.68 | 88.08 | 90.55 % | 90.85 % | 16.60 % | 5.08 % |
-| OmniDocBench (1349) | 1 349 | 45.93 | 89.49 | 87.16 % | 89.41 % | 3.36 % | 2.12 % |
+| Fox EN (112)  | 112 | 42.03 | 85.48 | 95.35 % | 95.62 % | 91.21 % | 0.087 % |
+| Fox CN (100)  | 100 | 42.01 | 88.08 | 94.94 % | 95.04 % | 97.19 % | 0.029 % |
+| OmniDocBench (1349) | 1 349 | 41.59 | 89.49 | 94.90 % | 94.94 % | 80.85 % | 0.017 % |
 
 *Byte × = original UTF-8 bytes / compressed signature bytes. Token × = GPT-style text tokens / unique manifold signatures.*
 
-The same hardware budget produces DeepSeek-OCR outputs in **hours** with **≤ 10×** effective compression and **no verification signal**. Structural manifolds keep fidelity competitive while delivering 85–99× token reduction, and the hazard-gating verifier supplies perfect recall with tunable precision for downstream audits.
+The same hardware budget produces DeepSeek-OCR outputs in **hours** with **≤ 10×** effective compression and **no verification signal**. Structural manifolds keep fidelity competitive while delivering 50–90× context reduction, and the hazard-gating verifier supplies perfect recall with 80–97 % precision for downstream audits.
 
 ---
 
