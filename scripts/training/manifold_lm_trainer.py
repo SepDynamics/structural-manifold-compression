@@ -209,7 +209,7 @@ def main() -> None:
         training_kwargs["save_strategy"] = "steps"
     if training_args_supports("evaluation_strategy"):
         training_kwargs["evaluation_strategy"] = "steps" if eval_dataset is not None else "no"
-    elif eval_dataset is not None:
+    elif eval_dataset is not None and training_args_supports("evaluate_during_training"):
         training_kwargs["evaluate_during_training"] = True
     training_kwargs["do_eval"] = bool(eval_dataset)
 
