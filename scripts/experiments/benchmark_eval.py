@@ -93,6 +93,12 @@ def main() -> None:
         action="store_true",
         help="Allow remote code when loading the tokenizer (required for some custom tokenizers).",
     )
+    parser.add_argument(
+        "--json-text-key",
+        type=str,
+        default="text",
+        help="Field name to read when ingesting JSON/JSONL corpora (default: text).",
+    )
     parser.add_argument("--use-native", action="store_true", help="Use the native manifold kernel if available.")
     parser.add_argument("--max-documents", type=int, help="Optional cap on number of documents per dataset.")
     args = parser.parse_args()
@@ -114,6 +120,7 @@ def main() -> None:
             tokenizer_trust_remote_code=args.tokenizer_trust_remote_code,
             max_documents=args.max_documents,
             use_native=args.use_native,
+            json_text_key=args.json_text_key,
         )
         json_path = args.output_dir / f"{config.label}.json"
         json_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")

@@ -81,6 +81,75 @@ To pull the corpora automatically (Fox + OmniDoc) and regenerate manifests, run:
 
 The helper wraps `scripts/data/download_corpora.py`, which uses Hugging Face snapshots. Set `HF_TOKEN=...` when downloading from private mirrors.
 
+### Custom Corpora & Manifold LM Prep
+
+Bring your own UTF-8 corpus (plain `.txt`, `.jsonl`, or `.json`) and run the manifold encoder end-to-end:
+
+```bash
+# 1) Benchmark compression / fidelity on arbitrary text
+python scripts/experiments/benchmark_eval.py \
+  --dataset wikitext=data/raw_text/wikitext_train.jsonl \
+  --json-text-key text \
+  --window-bytes 512 --stride-bytes 384 --precision 3 \
+  --output-dir output/benchmark_runs/wikitext_custom
+
+# 2) Build (and resume) the HF dataset used for causal training
+python scripts/data/prepare_causal_dataset.py \
+  --text-root data/raw_text/wikitext_train.jsonl \
+  --output-dir output/wikitext_manifold \
+  --window-bytes 512 --stride-bytes 384 --precision 3 \
+  --sequence-length 512 --min-sequence-length 8 \
+  --use-native --export-signatures --concat-documents --reset-output
+
+# Re-run the same command (without --reset-output) any time to resume from
+# the last processed document. Progress lives under output/wikitext_manifold/.
+```
+
+Artifacts:
+- `output/benchmark_runs/wikitext_custom/*.json`: compression + fidelity metrics.
+- `output/wikitext_manifold/samples.jsonl`: append-only store of every manifold sequence (safe to resume).
+- `output/wikitext_manifold/processed_docs.txt`: set of completed documents (reruns skip them automatically).
+- `output/wikitext_manifold/hf_dataset`: Hugging Face dataset (`input_ids`, `labels`) for GPT-style training.
+- `output/wikitext_manifold/vocab.json`: signature → token-id mapping (index corresponds to ID).
+- `output/wikitext_manifold/metadata.json`: run stats (doc count, sample count, effective vocab, etc.).
+- `output/wikitext_manifold/signatures/<doc_id>.json` (optional): per-document signature streams for inspection.
+
+Interrupt the builder at any time—rerunning the command continues where it left off, honors `--concat-documents` (so short texts still form long sequences), and refreshes the `hf_dataset` shard.
+
+### Train a Manifold LM on a 3080 Ti
+
+Once the dataset exists, launch the scratch GPT-style run (≈250 M params, tuned for a single 12 GB card):
+
+```bash
+RUN_DIR=output/training_runs/wikitext_manifold_gpt
+python scripts/training/manifold_lm_trainer.py \
+  --dataset-path output/wikitext_manifold/hf_dataset \
+  --vocab-path output/wikitext_manifold/vocab.json \
+  --output-dir "${RUN_DIR}" \
+  --n-layer 16 --n-head 16 --n-embd 1024 \
+  --context-length 512 \
+  --per-device-train-batch-size 2 \
+  --per-device-eval-batch-size 2 \
+  --gradient-accumulation-steps 16 \
+  --learning-rate 2e-4 \
+  --num-train-epochs 3 \
+  --warmup-steps 500 \
+  --eval-holdout 0.02 \
+  --gradient-checkpointing \
+  --fp16 \
+  --resume
+```
+
+Why these knobs:
+- 16×16×1024 decoder lands in the 230–250 M parameter band but still fits the 3080 Ti when combined with FP16 + gradient checkpointing.
+- Batch size 2 × grad-accum 16 ⇒ effective 32 sequences/step (~16k manifold tokens). With ~200k samples, you get ≈6.2k steps/epoch → ~18.6k updates for 3 epochs (≈2–3 h wall-clock on the 3080 Ti).
+- `--resume` inspects `${RUN_DIR}` for `checkpoint-*` folders and picks up automatically after interruptions (Ctrl+C, reboot, etc.).
+
+Monitoring & verification:
+- `tensorboard --logdir ${RUN_DIR}` to follow loss curves mid-run.
+- Each checkpoint stores HF-compatible weights under `${RUN_DIR}/checkpoint-XXXX`.
+- After training, the script prints `eval_loss` + `perplexity` on the held-out split (already reconstructed for manifold tokens).
+
 ---
 
 ## 5. Reproduce the Structural Benchmark

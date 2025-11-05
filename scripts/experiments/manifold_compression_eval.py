@@ -41,15 +41,63 @@ class WindowRecord:
     chunk: bytes
 
 
-def iter_text_files(root: Path) -> Iterable[Tuple[str, Path]]:
+def _extract_text(record: object, text_key: str) -> str:
+    if isinstance(record, dict):
+        value = record.get(text_key)
+    else:
+        value = None
+    if value is None:
+        raise KeyError(f"Missing text field '{text_key}' in record: {record}")
+    if not isinstance(value, str):
+        value = str(value)
+    return value
+
+
+def _iter_text_directory(root: Path) -> Iterable[Tuple[str, str]]:
     for path in sorted(root.rglob("*.txt")):
         relative = path.relative_to(root)
         relative_str = relative.as_posix()
-        suffix = relative.suffix
+        suffix = path.suffix
         if suffix:
             relative_str = relative_str[: -len(suffix)]
         doc_id = relative_str.replace("/", "__")
-        yield doc_id, path
+        yield doc_id, path.read_text(encoding="utf-8")
+
+
+def _iter_jsonl_file(path: Path, text_key: str) -> Iterable[Tuple[str, str]]:
+    with path.open("r", encoding="utf-8") as handle:
+        for idx, line in enumerate(handle):
+            line = line.strip()
+            if not line:
+                continue
+            record = json.loads(line)
+            text = _extract_text(record, text_key)
+            doc_id = f"{path.stem}__{idx:07d}"
+            yield doc_id, text
+
+
+def iter_text_documents(root: Path, json_text_key: str = "text") -> Iterable[Tuple[str, str]]:
+    if root.is_dir():
+        yield from _iter_text_directory(root)
+        return
+    suffix = root.suffix.lower()
+    if suffix in {".jsonl", ".ndjson"}:
+        yield from _iter_jsonl_file(root, json_text_key)
+        return
+    if suffix == ".json":
+        data = json.loads(root.read_text(encoding="utf-8"))
+        if isinstance(data, list):
+            for idx, record in enumerate(data):
+                text = _extract_text(record, json_text_key)
+                yield f"{root.stem}__{idx:07d}", text
+            return
+        if isinstance(data, dict):
+            text = _extract_text(data, json_text_key)
+            yield root.stem, text
+            return
+        raise TypeError(f"Unsupported JSON structure in {root}")
+    # Fallback: treat as plain text file
+    yield root.stem, root.read_text(encoding="utf-8")
 
 
 def sliding_windows(data: bytes, window_bytes: int, stride_bytes: int) -> Iterable[Tuple[int, bytes]]:
@@ -84,6 +132,7 @@ def build_compressed_representation(
     stride_bytes: int,
     precision: int,
     max_documents: Optional[int] = None,
+    json_text_key: str = "text",
 ) -> Tuple[
     Dict[str, Dict[str, Dict[str, float]]],
     Dict[str, List[WindowRecord]],
@@ -98,11 +147,10 @@ def build_compressed_representation(
     prototypes: Dict[str, Dict[str, bytes]] = defaultdict(dict)
 
     processed_docs = 0
-    for doc_id, path in iter_text_files(text_root):
+    for doc_id, text in iter_text_documents(text_root, json_text_key=json_text_key):
         if max_documents is not None and processed_docs >= max_documents:
             break
         processed_docs += 1
-        text = path.read_text(encoding="utf-8")
         text_bytes = text.encode("utf-8")
         doc_texts[doc_id] = text
         doc_sizes[doc_id] = len(text_bytes)
@@ -328,6 +376,7 @@ def evaluate_manifold(
     tokenizer_trust_remote_code: bool = False,
     max_documents: Optional[int] = None,
     use_native: bool = False,
+    json_text_key: str = "text",
 ) -> Dict[str, object]:
     if use_native:
         native.set_use_native(True)
@@ -344,6 +393,7 @@ def evaluate_manifold(
         stride_bytes,
         precision,
         max_documents=max_documents,
+        json_text_key=json_text_key,
     )
     compressed = normalise_compressed(compressed_raw)
     doc_signatures = {doc_id: set(bucket.keys()) for doc_id, bucket in compressed.items()}
@@ -446,6 +496,7 @@ def evaluate_manifold(
 
     summary: Dict[str, object] = {
         "text_root": text_root_rel,
+        "json_text_key": json_text_key,
         "documents": len(doc_windows),
         "window_bytes": window_bytes,
         "stride_bytes": stride_bytes,
@@ -503,6 +554,12 @@ def main() -> None:
         action="store_true",
         help="Allow remote code when loading the tokenizer (required for some custom tokenizers)",
     )
+    parser.add_argument(
+        "--json-text-key",
+        type=str,
+        default="text",
+        help="Field name to read when ingesting JSON/JSONL corpora",
+    )
     parser.add_argument("--max-documents", type=int, help="Optional cap on number of documents to process")
     parser.add_argument("--use-native", action="store_true", help="Prefer the native manifold kernel if available")
     args = parser.parse_args()
@@ -520,6 +577,7 @@ def main() -> None:
         tokenizer_trust_remote_code=args.tokenizer_trust_remote_code,
         max_documents=args.max_documents,
         use_native=args.use_native,
+        json_text_key=args.json_text_key,
     )
 
     output_path = args.output.resolve()
