@@ -405,6 +405,7 @@ def main() -> None:
     parser.add_argument("--train-batch-size", type=int, default=1, help="Per-device train batch size")
     parser.add_argument("--eval-batch-size", type=int, default=1, help="Per-device eval batch size")
     parser.add_argument("--gradient-accumulation", type=int, default=1, help="Gradient accumulation steps")
+    parser.add_argument("--eval-accumulation-steps", type=int, default=1, help="GPU-friendly chunking for evaluation loop")
     parser.add_argument("--learning-rate", type=float, default=5e-5, help="Base learning rate")
     parser.add_argument("--weight-decay", type=float, default=0.0, help="Weight decay")
     parser.add_argument("--warmup-ratio", type=float, default=0.03, help="Warmup ratio for the LR scheduler")
@@ -557,6 +558,7 @@ def main() -> None:
         "per_device_train_batch_size": args.train_batch_size,
         "per_device_eval_batch_size": args.eval_batch_size,
         "gradient_accumulation_steps": args.gradient_accumulation,
+        "eval_accumulation_steps": args.eval_accumulation_steps,
         "num_train_epochs": args.epochs,
         "output_dir": str(args.output_dir),
         "fp16": args.fp16,

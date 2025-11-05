@@ -70,6 +70,8 @@ def stage_train(stage_args: List[str]) -> None:
         os.environ.get("EVAL_BATCH_SIZE", "1"),
         "--gradient-accumulation",
         os.environ.get("GRAD_ACCUM", "8"),
+        "--eval-accumulation-steps",
+        os.environ.get("EVAL_ACCUM_STEPS", "1"),
         "--learning-rate",
         os.environ.get("LR", "1e-4"),
         "--weight-decay",
