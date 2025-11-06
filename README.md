@@ -28,6 +28,37 @@ Source: [`output/benchmark_runs/full_benchmark/summary.csv`](output/benchmark_ru
 
 ---
 
+## Quick Start (Structured Text Demo)
+
+```bash
+cd structural-manifold-compression
+source .venv/bin/activate
+python scripts/experiments/benchmark_eval.py \
+  --dataset briefs=examples/structured_demo/news_sample.jsonl \
+  --json-text-key text \
+  --window-bytes 512 --stride-bytes 384 --precision 3 \
+  --use-native \
+  --output-dir output/benchmark_runs/news_demo
+```
+
+- Ships with a tiny JSONL corpus (`examples/structured_demo/news_sample.jsonl`) that mimics PDF/news briefs. Even this toy run demonstrates 30×+ byte compression, 50×+ token compression, and negligible verification false positives.
+- Swap `briefs=...` for any structured corpus (JSONL/JSON/txt). Pass multiple `--dataset label=path` entries to compare sources (Fox EN vs. CN, R&D vs. Ops, etc.).
+- `output/benchmark_runs/news_demo/briefs.json` records byte/token ratios, per-document reconstructions, and verification stats. Attach this JSON to issues, blog posts, or audit reports.
+- For perplexity vs. GPT‑2 baselines, use `scripts/experiments/perplexity_compare.py` with your manifold checkpoint and matching raw text (see §“Benchmark vs. GPT‑2”).
+- Prefer zero-setup? A Hugging Face Space (in progress) will expose the same workflow via Gradio so reviewers can upload JSONL dumps, run compression, and inspect reconstructions/verification from the browser.
+
+---
+
+## Examples & Notebooks
+
+- `examples/structured_demo/news_sample.jsonl` — three briefing-style docs that mimic PDF/corpora use cases.
+- `examples/structured_demo/README.md` — shell-friendly walkthrough that benchmarks the sample corpus and explains how to swap in your own JSONL.
+- `examples/structured_demo/mini_pipeline.ipynb` — notebook version of the same commands so you can annotate or share results without leaving Jupyter.
+
+Use these assets for smoke tests, demos, or as a template when filing reproduction issues (attach the JSON + metrics emitted to `output/benchmark_runs/news_demo/`).
+
+---
+
 ## 3. Repository Layout
 
 ```
@@ -245,7 +276,23 @@ The PDF includes methodology, metric definitions, full benchmark tables, DeepSee
 
 ---
 
-## 8. Citation
+## Release Channels & Hugging Face Space
+
+- **GitHub (this repo)** – canonical scripts, docs, and benchmarks. Open issues with the JSON/CSV outputs from `benchmark_eval.py` so we can reproduce quickly.
+- **Hugging Face Model** – [`scrallex/structural-manifold-compression`](https://huggingface.co/scrallex/structural-manifold-compression) hosts the 8 h manifold LM checkpoint plus the latest benchmark JSON (Wikitext slice, perplexity comparison, etc.). The model card mirrors the Quick Start commands and tables above.
+- **Upcoming HF Space** – a Gradio app that:
+  1. Lets you upload JSONL/txt exports (e.g., PDF OCR, news briefs) and runs `benchmark_eval.py` with adjustable window/stride/precision.
+  2. Displays byte/token compression, token accuracy, verification precision/FPR, and reconstructed snippets.
+  3. Provides a verification tab to compare two documents/hazard profiles.
+  4. Optionally compares manifold LM perplexity vs. GPT‑2 on the uploaded text.
+
+Once the Space is live it will be embedded in both this README and the HF model card so newcomers can test the workflow without a local GPU.
+
+---
+
+## 8. License & Citation
+
+This project is released under the [MIT License](LICENSE). If you build on these scripts, please cite the 2025 structural manifold release:
 
 ```bibtex
 @misc{nagy2025manifold,
