@@ -93,6 +93,12 @@ python scripts/experiments/benchmark_eval.py \
   --window-bytes 512 --stride-bytes 384 --precision 3 \
   --output-dir output/benchmark_runs/wikitext_custom
 
+# Run the same benchmark inside a CUDA-ready Docker image (works even when local nvcc breaks):
+CUDA_IMAGE=nvcr.io/nvidia/cuda:12.4.0-devel-ubuntu22.04 \
+DATASET=wikitext=data/raw_text/wikitext_train.jsonl \
+OUTDIR=output/benchmark_runs/wikitext_custom_gpu \
+scripts/experiments/run_benchmark_docker.sh
+
 # 2) Build (and resume) the HF dataset used for causal training
 python scripts/data/prepare_causal_dataset.py \
   --text-root data/raw_text/wikitext_train.jsonl \

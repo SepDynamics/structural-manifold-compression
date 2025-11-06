@@ -14,7 +14,7 @@ native:
 	@echo "[native] building optional CUDA kernel"
 	@mkdir -p build
 	@if command -v nvcc >/dev/null 2>&1; then \
-		nvcc -shared -Xcompiler -fPIC -arch=sm_80 scripts/utils/native_kernel.cu -o build/native_kernel.so; \
+		nvcc -allow-unsupported-compiler -ccbin g++-14 -shared -Xcompiler -fPIC -arch=sm_80 scripts/utils/native_kernel.cu -o build/native_kernel.so; \
 	else \
 		echo "nvcc not found; skipping native build"; \
 	fi
