@@ -6,6 +6,7 @@ FOX_CN_TEXT ?= data/benchmark_corpus/fox/text/cn_page_ocr
 OMNIDOC_TEXT ?= data/benchmark_corpus/omnidocbench/text
 OUTPUT_DIR ?= output/benchmark_runs/full_benchmark
 TOKENIZER ?= external/DeepSeek-OCR/weights
+CCBIN ?= g++-14
 
 install:
 	pip install --no-cache-dir -r requirements.txt
@@ -14,7 +15,7 @@ native:
 	@echo "[native] building optional CUDA kernel"
 	@mkdir -p build
 	@if command -v nvcc >/dev/null 2>&1; then \
-		nvcc -allow-unsupported-compiler -ccbin g++-14 -shared -Xcompiler -fPIC -arch=sm_80 scripts/utils/native_kernel.cu -o build/native_kernel.so; \
+		nvcc -allow-unsupported-compiler -ccbin $(CCBIN) -shared -Xcompiler -fPIC -arch=sm_80 scripts/utils/native_kernel.cu -o build/native_kernel.so; \
 	else \
 		echo "nvcc not found; skipping native build"; \
 	fi
