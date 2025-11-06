@@ -133,6 +133,7 @@ def build_compressed_representation(
     precision: int,
     max_documents: Optional[int] = None,
     json_text_key: str = "text",
+    document_offset: int = 0,
 ) -> Tuple[
     Dict[str, Dict[str, Dict[str, float]]],
     Dict[str, List[WindowRecord]],
@@ -147,7 +148,10 @@ def build_compressed_representation(
     prototypes: Dict[str, Dict[str, bytes]] = defaultdict(dict)
 
     processed_docs = 0
-    for doc_id, text in iter_text_documents(text_root, json_text_key=json_text_key):
+    start_index = max(document_offset, 0)
+    for doc_index, (doc_id, text) in enumerate(iter_text_documents(text_root, json_text_key=json_text_key)):
+        if doc_index < start_index:
+            continue
         if max_documents is not None and processed_docs >= max_documents:
             break
         processed_docs += 1
@@ -377,6 +381,7 @@ def evaluate_manifold(
     max_documents: Optional[int] = None,
     use_native: bool = False,
     json_text_key: str = "text",
+    document_offset: int = 0,
 ) -> Dict[str, object]:
     if use_native:
         native.set_use_native(True)
@@ -394,6 +399,7 @@ def evaluate_manifold(
         precision,
         max_documents=max_documents,
         json_text_key=json_text_key,
+        document_offset=document_offset,
     )
     compressed = normalise_compressed(compressed_raw)
     doc_signatures = {doc_id: set(bucket.keys()) for doc_id, bucket in compressed.items()}
@@ -561,6 +567,7 @@ def main() -> None:
         help="Field name to read when ingesting JSON/JSONL corpora",
     )
     parser.add_argument("--max-documents", type=int, help="Optional cap on number of documents to process")
+    parser.add_argument("--document-offset", type=int, default=0, help="Skip the first N documents before processing")
     parser.add_argument("--use-native", action="store_true", help="Prefer the native manifold kernel if available")
     args = parser.parse_args()
 
@@ -578,6 +585,7 @@ def main() -> None:
         max_documents=args.max_documents,
         use_native=args.use_native,
         json_text_key=args.json_text_key,
+        document_offset=args.document_offset,
     )
 
     output_path = args.output.resolve()

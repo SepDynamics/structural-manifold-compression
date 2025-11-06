@@ -101,6 +101,12 @@ def main() -> None:
     )
     parser.add_argument("--use-native", action="store_true", help="Use the native manifold kernel if available.")
     parser.add_argument("--max-documents", type=int, help="Optional cap on number of documents per dataset.")
+    parser.add_argument(
+        "--document-offset",
+        type=int,
+        default=0,
+        help="Skip the first N documents for each dataset before processing.",
+    )
     args = parser.parse_args()
 
     configs = parse_dataset_args(args.dataset or [])
@@ -121,6 +127,7 @@ def main() -> None:
             max_documents=args.max_documents,
             use_native=args.use_native,
             json_text_key=args.json_text_key,
+            document_offset=args.document_offset,
         )
         json_path = args.output_dir / f"{config.label}.json"
         json_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
