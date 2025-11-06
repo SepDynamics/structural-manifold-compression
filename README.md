@@ -121,6 +121,10 @@ Interrupt the builder at any time—rerunning the command continues where it lef
 Once the dataset exists, launch the scratch GPT-style run (≈250 M params, tuned for a single 12 GB card):
 
 ```bash
+# one-liner (honours MANIFOLD_PY / CUDA overrides)
+make train-manifold-gpt
+
+# or manual invocation
 RUN_DIR=output/training_runs/wikitext_manifold_gpt
 python scripts/training/manifold_lm_trainer.py \
   --dataset-path output/wikitext_manifold/hf_dataset \
@@ -149,6 +153,36 @@ Monitoring & verification:
 - `tensorboard --logdir ${RUN_DIR}` to follow loss curves mid-run.
 - Each checkpoint stores HF-compatible weights under `${RUN_DIR}/checkpoint-XXXX`.
 - After training, the script prints `eval_loss` + `perplexity` on the held-out split (already reconstructed for manifold tokens).
+
+### Benchmark vs. GPT-2 (Perplexity & Reconstruction)
+
+1. **Long-context fidelity / compression** (structural reconstruction metrics):
+   ```bash
+   python scripts/experiments/benchmark_eval.py \
+     --dataset wikitext=data/raw_text/wikitext_train.jsonl \
+     --json-text-key text \
+     --window-bytes 512 --stride-bytes 384 --precision 3 \
+     --output-dir output/benchmark_runs/wikitext_custom \
+     --use-native
+   ```
+   Inspect `output/benchmark_runs/wikitext_custom/wikitext.json` for token accuracy, compression ratio, and verification stats—the numbers quantify how 512-signature contexts preserve 20k+ raw tokens.
+
+2. **A/B perplexity (manifold LM vs. GPT-2 on raw text)**:
+   ```bash
+   CUDA_VISIBLE_DEVICES=0 python scripts/experiments/perplexity_compare.py \
+     --manifold-model output/training_runs/wikitext_manifold_gpt \
+     --manifold-dataset output/wikitext_manifold/hf_dataset \
+     --manifold-vocab output/wikitext_manifold/vocab.json \
+     --manifold-eval-fraction 0.25 \
+     --manifold-batch-size 8 \
+     --gpt2-model gpt2-medium \
+     --raw-text data/raw_text/wikitext_train.jsonl \
+     --json-text-key text \
+     --gpt2-block-size 1024 \
+     --gpt2-max-documents 500 \
+     --output output/benchmark_runs/wikitext_perplexity.json
+   ```
+   The script reports both perplexities plus a compression proxy (`raw_tokens / manifold_tokens`) so you can cite the effective gain in sequence length. Adjust `--gpt2-max-documents` or switch to another baseline (e.g. `gpt2-large`) as needed.
 
 ---
 

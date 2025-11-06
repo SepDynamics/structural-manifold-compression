@@ -46,3 +46,28 @@ docker:
 
 test:
 	pytest -v
+
+MANIFOLD_RUN_DIR ?= output/training_runs/wikitext_manifold_gpt
+MANIFOLD_DATASET ?= output/wikitext_manifold/hf_dataset
+MANIFOLD_VOCAB ?= output/wikitext_manifold/vocab.json
+MANIFOLD_PY ?= .venv/bin/python
+CUDA ?= 0
+
+train-manifold-gpt:
+	@echo "[train] launching manifold LM on GPU $(CUDA)"
+	CUDA_VISIBLE_DEVICES=$(CUDA) $(MANIFOLD_PY) scripts/training/manifold_lm_trainer.py \
+		--dataset-path $(MANIFOLD_DATASET) \
+		--vocab-path $(MANIFOLD_VOCAB) \
+		--output-dir $(MANIFOLD_RUN_DIR) \
+		--n-layer 16 --n-head 16 --n-embd 1024 \
+		--context-length 512 \
+		--per-device-train-batch-size 2 \
+		--per-device-eval-batch-size 2 \
+		--gradient-accumulation-steps 16 \
+		--learning-rate 2e-4 \
+		--num-train-epochs 3 \
+		--warmup-steps 500 \
+		--eval-holdout 0.02 \
+		--gradient-checkpointing \
+		--fp16 \
+		--resume
