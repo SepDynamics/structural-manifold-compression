@@ -59,9 +59,10 @@ def evaluate_manifold(
     total_tokens = 0
     with torch.no_grad():
         for batch in loader:
+            attention = batch["attention_mask"]
+            lengths = attention.sum(dim=1)
             batch = {k: v.to(device) for k, v in batch.items()}
             outputs = model(**batch)
-            lengths = batch["length"]
             token_count = int(lengths.sum().item())
             total_tokens += token_count
             total_loss += outputs.loss.item() * token_count

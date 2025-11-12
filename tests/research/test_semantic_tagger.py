@@ -12,7 +12,7 @@ def test_high_stability_and_low_hazard_tags():
     payload = {
         "components": {"coherence": 0.85, "stability": 0.82, "entropy": 0.3},
         "hazard": 0.05,
-        "coherence_delta": 0.02,
+        "coherence_delta": 0.03,
         "lambda_slope": -0.1,
     }
     tags = set(generate_semantic_tags(payload))
@@ -39,3 +39,36 @@ def test_entropy_fallback_from_coherence_distance():
     tags = set(generate_semantic_tags(payload, thresholds=thresholds))
     assert "chaotic_price_action" in tags
     assert "high_rupture_event" in tags
+
+
+def test_volatility_crush_detection():
+    payload = {
+        "components": {"coherence": 0.8, "stability": 0.82},
+        "metrics": {"volatility_ratio": 0.4, "price_zscore": 0.5},
+    }
+    tags = set(generate_semantic_tags(payload))
+    assert "volatility_crush" in tags
+
+
+def test_structural_regime_shift_detection():
+    payload = {
+        "components": {"coherence": 0.85, "stability": 0.8},
+        "lambda_slope": 0.08,
+        "coherence_delta": 0.09,
+    }
+    tags = set(generate_semantic_tags(payload))
+    assert "structural_regime_shift" in tags
+
+
+def test_momentum_breakout_tag():
+    payload = {"metrics": {"momentum_short": 0.001}}
+    thresholds = SemanticThresholds(momentum_breakout=0.0005)
+    tags = set(generate_semantic_tags(payload, thresholds=thresholds))
+    assert "momentum_breakout" in tags
+
+
+def test_price_breakout_tag():
+    payload = {"metrics": {"price_change_short": 0.001}}
+    thresholds = SemanticThresholds(price_breakout=0.0004)
+    tags = set(generate_semantic_tags(payload, thresholds=thresholds))
+    assert "price_breakout" in tags

@@ -53,18 +53,25 @@ def _extract_text(record: object, text_key: str) -> str:
     return value
 
 
-def _iter_text_directory(root: Path) -> Iterable[Tuple[str, str]]:
-    for path in sorted(root.rglob("*.txt")):
-        relative = path.relative_to(root)
-        relative_str = relative.as_posix()
-        suffix = path.suffix
-        if suffix:
-            relative_str = relative_str[: -len(suffix)]
-        doc_id = relative_str.replace("/", "__")
-        yield doc_id, path.read_text(encoding="utf-8")
+def _iter_text_directory(root: Path, text_key: str) -> Iterable[Tuple[str, str]]:
+    for path in sorted(root.rglob("*")):
+        if not path.is_file():
+            continue
+        suffix = path.suffix.lower()
+        if suffix not in {".txt", ".jsonl", ".ndjson", ".json"}:
+            continue
+        relative = path.relative_to(root).as_posix()
+        base = relative[:-len(path.suffix)] if path.suffix else relative
+        base_id = base.replace("/", "__")
+        if suffix == ".txt":
+            yield base_id, path.read_text(encoding="utf-8")
+        elif suffix in {".jsonl", ".ndjson"}:
+            yield from _iter_jsonl_file(path, text_key, doc_prefix=base_id)
+        elif suffix == ".json":
+            yield from _iter_json_file(path, text_key, doc_prefix=base_id)
 
 
-def _iter_jsonl_file(path: Path, text_key: str) -> Iterable[Tuple[str, str]]:
+def _iter_jsonl_file(path: Path, text_key: str, doc_prefix: str | None = None) -> Iterable[Tuple[str, str]]:
     with path.open("r", encoding="utf-8") as handle:
         for idx, line in enumerate(handle):
             line = line.strip()
@@ -72,30 +79,37 @@ def _iter_jsonl_file(path: Path, text_key: str) -> Iterable[Tuple[str, str]]:
                 continue
             record = json.loads(line)
             text = _extract_text(record, text_key)
-            doc_id = f"{path.stem}__{idx:07d}"
+            prefix = doc_prefix or path.stem
+            doc_id = f"{prefix}__{idx:07d}"
             yield doc_id, text
+
+
+def _iter_json_file(path: Path, text_key: str, doc_prefix: str | None = None) -> Iterable[Tuple[str, str]]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    prefix = doc_prefix or path.stem
+    if isinstance(data, list):
+        for idx, record in enumerate(data):
+            text = _extract_text(record, text_key)
+            yield f"{prefix}__{idx:07d}", text
+        return
+    if isinstance(data, dict):
+        text = _extract_text(data, text_key)
+        yield prefix, text
+        return
+    raise TypeError(f"Unsupported JSON structure in {path}")
 
 
 def iter_text_documents(root: Path, json_text_key: str = "text") -> Iterable[Tuple[str, str]]:
     if root.is_dir():
-        yield from _iter_text_directory(root)
+        yield from _iter_text_directory(root, json_text_key)
         return
     suffix = root.suffix.lower()
     if suffix in {".jsonl", ".ndjson"}:
         yield from _iter_jsonl_file(root, json_text_key)
         return
     if suffix == ".json":
-        data = json.loads(root.read_text(encoding="utf-8"))
-        if isinstance(data, list):
-            for idx, record in enumerate(data):
-                text = _extract_text(record, json_text_key)
-                yield f"{root.stem}__{idx:07d}", text
-            return
-        if isinstance(data, dict):
-            text = _extract_text(data, json_text_key)
-            yield root.stem, text
-            return
-        raise TypeError(f"Unsupported JSON structure in {root}")
+        yield from _iter_json_file(root, json_text_key)
+        return
     # Fallback: treat as plain text file
     yield root.stem, root.read_text(encoding="utf-8")
 
@@ -265,15 +279,18 @@ def reconstruct_document(
         return b""
     sorted_windows = sorted(windows, key=lambda rec: rec.offset)
     result = bytearray()
-    for idx, record in enumerate(sorted_windows):
+    for record in sorted_windows:
         chunk = prototypes.get(record.signature, record.chunk)
-        if idx == 0:
-            result.extend(chunk)
+        start = max(record.offset, 0)
+        if len(result) < start:
+            gap = start - len(result)
+            result.extend(chunk[:gap])
+        overlap = len(result) - start
+        if overlap < 0:
+            overlap = 0
+        if overlap >= len(chunk):
             continue
-        append_len = stride_bytes
-        if stride_bytes <= 0 or stride_bytes > len(chunk):
-            append_len = len(chunk)
-        result.extend(chunk[-append_len:])
+        result.extend(chunk[overlap:])
     return bytes(result)
 
 

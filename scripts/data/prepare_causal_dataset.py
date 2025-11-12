@@ -28,6 +28,11 @@ for candidate in SCORE_CANDIDATES:
 from datasets import Dataset, Features, Sequence as HFSequence, Value  # type: ignore  # noqa: E402
 
 from sep_text_manifold import encode, native  # type: ignore  # noqa: E402
+try:  # type: ignore  # noqa: E402
+    from sep_text_manifold.gpu_windows import HAVE_CUDA as HAVE_CUDA_WINDOWS, gpu_window_metrics
+except ImportError:  # pragma: no cover - optional dependency
+    HAVE_CUDA_WINDOWS = False
+    gpu_window_metrics = None
 
 from scripts.experiments.manifold_compression_eval import (  # noqa: E402
     iter_text_documents,
@@ -179,10 +184,25 @@ def main() -> None:
         action="store_true",
         help="Delete existing samples/progress and rebuild from scratch before processing.",
     )
+    parser.add_argument(
+        "--use-cuda-windows",
+        action="store_true",
+        help="Use the CUDA histogram path (requires cupy) to accelerate per-window metrics.",
+    )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=512,
+        help="Number of byte windows to accumulate before invoking the encoder.",
+    )
     args = parser.parse_args()
 
     if args.min_sequence_length < 2:
         parser.error("--min-sequence-length must be at least 2 to form input/label pairs.")
+    if args.batch_size <= 0:
+        parser.error("--batch-size must be a positive integer.")
+    if args.use_cuda_windows and not HAVE_CUDA_WINDOWS:
+        parser.error("--use-cuda-windows requested but CUDA runtime is unavailable.")
 
     text_root = args.text_root.expanduser().resolve()
     if not text_root.exists():
@@ -204,6 +224,10 @@ def main() -> None:
 
     if args.reset_output:
         reset_output(paths)
+
+    native_batch_fn = getattr(native, "analyze_window_batch", None)
+    can_use_native_batch = bool(args.use_native and native_batch_fn and native.HAVE_NATIVE)
+    use_cuda_windows = bool(args.use_cuda_windows and gpu_window_metrics and HAVE_CUDA_WINDOWS)
 
     if args.use_native:
         native.set_use_native(True)
@@ -295,6 +319,28 @@ def main() -> None:
                 records.append(record)
         return records
 
+    def encode_windows_batch(windows: Sequence[bytes]) -> List[str]:
+        if not windows:
+            return []
+        metrics_batch: Iterable[Dict[str, float]]
+        if use_cuda_windows and gpu_window_metrics is not None:
+            metrics_batch = gpu_window_metrics(list(windows), window_bytes=args.window_bytes)
+        elif can_use_native_batch and native_batch_fn is not None:
+            metrics_batch = native_batch_fn(list(windows))
+        else:
+            metrics_batch = (encode.encode_window(window) for window in windows)
+        signatures: List[str] = []
+        for metrics in metrics_batch:
+            signatures.append(
+                encode.signature_from_metrics(
+                    metrics["coherence"],
+                    metrics["stability"],
+                    metrics["entropy"],
+                    precision=args.precision,
+                )
+            )
+        return signatures
+
     for doc_id, text in iter_text_documents(text_root, json_text_key=args.json_text_key):
         if doc_id in processed_docs:
             continue
@@ -309,15 +355,20 @@ def main() -> None:
             continue
 
         doc_signatures: List[str] = []
+        pending_windows: List[bytes] = []
+
+        def flush_window_batch() -> None:
+            if not pending_windows:
+                return
+            doc_signatures.extend(encode_windows_batch(pending_windows))
+            pending_windows.clear()
+
         for _, chunk in sliding_windows(text_bytes, args.window_bytes, args.stride_bytes):
-            metrics = encode.encode_window(bytes(chunk))
-            signature = encode.signature_from_metrics(
-                metrics["coherence"],
-                metrics["stability"],
-                metrics["entropy"],
-                precision=args.precision,
-            )
-            doc_signatures.append(signature)
+            pending_windows.append(bytes(chunk))
+            if len(pending_windows) >= args.batch_size:
+                flush_window_batch()
+
+        flush_window_batch()
 
         if args.export_signatures:
             sig_path = paths.signatures_dir / f"{doc_id}.json"

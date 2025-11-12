@@ -36,7 +36,6 @@ class ManifoldDataCollator:
         batch_input_ids: List[List[int]] = []
         batch_labels: List[List[int]] = []
         batch_attention: List[List[int]] = []
-        batch_lengths: List[int] = []
         for feature in features:
             ids = list(feature["input_ids"])
             labels = list(feature["labels"])
@@ -49,16 +48,13 @@ class ManifoldDataCollator:
             batch_input_ids.append(ids)
             batch_labels.append(labels)
             batch_attention.append(attention)
-            batch_lengths.append(length)
         input_tensor = torch.tensor(batch_input_ids, dtype=torch.long)
         label_tensor = torch.tensor(batch_labels, dtype=torch.long)
         attention_tensor = torch.tensor(batch_attention, dtype=torch.long)
-        length_tensor = torch.tensor(batch_lengths, dtype=torch.long)
         return {
             "input_ids": input_tensor,
             "labels": label_tensor,
             "attention_mask": attention_tensor,
-            "length": length_tensor,
         }
 
 
