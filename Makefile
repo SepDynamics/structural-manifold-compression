@@ -1,4 +1,4 @@
-.PHONY: install native full-run report docker test
+.PHONY: install native full-run report docker test demo-corpus
 
 PYTHON ?= python
 FOX_TEXT ?= data/benchmark_corpus/fox/text/en_page_ocr
@@ -47,6 +47,11 @@ docker:
 
 test:
 	pytest -v
+
+demo-corpus:
+	python scripts/rag/prepare_corpus.py --input-dir data/sample_docs --output-jsonl data/sample_corpus.jsonl
+	python scripts/rag/build_manifold_index.py --dataset data/sample_corpus.jsonl --output output/manifold_index/sample_corpus.json
+	python scripts/rag/demo_rag.py --index output/manifold_index/sample_corpus.json --dataset data/sample_corpus.jsonl --question "What does the corpus say about liquidity?"
 
 MANIFOLD_RUN_DIR ?= output/training_runs/wikitext_manifold_gpt
 MANIFOLD_DATASET ?= output/wikitext_manifold/hf_dataset

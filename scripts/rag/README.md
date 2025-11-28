@@ -59,3 +59,13 @@ python scripts/rag/demo_rag.py \
 ```
 
 - Builds embeddings over chunked passages, prints naive top-k retrieval, then filters with `verify_snippet` to show only hazard-gated matches.
+
+## One-step demo corpus
+
+```bash
+make demo-corpus
+```
+
+- Prepares `data/sample_docs` → `data/sample_corpus.jsonl`
+- Builds `output/manifold_index/sample_corpus.json`
+- Runs the CLI RAG demo with a sample liquidity question

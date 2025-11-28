@@ -11,6 +11,13 @@ from typing import Dict, Optional, Tuple
 import gradio as gr
 import matplotlib.pyplot as plt
 
+import sys
+
+REPO_ROOT = Path(__file__).resolve().parent
+SRC_PATH = REPO_ROOT / "src"
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
+
 from manifold.sidecar import (
     EncodeResult,
     ManifoldIndex,
@@ -64,16 +71,16 @@ def _make_hazard_plot(hazards):
     if hazards:
         ax.hist(hazards, bins=20, color="#2f6fff", alpha=0.8)
     ax.set_title("Window hazards")
-    ax.set_xlabel("hazard λ")
-    ax.set_ylabel("count")
+    ax.set_xlabel("Hazard λ")
+    ax.set_ylabel("Window count")
     fig.tight_layout()
     return fig
 
 
-def _preview(text: str, limit: int = 1000) -> str:
+def _preview(text: str, limit: int = 2000) -> str:
     if len(text) <= limit:
         return text
-    return text[:limit] + f"\n\n...[truncated {len(text) - limit} chars]"
+    return text[:limit] + f"\n\n… [truncated {len(text) - limit} chars]"
 
 
 def handle_compress(file, raw_text):
@@ -111,14 +118,18 @@ def handle_compress(file, raw_text):
             - windows: {len(encoded.windows)}
             - unique signatures: {unique_sigs}
             - hazard gate: ≤ {encoded.hazard_threshold:.4f}
-            - bytes before: {bytes_before}
-            - bytes after (~signatures): {bytes_after}
+            - original bytes: {bytes_before}
+            - manifold payload bytes (~signatures): {bytes_after}
             - compression ratio (approx): {compression_ratio:.2f}×
             """
         ).strip()
 
         hazards = encoded.hazards
         fig = _make_hazard_plot(hazards)
+        if encoded.hazard_threshold and hazards:
+            ax = fig.axes[0]
+            ax.axvline(encoded.hazard_threshold, color="red", linestyle="--", label="hazard gate")
+            ax.legend()
 
         dropdown_update = gr.update(choices=list(docs_store.keys()), value=doc_id)
         return (
@@ -151,15 +162,17 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
         return "No documents ingested yet.", ""
 
     result = verify_snippet(snippet, index, coverage_threshold=coverage_threshold, include_reconstruction=False)
+    coverage_pct = result.coverage * 100.0
     status = "✅ Verified" if result.verified else "❌ Not verified"
-    status_line = f"{status} (coverage={result.coverage:.2f}, hazard≤{result.hazard_threshold:.4f})"
+    status_line = f"{status} (coverage = {coverage_pct:.2f}%)"
 
     lines = []
     for match in result.matches[:20]:
         sig = str(match.get("signature", ""))[:12]
         hz = float(match.get("hazard", 0.0))
         occ = match.get("occurrences", []) or []
-        lines.append(f"- `{sig}` hazard={hz:.4f} occurrences={len(occ)}")
+        first_doc = occ[0].get("doc_id") if occ else ""
+        lines.append(f"- `{sig}` hazard={hz:.3f} occurrences={len(occ)} doc={first_doc}")
     matches_md = "\n".join(lines) if lines else "_No matches_"
     return status_line, matches_md
 
@@ -167,7 +180,11 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
 with gr.Blocks(title="Structural Manifold Sidecar") as demo:
     gr.Markdown("# Structural Manifold Sidecar\nCompression + verification for RAG provenance.")
 
-    with gr.Tab("Compress & Reconstruct"):
+    with gr.Tab("Compress & Reconstruct (Structural Manifolds)"):
+        gr.Markdown(
+            "Upload a document or paste text. We encode it into structural manifolds, reconstruct an approximate "
+            "version, and show compression + hazard stats."
+        )
         file_input = gr.File(label="Upload (.pdf, .txt, .md)", file_types=[".pdf", ".txt", ".md"])
         text_input = gr.Textbox(label="Or paste text", lines=6)
         run_btn = gr.Button("Run structural manifold")
@@ -178,6 +195,10 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         hazard_plot = gr.Plot(label="Hazard histogram")
 
     with gr.Tab("Verify snippet"):
+        gr.Markdown(
+            "Paste any snippet. We re-encode it, look for matching manifold signatures in your ingested docs, "
+            "and compute hazard-gated coverage."
+        )
         doc_dropdown = gr.Dropdown(
             label="Docs ingested this session",
             choices=list(docs_store.keys()),

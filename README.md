@@ -59,6 +59,21 @@ Use these assets for smoke tests, demos, or as a template when filing reproducti
 
 ---
 
+## Gradio app + CLI demo
+
+- Launch the UI:  
+  ```bash
+  pip install -r requirements.txt
+  python app.py
+  ```
+  Compress/reconstruct docs and hazard-verify snippets in the browser.
+
+- Run the CLI demo end-to-end:  
+  ```bash
+  make demo-corpus
+  ```
+  Prepares a sample corpus, builds a manifold index, and runs the naive vs hazard-gated RAG demo.
+
 ## 3. Repository Layout
 
 ```
