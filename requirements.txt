@@ -21,3 +21,4 @@ huggingface-hub>=0.24.0
 datasets>=2.20.0
 pdfplumber>=0.11.0
 sentence-transformers>=3.0.0
+gradio>=4.44.0

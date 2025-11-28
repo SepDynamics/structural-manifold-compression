@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
-"""Build a structural manifold index for downstream RAG verification."""
+"""Build a structural manifold index for downstream RAG verification.
+
+Schema (JSON):
+- format_version: str (currently "1")
+- hazard_threshold: float (80th percentile by default)
+- meta: run configuration + aggregate stats
+- signatures: signature -> {prototype, occurrences, hazard stats}
+- documents: doc_id -> {bytes, characters, window_count, windows?}
+"""
 
 from __future__ import annotations
 

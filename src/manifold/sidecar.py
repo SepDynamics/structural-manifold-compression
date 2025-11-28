@@ -1,4 +1,4 @@
-"""Sidecar helpers to build and query structural manifold indexes for RAG verification."""
+"""Structural manifold sidecar for compression + verification (RAG provenance, audit, hazard gating)."""
 
 from __future__ import annotations
 
@@ -12,6 +12,8 @@ import numpy as np
 
 from scripts.experiments.manifold_compression_eval import iter_text_documents, sliding_windows
 from sep_text_manifold import encode, native
+
+FORMAT_VERSION = "1"
 
 
 @dataclass
@@ -91,7 +93,16 @@ class ManifoldIndex:
     documents: Dict[str, Dict[str, object]]
 
     def to_dict(self) -> Dict[str, object]:
-        return {"meta": self.meta, "signatures": self.signatures, "documents": self.documents}
+        """Serialise index with stable format version and hazard gate."""
+
+        hazard_threshold = self.meta.get("hazard_threshold", 0.0)
+        return {
+            "format_version": FORMAT_VERSION,
+            "hazard_threshold": hazard_threshold,
+            "meta": self.meta,
+            "signatures": self.signatures,
+            "documents": self.documents,
+        }
 
 
 @dataclass
@@ -145,7 +156,10 @@ def encode_text(
     use_native: bool = False,
     hazard_percentile: float = 0.8,
 ) -> EncodeResult:
-    """Encode text into manifold signatures with hazard stats."""
+    """Encode text into manifold signatures with hazard stats.
+
+    Slides byte windows, computes signatures + hazards, and returns windows, prototypes, and hazard gates.
+    """
 
     if use_native:
         native.set_use_native(True)
@@ -444,7 +458,10 @@ def verify_snippet(
     use_native: bool = False,
     include_reconstruction: bool = False,
 ) -> VerificationResult:
-    """Verify a snippet by matching signatures and gating by hazard."""
+    """Verify a snippet by matching signatures and gating by hazard.
+
+    Coverage = low-hazard matched windows / total windows. Uses hazard gate from index unless overridden.
+    """
 
     meta = index.meta if isinstance(index, ManifoldIndex) else (index.get("meta", {}) if isinstance(index, Mapping) else {})
     signatures = index.signatures if isinstance(index, ManifoldIndex) else index.get("signatures", {})  # type: ignore[arg-type]
@@ -516,12 +533,18 @@ def verify_snippet(
 
 
 def load_index(path: Path) -> ManifoldIndex:
-    """Load an index from JSON on disk."""
+    """Load an index from JSON on disk and validate format version."""
 
     data = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError(f"Invalid index payload in {path}")
+    version = str(data.get("format_version", "") or "")
+    if version and version != FORMAT_VERSION:
+        raise ValueError(f"Unsupported index version {version}, expected {FORMAT_VERSION}")
+    hazard_threshold = data.get("hazard_threshold")
     meta = data.get("meta", {})
+    if hazard_threshold is not None:
+        meta.setdefault("hazard_threshold", hazard_threshold)
     signatures = data.get("signatures", {})
     documents = data.get("documents", {})
     return ManifoldIndex(meta=meta, signatures=signatures, documents=documents)

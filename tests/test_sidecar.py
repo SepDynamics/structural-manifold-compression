@@ -63,3 +63,18 @@ def test_build_index_and_verify(tmp_path: Path) -> None:
     assert result.match_ratio > 0
     assert result.reconstruction
     assert result.matched_documents
+
+
+def test_index_serialization_includes_version(tmp_path: Path) -> None:
+    corpus_path = _write_corpus(tmp_path)
+    docs = _load_docs(corpus_path)
+    index = build_index(
+        docs,
+        window_bytes=32,
+        stride_bytes=16,
+        precision=2,
+        hazard_percentile=0.8,
+    )
+    payload = index.to_dict()
+    assert payload.get("format_version") == "1"
+    assert "hazard_threshold" in payload
