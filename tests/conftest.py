@@ -9,6 +9,10 @@ PROJECT_ROOT = ROOT
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+SRC_PATH = PROJECT_ROOT / "src"
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
+
 SCRIPTS_PATH = PROJECT_ROOT / "scripts"
 INIT_FILE = SCRIPTS_PATH / "__init__.py"
 if INIT_FILE.exists():
