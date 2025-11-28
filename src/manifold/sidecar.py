@@ -6,7 +6,7 @@ import json
 from bisect import bisect_right
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Mapping, MutableMapping, Sequence, Tuple
+from typing import Dict, Iterable, List, Mapping, MutableMapping, Sequence, Tuple
 
 import numpy as np
 
@@ -16,6 +16,8 @@ from sep_text_manifold import encode, native
 
 @dataclass
 class EncodedWindow:
+    """Single encoded window with offsets and hazard."""
+
     signature: str
     hazard: float
     byte_start: int
@@ -35,6 +37,94 @@ class EncodedWindow:
             "window_index": self.window_index,
         }
 
+    @classmethod
+    def from_dict(cls, data: Mapping[str, object]) -> "EncodedWindow":
+        return cls(
+            signature=str(data.get("signature", "")),
+            hazard=float(data.get("hazard", 0.0)),
+            byte_start=int(data.get("byte_start", 0)),
+            byte_end=int(data.get("byte_end", 0)),
+            char_start=int(data.get("char_start", 0)),
+            char_end=int(data.get("char_end", 0)),
+            window_index=int(data.get("window_index", 0)),
+        )
+
+
+@dataclass
+class EncodeResult:
+    """Encoding result for a single text span."""
+
+    windows: List[EncodedWindow]
+    prototypes: Dict[str, str]
+    hazards: List[float]
+    window_bytes: int
+    stride_bytes: int
+    precision: int
+    hazard_percentile: float
+    hazard_threshold: float
+    original_bytes: int
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "meta": {
+                "window_bytes": self.window_bytes,
+                "stride_bytes": self.stride_bytes,
+                "precision": self.precision,
+                "hazard_percentile": self.hazard_percentile,
+                "hazard_threshold": self.hazard_threshold,
+                "original_bytes": self.original_bytes,
+                "windows": len(self.windows),
+                "unique_signatures": len(self.prototypes),
+            },
+            "windows": [w.to_dict() for w in self.windows],
+            "prototypes": self.prototypes,
+            "hazards": self.hazards,
+        }
+
+
+@dataclass
+class ManifoldIndex:
+    """Hazard-gated manifold index."""
+
+    meta: Dict[str, object]
+    signatures: Dict[str, Dict[str, object]]
+    documents: Dict[str, Dict[str, object]]
+
+    def to_dict(self) -> Dict[str, object]:
+        return {"meta": self.meta, "signatures": self.signatures, "documents": self.documents}
+
+
+@dataclass
+class VerificationResult:
+    """Verification response for a snippet."""
+
+    verified: bool
+    coverage: float
+    match_ratio: float
+    coverage_threshold: float
+    hazard_threshold: float
+    total_windows: int
+    gated_hits: int
+    matches: List[Dict[str, object]]
+    matched_documents: List[str]
+    reconstruction: str | None = None
+
+    def to_dict(self) -> Dict[str, object]:
+        payload = {
+            "verified": self.verified,
+            "coverage": self.coverage,
+            "match_ratio": self.match_ratio,
+            "coverage_threshold": self.coverage_threshold,
+            "hazard_threshold": self.hazard_threshold,
+            "total_windows": self.total_windows,
+            "gated_hits": self.gated_hits,
+            "matches": self.matches,
+            "matched_documents": self.matched_documents,
+        }
+        if self.reconstruction is not None:
+            payload["reconstruction"] = self.reconstruction
+        return payload
+
 
 def _build_byte_index(text: str) -> List[int]:
     offsets = [0]
@@ -47,13 +137,16 @@ def _byte_to_char(byte_offset: int, byte_index: Sequence[int]) -> int:
     return max(0, bisect_right(byte_index, byte_offset) - 1)
 
 
-def encode_text_to_windows(
+def encode_text(
     text: str,
     window_bytes: int = 512,
     stride_bytes: int = 384,
     precision: int = 3,
     use_native: bool = False,
-) -> Tuple[List[EncodedWindow], Dict[str, str], List[float]]:
+    hazard_percentile: float = 0.8,
+) -> EncodeResult:
+    """Encode text into manifold signatures with hazard stats."""
+
     if use_native:
         native.set_use_native(True)
     text_bytes = text.encode("utf-8")
@@ -93,7 +186,39 @@ def encode_text_to_windows(
             prototypes[signature] = text_bytes[byte_start:byte_end].decode("utf-8", errors="replace")
         hazards.append(hazard)
 
-    return windows, prototypes, hazards
+    hazard_threshold = float(np.quantile(np.array(hazards), hazard_percentile)) if hazards else 0.0
+    return EncodeResult(
+        windows=windows,
+        prototypes=prototypes,
+        hazards=hazards,
+        window_bytes=window_bytes,
+        stride_bytes=stride_bytes,
+        precision=precision,
+        hazard_percentile=hazard_percentile,
+        hazard_threshold=hazard_threshold,
+        original_bytes=len(text_bytes),
+    )
+
+
+def encode_text_to_windows(
+    text: str,
+    window_bytes: int = 512,
+    stride_bytes: int = 384,
+    precision: int = 3,
+    use_native: bool = False,
+    hazard_percentile: float = 0.8,
+) -> Tuple[List[EncodedWindow], Dict[str, str], List[float]]:
+    """Backward-compatible helper returning windows/prototypes/hazards."""
+
+    result = encode_text(
+        text,
+        window_bytes=window_bytes,
+        stride_bytes=stride_bytes,
+        precision=precision,
+        use_native=use_native,
+        hazard_percentile=hazard_percentile,
+    )
+    return result.windows, result.prototypes, result.hazards
 
 
 def _finalise_hazard_stats(raw: MutableMapping[str, float]) -> Dict[str, float]:
@@ -108,59 +233,47 @@ def _finalise_hazard_stats(raw: MutableMapping[str, float]) -> Dict[str, float]:
     }
 
 
-def build_manifold_index(
-    text_root: Path,
-    window_bytes: int = 512,
-    stride_bytes: int = 384,
-    precision: int = 3,
-    hazard_percentile: float = 0.8,
-    json_text_key: str = "text",
-    max_documents: int | None = None,
-    document_offset: int = 0,
-    use_native: bool = False,
-    store_windows: bool = True,
-) -> Dict[str, object]:
-    if use_native:
-        native.set_use_native(True)
-
+def _aggregate_index(
+    docs: Mapping[str, str],
+    window_bytes: int,
+    stride_bytes: int,
+    precision: int,
+    hazard_percentile: float,
+    use_native: bool,
+    store_windows: bool,
+) -> ManifoldIndex:
     signatures: Dict[str, Dict[str, object]] = {}
     documents: Dict[str, Dict[str, object]] = {}
     hazards: List[float] = []
     total_windows = 0
 
-    processed = 0
-    for doc_index, (doc_id, text) in enumerate(iter_text_documents(text_root, json_text_key=json_text_key)):
-        if doc_index < max(document_offset, 0):
-            continue
-        if max_documents is not None and processed >= max_documents:
-            break
-        processed += 1
-
-        windows, prototypes, window_hazards = encode_text_to_windows(
+    for doc_id, text in docs.items():
+        encoded = encode_text(
             text,
             window_bytes=window_bytes,
             stride_bytes=stride_bytes,
             precision=precision,
-            use_native=False,
+            use_native=use_native,
+            hazard_percentile=hazard_percentile,
         )
-        hazards.extend(window_hazards)
-        total_windows += len(windows)
+        hazards.extend(encoded.hazards)
+        total_windows += len(encoded.windows)
 
         doc_entry: Dict[str, object] = {
             "characters": len(text),
             "bytes": len(text.encode("utf-8")),
-            "window_count": len(windows),
+            "window_count": len(encoded.windows),
         }
         if store_windows:
-            doc_entry["windows"] = [window.to_dict() for window in windows]
+            doc_entry["windows"] = [window.to_dict() for window in encoded.windows]
         documents[doc_id] = doc_entry
 
-        for window in windows:
+        for window in encoded.windows:
             entry = signatures.get(window.signature)
             if entry is None:
                 entry = {
                     "prototype": {
-                        "text": prototypes[window.signature],
+                        "text": encoded.prototypes[window.signature],
                         "doc_id": doc_id,
                         "byte_start": window.byte_start,
                         "byte_end": window.byte_end,
@@ -194,10 +307,7 @@ def build_manifold_index(
         entry["hazard"] = _finalise_hazard_stats(entry["hazard"])
 
     hazard_threshold = float(np.quantile(np.array(hazards), hazard_percentile)) if hazards else 0.0
-
     meta = {
-        "text_root": str(text_root),
-        "documents": len(documents),
         "window_bytes": window_bytes,
         "stride_bytes": stride_bytes,
         "precision": precision,
@@ -205,24 +315,86 @@ def build_manifold_index(
         "hazard_threshold": hazard_threshold,
         "total_signatures": len(signatures),
         "total_windows": total_windows,
-        "json_text_key": json_text_key,
-        "max_documents": max_documents,
-        "document_offset": document_offset,
         "use_native": use_native,
         "store_windows": store_windows,
+        "documents": len(documents),
     }
+    return ManifoldIndex(meta=meta, signatures=signatures, documents=documents)
 
-    return {
-        "meta": meta,
-        "signatures": signatures,
-        "documents": documents,
-    }
+
+def build_index(
+    docs: Mapping[str, str],
+    window_bytes: int = 512,
+    stride_bytes: int = 384,
+    precision: int = 3,
+    hazard_percentile: float = 0.8,
+    use_native: bool = False,
+    store_windows: bool = True,
+) -> ManifoldIndex:
+    """Build an in-memory manifold index from a mapping of doc_id -> text."""
+
+    return _aggregate_index(
+        docs=docs,
+        window_bytes=window_bytes,
+        stride_bytes=stride_bytes,
+        precision=precision,
+        hazard_percentile=hazard_percentile,
+        use_native=use_native,
+        store_windows=store_windows,
+    )
+
+
+def build_manifold_index(
+    text_root: Path,
+    window_bytes: int = 512,
+    stride_bytes: int = 384,
+    precision: int = 3,
+    hazard_percentile: float = 0.8,
+    json_text_key: str = "text",
+    max_documents: int | None = None,
+    document_offset: int = 0,
+    use_native: bool = False,
+    store_windows: bool = True,
+) -> Dict[str, object]:
+    """Build an index from a directory/JSONL corpus (CLI helper)."""
+
+    docs: Dict[str, str] = {}
+    processed = 0
+    for doc_index, (doc_id, text) in enumerate(iter_text_documents(text_root, json_text_key=json_text_key)):
+        if doc_index < max(document_offset, 0):
+            continue
+        if max_documents is not None and processed >= max_documents:
+            break
+        processed += 1
+        docs[doc_id] = text
+
+    index = _aggregate_index(
+        docs=docs,
+        window_bytes=window_bytes,
+        stride_bytes=stride_bytes,
+        precision=precision,
+        hazard_percentile=hazard_percentile,
+        use_native=use_native,
+        store_windows=store_windows,
+    )
+
+    index.meta.update(
+        {
+            "text_root": str(text_root),
+            "json_text_key": json_text_key,
+            "max_documents": max_documents,
+            "document_offset": document_offset,
+        }
+    )
+    return index.to_dict()
 
 
 def reconstruct_from_windows(
-    windows: Sequence[Mapping[str, object]],
+    windows: Sequence[Mapping[str, object] | EncodedWindow],
     prototypes: Mapping[str, Mapping[str, object] | str],
 ) -> str:
+    """Reconstruct text by overlapping prototype spans following window offsets."""
+
     if not windows:
         return ""
 
@@ -235,7 +407,12 @@ def reconstruct_from_windows(
         text = proto.get("text", "")
         return str(text).encode("utf-8", errors="replace")
 
-    sorted_windows = sorted(windows, key=lambda item: int(item.get("byte_start", 0)))
+    def _window_dict(win: Mapping[str, object] | EncodedWindow) -> Mapping[str, object]:
+        if isinstance(win, EncodedWindow):
+            return win.to_dict()
+        return win
+
+    sorted_windows = sorted((_window_dict(w) for w in windows), key=lambda item: int(item.get("byte_start", 0)))
     result = bytearray()
     for window in sorted_windows:
         signature = str(window.get("signature", ""))
@@ -257,7 +434,7 @@ def reconstruct_from_windows(
 
 def verify_snippet(
     text: str,
-    index: Mapping[str, object],
+    index: ManifoldIndex | Mapping[str, object],
     *,
     hazard_threshold: float | None = None,
     coverage_threshold: float = 0.5,
@@ -266,21 +443,25 @@ def verify_snippet(
     precision: int | None = None,
     use_native: bool = False,
     include_reconstruction: bool = False,
-) -> Dict[str, object]:
-    meta = index.get("meta", {}) if isinstance(index, Mapping) else {}
+) -> VerificationResult:
+    """Verify a snippet by matching signatures and gating by hazard."""
+
+    meta = index.meta if isinstance(index, ManifoldIndex) else (index.get("meta", {}) if isinstance(index, Mapping) else {})
+    signatures = index.signatures if isinstance(index, ManifoldIndex) else index.get("signatures", {})  # type: ignore[arg-type]
+
     window_bytes = window_bytes or int(meta.get("window_bytes", 512))
     stride_bytes = stride_bytes or int(meta.get("stride_bytes", 384))
     precision = precision or int(meta.get("precision", 3))
     hazard_threshold = hazard_threshold if hazard_threshold is not None else float(meta.get("hazard_threshold", 0.0))
 
-    windows, _, _ = encode_text_to_windows(
+    encoded = encode_text(
         text,
         window_bytes=window_bytes,
         stride_bytes=stride_bytes,
         precision=precision,
         use_native=use_native,
     )
-    signatures = index.get("signatures", {}) if isinstance(index, Mapping) else {}
+    windows = encoded.windows
 
     matched_windows = 0
     gated_hits = 0
@@ -316,25 +497,31 @@ def verify_snippet(
     verified = coverage >= coverage_threshold
 
     prototypes = {sig: sig_entry.get("prototype", {}) for sig, sig_entry in signatures.items()}
+    reconstruction = (
+        reconstruct_from_windows(window_results, prototypes) if include_reconstruction else None
+    )
 
-    result: Dict[str, object] = {
-        "verified": verified,
-        "coverage": coverage,
-        "match_ratio": match_ratio,
-        "coverage_threshold": coverage_threshold,
-        "hazard_threshold": hazard_threshold,
-        "total_windows": total,
-        "gated_hits": gated_hits,
-        "matches": window_results,
-        "matched_documents": sorted(doc for doc in matched_documents if doc),
-    }
-    if include_reconstruction:
-        result["reconstruction"] = reconstruct_from_windows(window_results, prototypes)
-    return result
+    return VerificationResult(
+        verified=verified,
+        coverage=coverage,
+        match_ratio=match_ratio,
+        coverage_threshold=coverage_threshold,
+        hazard_threshold=hazard_threshold,
+        total_windows=total,
+        gated_hits=gated_hits,
+        matches=window_results,
+        matched_documents=sorted(doc for doc in matched_documents if doc),
+        reconstruction=reconstruction,
+    )
 
 
-def load_index(path: Path) -> Dict[str, object]:
+def load_index(path: Path) -> ManifoldIndex:
+    """Load an index from JSON on disk."""
+
     data = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError(f"Invalid index payload in {path}")
-    return data
+    meta = data.get("meta", {})
+    signatures = data.get("signatures", {})
+    documents = data.get("documents", {})
+    return ManifoldIndex(meta=meta, signatures=signatures, documents=documents)

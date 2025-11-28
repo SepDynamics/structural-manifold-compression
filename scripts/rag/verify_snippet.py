@@ -79,7 +79,7 @@ def main() -> None:
         include_reconstruction=args.reconstruct,
     )
 
-    payload = json.dumps(result, indent=2)
+    payload = json.dumps(result.to_dict(), indent=2)
     if args.output:
         out_path = args.output.expanduser().resolve()
         out_path.parent.mkdir(parents=True, exist_ok=True)
