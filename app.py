@@ -163,6 +163,12 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
 
     meta = getattr(index, "meta", {}) if hasattr(index, "meta") else {}
     window_bytes = int(meta.get("window_bytes", 512))
+    default_hazard_threshold = float(meta.get("hazard_threshold", 0.8))
+    # hazard threshold slider is passed via bound partial; fallback to meta value
+    hazard_threshold = handle_verify.hazard_threshold  # type: ignore[attr-defined]
+    if hazard_threshold is None:
+        hazard_threshold = default_hazard_threshold
+
     snippet_bytes = len(snippet.encode("utf-8"))
     too_short = snippet_bytes < window_bytes
 
@@ -170,14 +176,17 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
         snippet,
         index,
         coverage_threshold=coverage_threshold,
+        hazard_threshold=hazard_threshold,
         include_reconstruction=False,
     )
     coverage_pct = result.coverage * 100.0
     status = "✅ Verified" if result.verified else "❌ Not verified"
-    status_line = f"{status} (coverage = {coverage_pct:.2f}%)"
+    status_line = f"{status} (coverage = {coverage_pct:.2f}%, hazard gate ≤ {hazard_threshold:.3f})"
 
     lines = []
     matched = [m for m in result.matches if m.get("occurrences")]
+    raw_hits = sum(1 for m in result.matches if m.get("matched"))
+    hazard_hits = sum(1 for m in result.matches if m.get("hazard_ok"))
     for match in matched[:20]:
         sig = str(match.get("signature", ""))[:12]
         hz = float(match.get("hazard", 0.0))
@@ -190,6 +199,12 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
             matches_md
             + f"\n\n_Note: snippet is {snippet_bytes} bytes; index windows are {window_bytes} bytes. "
             "Use a longer snippet or build the index with a smaller window to improve coverage._"
+        )
+    if raw_hits and not hazard_hits:
+        matches_md = (
+            matches_md
+            + "\n\n_Note: matching signatures exist but were filtered out by the hazard gate. "
+            "Raise the hazard threshold slider to test without gating._"
         )
     return status_line, matches_md
 
@@ -229,6 +244,13 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
             step=0.05,
             label="Coverage threshold",
         )
+        hazard_slider = gr.Slider(
+            minimum=0.0,
+            maximum=1.0,
+            value=0.8,
+            step=0.01,
+            label="Hazard gate (raise to be more permissive)",
+        )
         verify_btn = gr.Button("Verify")
         verify_status = gr.Markdown()
         verify_matches = gr.Markdown()
@@ -238,9 +260,14 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         inputs=[file_input, text_input],
         outputs=[doc_msg, original_box, recon_box, stats_box, hazard_plot, doc_dropdown],
     )
+    def bound_verify(snippet, coverage, hazard):
+        # stash hazard threshold on the function object so handle_verify can read it without changing signature
+        handle_verify.hazard_threshold = hazard  # type: ignore[attr-defined]
+        return handle_verify(None, snippet, coverage)
+
     verify_btn.click(
-        handle_verify,
-        inputs=[doc_dropdown, snippet_box, coverage_slider],
+        bound_verify,
+        inputs=[snippet_box, coverage_slider, hazard_slider],
         outputs=[verify_status, verify_matches],
     )
 
