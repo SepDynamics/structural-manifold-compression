@@ -8,6 +8,7 @@ import textwrap
 from pathlib import Path
 from typing import Dict, Optional, Tuple
 
+import os
 import gradio as gr
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,6 +23,7 @@ if str(SRC_PATH) not in sys.path:
 WINDOW_BYTES = 128
 STRIDE_BYTES = 96
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
+ENABLE_RETRIEVE = os.getenv("ENABLE_RETRIEVE", "0").lower() in {"1", "true", "yes"}
 
 from manifold.sidecar import (
     EncodeResult,
@@ -364,30 +366,31 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         verify_status = gr.Markdown()
         verify_matches = gr.Markdown()
 
-    with gr.Tab("Retrieve & Verify"):
-        gr.Markdown(
-            "Chunk-level RAG demo: retrieve top-k chunks via embeddings, then hazard-gate them with manifold verification."
-        )
-        question_box = gr.Textbox(label="Question / query", lines=3)
-        topk_slider = gr.Slider(minimum=1, maximum=10, value=5, step=1, label="Top-k chunks")
-        rag_coverage = gr.Slider(
-            minimum=0.0,
-            maximum=1.0,
-            value=0.5,
-            step=0.05,
-            label="Coverage threshold (verification)",
-        )
-        rag_hazard = gr.Slider(
-            minimum=0.0,
-            maximum=1.0,
-            value=0.8,
-            step=0.01,
-            label="Hazard gate (verification)",
-        )
-        retrieve_btn = gr.Button("Retrieve & verify")
-    retrieve_status = gr.Markdown()
-    naive_rag = gr.Markdown(label="Naive retrieval")
-    verified_rag = gr.Markdown(label="Hazard-gated retrieval (secondary demo)")
+    if ENABLE_RETRIEVE:
+        with gr.Tab("Retrieve & Verify"):
+            gr.Markdown(
+                "Chunk-level RAG demo: retrieve top-k chunks via embeddings, then hazard-gate them with manifold verification."
+            )
+            question_box = gr.Textbox(label="Question / query", lines=3)
+            topk_slider = gr.Slider(minimum=1, maximum=10, value=5, step=1, label="Top-k chunks")
+            rag_coverage = gr.Slider(
+                minimum=0.0,
+                maximum=1.0,
+                value=0.5,
+                step=0.05,
+                label="Coverage threshold (verification)",
+            )
+            rag_hazard = gr.Slider(
+                minimum=0.0,
+                maximum=1.0,
+                value=0.8,
+                step=0.01,
+                label="Hazard gate (verification)",
+            )
+            retrieve_btn = gr.Button("Retrieve & verify")
+        retrieve_status = gr.Markdown()
+        naive_rag = gr.Markdown(label="Naive retrieval")
+        verified_rag = gr.Markdown(label="Hazard-gated retrieval (secondary demo)")
 
     run_btn.click(
         handle_compress,
@@ -404,11 +407,12 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         inputs=[snippet_box, coverage_slider, hazard_slider],
         outputs=[verify_status, verify_matches],
     )
-    retrieve_btn.click(
-        handle_retrieve,
-        inputs=[question_box, topk_slider, rag_coverage, rag_hazard],
-        outputs=[retrieve_status, naive_rag, verified_rag],
-    )
+    if ENABLE_RETRIEVE:
+        retrieve_btn.click(
+            handle_retrieve,
+            inputs=[question_box, topk_slider, rag_coverage, rag_hazard],
+            outputs=[retrieve_status, naive_rag, verified_rag],
+        )
 
 
 if __name__ == "__main__":
