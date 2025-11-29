@@ -161,19 +161,36 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
     if index is None:
         return "No documents ingested yet.", ""
 
-    result = verify_snippet(snippet, index, coverage_threshold=coverage_threshold, include_reconstruction=False)
+    meta = getattr(index, "meta", {}) if hasattr(index, "meta") else {}
+    window_bytes = int(meta.get("window_bytes", 512))
+    snippet_bytes = len(snippet.encode("utf-8"))
+    too_short = snippet_bytes < window_bytes
+
+    result = verify_snippet(
+        snippet,
+        index,
+        coverage_threshold=coverage_threshold,
+        include_reconstruction=False,
+    )
     coverage_pct = result.coverage * 100.0
     status = "✅ Verified" if result.verified else "❌ Not verified"
     status_line = f"{status} (coverage = {coverage_pct:.2f}%)"
 
     lines = []
-    for match in result.matches[:20]:
+    matched = [m for m in result.matches if m.get("occurrences")]
+    for match in matched[:20]:
         sig = str(match.get("signature", ""))[:12]
         hz = float(match.get("hazard", 0.0))
         occ = match.get("occurrences", []) or []
         first_doc = occ[0].get("doc_id") if occ else ""
         lines.append(f"- `{sig}` hazard={hz:.3f} occurrences={len(occ)} doc={first_doc}")
     matches_md = "\n".join(lines) if lines else "_No matches_"
+    if too_short and not lines:
+        matches_md = (
+            matches_md
+            + f"\n\n_Note: snippet is {snippet_bytes} bytes; index windows are {window_bytes} bytes. "
+            "Use a longer snippet or build the index with a smaller window to improve coverage._"
+        )
     return status_line, matches_md
 
 
