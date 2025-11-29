@@ -229,10 +229,12 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
     hazard_hits = sum(1 for m in result.matches if m.get("hazard_ok"))
     raw_coverage = raw_hits / total
     safe_coverage = hazard_hits / total
-
-    status = "✅ Verified" if safe_coverage >= coverage_threshold else "❌ Not verified"
+    verified = safe_coverage >= coverage_threshold
+    status = "✅ Verified" if verified else "❌ Not verified"
+    status_color = "green" if verified else "red"
     status_line = (
-        f"{status} (raw={raw_coverage*100:.2f}%, safe={safe_coverage*100:.2f}%, hazard_gate ≤ {hazard_threshold:.3f})"
+        f"<span style='color:{status_color}; font-weight:700;'>{status}</span> "
+        f"(raw={raw_coverage*100:.2f}%, safe={safe_coverage*100:.2f}%, hazard_gate ≤ {hazard_threshold:.3f})"
     )
 
     lines = []
@@ -383,9 +385,9 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
             label="Hazard gate (verification)",
         )
         retrieve_btn = gr.Button("Retrieve & verify")
-        retrieve_status = gr.Markdown()
-        naive_rag = gr.Markdown(label="Naive retrieval")
-        verified_rag = gr.Markdown(label="Hazard-gated retrieval")
+    retrieve_status = gr.Markdown()
+    naive_rag = gr.Markdown(label="Naive retrieval")
+    verified_rag = gr.Markdown(label="Hazard-gated retrieval (secondary demo)")
 
     run_btn.click(
         handle_compress,

@@ -74,6 +74,32 @@ Use these assets for smoke tests, demos, or as a template when filing reproducti
   ```
   Prepares a sample corpus, builds a manifold index, and runs the naive vs hazard-gated RAG demo.
 
+- Coming soon (HF Space): interactive web demo to paste/upload docs and see compression + verification in the browser.
+
+## Quickstart (API)
+
+```bash
+pip install -r requirements.txt
+python app.py  # or make demo-corpus for the CLI demo
+```
+
+```python
+from pathlib import Path
+from manifold.sidecar import encode_text, build_index, verify_snippet
+
+docs = {
+    "doc1": "This is a tiny test document about liquidity and Q3 risk...",
+    "doc2": "Another topic...",
+}
+
+# build index in-memory
+index = build_index(docs, window_bytes=128, stride_bytes=96, hazard_percentile=0.8)
+
+# verify a chunk
+result = verify_snippet("This is a tiny test document...", index, coverage_threshold=0.5)
+print(result.verified, result.coverage)
+```
+
 ## 3. Repository Layout
 
 ```
