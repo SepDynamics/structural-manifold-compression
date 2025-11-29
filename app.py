@@ -18,6 +18,9 @@ SRC_PATH = REPO_ROOT / "src"
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
+WINDOW_BYTES = 128
+STRIDE_BYTES = 96
+
 from manifold.sidecar import (
     EncodeResult,
     ManifoldIndex,
@@ -35,8 +38,6 @@ except Exception:  # pragma: no cover - optional dependency handled by requireme
 
 docs_store: Dict[str, str] = {}
 encodings_store: Dict[str, EncodeResult] = {}
-global_index: Optional[ManifoldIndex] = None
-index_dirty: bool = False
 doc_counter = 0
 
 
@@ -84,7 +85,6 @@ def _preview(text: str, limit: int = 2000) -> str:
 
 
 def handle_compress(file, raw_text):
-    global global_index, index_dirty
     try:
         text_source = None
         text_content = ""
@@ -100,10 +100,12 @@ def handle_compress(file, raw_text):
 
         doc_id = _next_doc_id()
         docs_store[doc_id] = text_content
-        encoded = encode_text(text_content)
+        encoded = encode_text(
+            text_content,
+            window_bytes=WINDOW_BYTES,
+            stride_bytes=STRIDE_BYTES,
+        )
         encodings_store[doc_id] = encoded
-        index_dirty = True
-        global_index = None
 
         reconstruction = reconstruct_from_windows(encoded.windows, encoded.prototypes)
 
@@ -145,13 +147,13 @@ def handle_compress(file, raw_text):
 
 
 def _ensure_index() -> Optional[ManifoldIndex]:
-    global global_index, index_dirty
-    if global_index is None or index_dirty:
-        if not docs_store:
-            return None
-        global_index = build_index(docs_store)
-        index_dirty = False
-    return global_index
+    if not docs_store:
+        return None
+    return build_index(
+        docs_store,
+        window_bytes=WINDOW_BYTES,
+        stride_bytes=STRIDE_BYTES,
+    )
 
 
 def handle_verify(selected_doc, snippet, coverage_threshold):
@@ -162,7 +164,7 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
         return "No documents ingested yet.", ""
 
     meta = getattr(index, "meta", {}) if hasattr(index, "meta") else {}
-    window_bytes = int(meta.get("window_bytes", 512))
+    window_bytes = int(meta.get("window_bytes", WINDOW_BYTES))
     default_hazard_threshold = float(meta.get("hazard_threshold", 0.8))
     # hazard threshold slider is passed via bound partial; fallback to meta value
     hazard_threshold = handle_verify.hazard_threshold  # type: ignore[attr-defined]
@@ -177,16 +179,23 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
         index,
         coverage_threshold=coverage_threshold,
         hazard_threshold=hazard_threshold,
+        window_bytes=WINDOW_BYTES,
+        stride_bytes=STRIDE_BYTES,
         include_reconstruction=False,
     )
-    coverage_pct = result.coverage * 100.0
-    status = "✅ Verified" if result.verified else "❌ Not verified"
-    status_line = f"{status} (coverage = {coverage_pct:.2f}%, hazard gate ≤ {hazard_threshold:.3f})"
+    total = max(result.total_windows, 1)
+    raw_hits = sum(1 for m in result.matches if m.get("matched"))
+    hazard_hits = sum(1 for m in result.matches if m.get("hazard_ok"))
+    raw_coverage = raw_hits / total
+    safe_coverage = hazard_hits / total
+
+    status = "✅ Verified" if safe_coverage >= coverage_threshold else "❌ Not verified"
+    status_line = (
+        f"{status} (raw={raw_coverage*100:.2f}%, safe={safe_coverage*100:.2f}%, hazard_gate ≤ {hazard_threshold:.3f})"
+    )
 
     lines = []
     matched = [m for m in result.matches if m.get("occurrences")]
-    raw_hits = sum(1 for m in result.matches if m.get("matched"))
-    hazard_hits = sum(1 for m in result.matches if m.get("hazard_ok"))
     for match in matched[:20]:
         sig = str(match.get("signature", ""))[:12]
         hz = float(match.get("hazard", 0.0))
