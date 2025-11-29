@@ -10,6 +10,7 @@ from typing import Dict, Optional, Tuple
 
 import gradio as gr
 import matplotlib.pyplot as plt
+import numpy as np
 
 import sys
 
@@ -20,6 +21,7 @@ if str(SRC_PATH) not in sys.path:
 
 WINDOW_BYTES = 128
 STRIDE_BYTES = 96
+EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
 
 from manifold.sidecar import (
     EncodeResult,
@@ -35,10 +37,16 @@ try:
 except Exception:  # pragma: no cover - optional dependency handled by requirements.txt
     pdfplumber = None
 
+try:
+    from sentence_transformers import SentenceTransformer  # type: ignore
+except Exception:  # pragma: no cover - lazy load handled later
+    SentenceTransformer = None
+
 
 docs_store: Dict[str, str] = {}
 encodings_store: Dict[str, EncodeResult] = {}
 doc_counter = 0
+_embedding_model = None
 
 
 def _next_doc_id() -> str:
@@ -82,6 +90,39 @@ def _preview(text: str, limit: int = 2000) -> str:
     if len(text) <= limit:
         return text
     return text[:limit] + f"\n\n… [truncated {len(text) - limit} chars]"
+
+
+def _chunk_text(text: str, chunk_size: int = 512, overlap: int = 128) -> list[tuple[str, str]]:
+    chunks = []
+    start = 0
+    text_len = len(text)
+    idx = 0
+    while start < text_len:
+        end = min(text_len, start + chunk_size)
+        chunk = text[start:end]
+        chunks.append((f"chunk-{idx}", chunk))
+        if end == text_len:
+            break
+        start = end - overlap
+        idx += 1
+    return chunks
+
+
+def _get_embedding_model():
+    global _embedding_model
+    if _embedding_model is None:
+        if SentenceTransformer is None:
+            raise RuntimeError(
+                "sentence-transformers is required for retrieval demo. Install with `pip install sentence-transformers`."
+            )
+        _embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+    return _embedding_model
+
+
+def _embed_texts(texts: list[str]) -> np.ndarray:
+    model = _get_embedding_model()
+    embeddings = model.encode(texts, convert_to_numpy=True, normalize_embeddings=True)
+    return embeddings.astype(np.float32)
 
 
 def handle_compress(file, raw_text):
@@ -218,6 +259,63 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
     return status_line, matches_md
 
 
+def handle_retrieve(question, top_k, coverage_threshold, hazard_threshold):
+    if not question or not question.strip():
+        return "Provide a question.", "", ""
+    if not docs_store:
+        return "No documents ingested yet.", "", ""
+
+    index = _ensure_index()
+    if index is None:
+        return "No documents ingested yet.", "", ""
+
+    # Build chunks
+    chunks = []
+    for doc_id, text in docs_store.items():
+        for chunk_id, chunk_text in _chunk_text(text):
+            chunks.append((doc_id, chunk_id, chunk_text))
+    if not chunks:
+        return "No chunks available to retrieve.", "", ""
+
+    chunk_texts = [c[2] for c in chunks]
+    chunk_embeddings = _embed_texts(chunk_texts)
+    question_embedding = _embed_texts([question])[0]
+    scores = np.dot(chunk_embeddings, question_embedding)
+    order = np.argsort(scores)[::-1]
+    top_indices = order[: int(top_k)]
+
+    naive_lines = []
+    verified_lines = []
+    for rank, idx in enumerate(top_indices, start=1):
+        doc_id, chunk_id, chunk_text = chunks[int(idx)]
+        score = float(scores[int(idx)])
+        naive_lines.append(f"- [{rank}] {doc_id}::{chunk_id} score={score:.3f}\n  {chunk_text[:200]}...")
+
+        result = verify_snippet(
+            chunk_text,
+            index,
+            coverage_threshold=coverage_threshold,
+            hazard_threshold=hazard_threshold,
+            window_bytes=WINDOW_BYTES,
+            stride_bytes=STRIDE_BYTES,
+            include_reconstruction=False,
+        )
+        total = max(result.total_windows, 1)
+        raw_hits = sum(1 for m in result.matches if m.get("matched"))
+        hazard_hits = sum(1 for m in result.matches if m.get("hazard_ok"))
+        raw_coverage = raw_hits / total
+        safe_coverage = hazard_hits / total
+        status = "✅" if safe_coverage >= coverage_threshold else "❌"
+        verified_lines.append(
+            f"- [{rank}] {doc_id}::{chunk_id} {status} score={score:.3f} "
+            f"raw={raw_coverage*100:.2f}%, safe={safe_coverage*100:.2f}% "
+            f"(hazard_gate ≤ {hazard_threshold:.3f})"
+        )
+    naive_md = "\n".join(naive_lines) if naive_lines else "_No chunks_"
+    verified_md = "\n".join(verified_lines) if verified_lines else "_No verified chunks_"
+    return "Retrieved top-k chunks:", naive_md, verified_md
+
+
 with gr.Blocks(title="Structural Manifold Sidecar") as demo:
     gr.Markdown("# Structural Manifold Sidecar\nCompression + verification for RAG provenance.")
 
@@ -264,6 +362,31 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         verify_status = gr.Markdown()
         verify_matches = gr.Markdown()
 
+    with gr.Tab("Retrieve & Verify"):
+        gr.Markdown(
+            "Chunk-level RAG demo: retrieve top-k chunks via embeddings, then hazard-gate them with manifold verification."
+        )
+        question_box = gr.Textbox(label="Question / query", lines=3)
+        topk_slider = gr.Slider(minimum=1, maximum=10, value=5, step=1, label="Top-k chunks")
+        rag_coverage = gr.Slider(
+            minimum=0.0,
+            maximum=1.0,
+            value=0.5,
+            step=0.05,
+            label="Coverage threshold (verification)",
+        )
+        rag_hazard = gr.Slider(
+            minimum=0.0,
+            maximum=1.0,
+            value=0.8,
+            step=0.01,
+            label="Hazard gate (verification)",
+        )
+        retrieve_btn = gr.Button("Retrieve & verify")
+        retrieve_status = gr.Markdown()
+        naive_rag = gr.Markdown(label="Naive retrieval")
+        verified_rag = gr.Markdown(label="Hazard-gated retrieval")
+
     run_btn.click(
         handle_compress,
         inputs=[file_input, text_input],
@@ -278,6 +401,11 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         bound_verify,
         inputs=[snippet_box, coverage_slider, hazard_slider],
         outputs=[verify_status, verify_matches],
+    )
+    retrieve_btn.click(
+        handle_retrieve,
+        inputs=[question_box, topk_slider, rag_coverage, rag_hazard],
+        outputs=[retrieve_status, naive_rag, verified_rag],
     )
 
 
