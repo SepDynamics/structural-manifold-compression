@@ -1,6 +1,28 @@
 cmake_minimum_required(VERSION 3.18)
 project(sep_trader LANGUAGES CXX C)
 
+function(add_sep_library name)
+    cmake_parse_arguments(ARG "SHARED" "" "SOURCES" ${ARGN})
+    if(ARG_SHARED)
+        add_library(${name} SHARED ${ARG_SOURCES})
+    else()
+        add_library(${name} ${ARG_SOURCES})
+    endif()
+    target_include_directories(${name} PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include/sep>
+    )
+endfunction()
+
+function(add_sep_executable name)
+    cmake_parse_arguments(ARG "" "" "SOURCES" ${ARGN})
+    add_executable(${name} ${ARG_SOURCES})
+    target_include_directories(${name} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+endfunction()
+
+add_library(sep_core_deps INTERFACE)
+add_library(sep_fetchcontent_deps INTERFACE)
+
 add_definitions(-DGLM_COMPILER=0)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -17,8 +39,20 @@ FetchContent_Declare(
     GIT_TAG v1.12.0
     FIND_PACKAGE_ARGS
 )
-
-FetchContent_MakeAvailable(spdlog)
+FetchContent_Declare(
+    cxxopts
+    GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
+    GIT_TAG v3.1.1
+    FIND_PACKAGE_ARGS
+)
+FetchContent_Declare(
+    hiredis
+    GIT_REPOSITORY https://github.com/redis/hiredis.git
+    GIT_TAG v1.2.0
+)
+find_package(ZLIB REQUIRED)
+FetchContent_MakeAvailable(spdlog cxxopts hiredis)
+target_link_libraries(sep_fetchcontent_deps INTERFACE spdlog::spdlog cxxopts::cxxopts hiredis::hiredis ZLIB::ZLIB)
 
 # Gather C++ source files only from existing directories
 file(GLOB_RECURSE CXX_SOURCES
@@ -31,8 +65,18 @@ set(C_SOURCES)
 
 # Exclude facade_original.cpp only (OANDA files are needed for frontend)
 list(FILTER CXX_SOURCES EXCLUDE REGEX ".*/facade_original\\.cpp$")
-# Structural manifold core algorithm enabled - core functionality for SEP system
+# Exclude legacy files if any
 # list(FILTER CXX_SOURCES EXCLUDE REGEX ".*/core/qbsa\\.cpp$")
+# list(FILTER CXX_SOURCES EXCLUDE REGEX ".*/core/qfh\\.cpp$") # Exclude old qfh if still present
+list(FILTER CXX_SOURCES EXCLUDE REGEX ".*/core/oanda_client\\.cpp$")
+
+find_package(TBB)
+if(TBB_FOUND)
+    target_link_libraries(sep_core_deps INTERFACE TBB::tbb)
+else()
+    message(WARNING "TBB not found, parallel execution might fail to link")
+endif()
+
 
 # Separate main files from library source files
 set(LIB_CXX_SOURCES)
@@ -106,15 +150,15 @@ add_custom_command(TARGET quantum_metrics POST_BUILD
 find_package(OpenSSL)
 if(OpenSSL_FOUND AND TARGET OpenSSL::Crypto)
     # Data downloader utility (point directly to main)
-    add_sep_executable(data_downloader SOURCES app/data_downloader_main.cpp)
-    target_link_libraries(data_downloader PRIVATE sep_lib sep_core_deps sep_fetchcontent_deps OpenSSL::Crypto)
-    set_target_properties(data_downloader PROPERTIES
-        INSTALL_RPATH "${SEP_RUNTIME_LIBPATH}:$ORIGIN/../lib"
-        BUILD_RPATH "${SEP_RUNTIME_LIBPATH};${CMAKE_BINARY_DIR}/_deps/spdlog-build;${CMAKE_BINARY_DIR}/_deps/fmt-build}")
-    add_custom_command(TARGET data_downloader POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:data_downloader> ${CMAKE_SOURCE_DIR}/bin/$<TARGET_FILE_NAME:data_downloader>
-        COMMENT "Staging data_downloader to bin/"
-    )
+    # add_sep_executable(data_downloader SOURCES app/data_downloader_main.cpp)
+    # target_link_libraries(data_downloader PRIVATE sep_lib sep_core_deps sep_fetchcontent_deps OpenSSL::Crypto)
+    # set_target_properties(data_downloader PROPERTIES
+    #     INSTALL_RPATH "${SEP_RUNTIME_LIBPATH}:$ORIGIN/../lib"
+    #     BUILD_RPATH "${SEP_RUNTIME_LIBPATH};${CMAKE_BINARY_DIR}/_deps/spdlog-build;${CMAKE_BINARY_DIR}/_deps/fmt-build}")
+    # add_custom_command(TARGET data_downloader POST_BUILD
+    #     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:data_downloader> ${CMAKE_SOURCE_DIR}/bin/$<TARGET_FILE_NAME:data_downloader>
+    #     COMMENT "Staging data_downloader to bin/"
+    # )
 else()
     message(WARNING "OpenSSL not found; skipping data_downloader target (manifold_generator unaffected)")
 endif()
