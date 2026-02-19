@@ -4,6 +4,7 @@ build/
 *.so
 .env
 .venv/
+.venv*/
 data/benchmark_corpus/
 output/raw/
 report.log

@@ -93,7 +93,7 @@ class DualStreamInference:
         """
         # Import the existing manifold encoding system
         sys.path.insert(0, str(REPO_ROOT / "SMC-Demo"))
-        from sep_text_manifold import encode
+        from sep_text_manifold.encode import encode_window, signature_from_metrics
 
         signatures = []
         text_bytes = text.encode('utf-8')
@@ -107,10 +107,10 @@ class DualStreamInference:
                 continue
 
             # Use actual manifold encoding
-            metrics = encode.encode_window(window)
+            metrics = encode_window(window)
 
             # Generate signature from metrics
-            signature = encode.signature_from_metrics(
+            signature = signature_from_metrics(
                 metrics["coherence"],
                 metrics["stability"],
                 metrics["entropy"],
