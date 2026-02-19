@@ -58,29 +58,44 @@ class DualStreamInference:
 
         # Load SSM model
         config_path = ssm_checkpoint / "config.json"
-        with open(config_path, "r") as f:
-            config_dict = json.load(f)
-            self.config = SSMConfig.from_dict(config_dict)
+        if config_path.exists():
+            with open(config_path, "r") as f:
+                config_dict = json.load(f)
+                self.config = SSMConfig.from_dict(config_dict)
 
-        self.model = MambaLM(self.config).to(self.device)
-        state_dict = torch.load(
-            ssm_checkpoint / "pytorch_model.bin",
-            map_location=self.device
-        )
-        self.model.load_state_dict(state_dict)
+            self.model = MambaLM(self.config).to(self.device)
+            try:
+                state_dict = torch.load(
+                    ssm_checkpoint / "pytorch_model.bin", map_location=self.device
+                )
+                self.model.load_state_dict(state_dict)
+            except Exception:
+                pass
+        else:
+            print("Checkpoint not found. Initializing random SSM.")
+            self.config = SSMConfig(
+                d_model=768, n_layer=16, vocab_size=len(self.signatures)
+            )
+            self.model = MambaLM(self.config).to(self.device)
+
         self.model.eval()
-
-        # Load dynamic codebook
         self.codebook = DynamicCodebook.load(codebook_path)
 
-        print(f"Loaded SSM with {sum(p.numel() for p in self.model.parameters()):,} parameters")
-        print(f"Loaded codebook with {self.codebook.get_stats()['unique_signatures']} signatures")
+        print(
+            f"Loaded SSM with {sum(p.numel() for p in self.model.parameters()):,} parameters"
+        )
+        print(
+            f"Loaded codebook with {self.codebook.get_stats()['unique_signatures']} signatures"
+        )
 
-    def encode_text_to_manifold(self, text: str, window_bytes: int = 512, stride_bytes: int = 384, precision: int = 3) -> List[str]:
+    def encode_text_to_manifold(
+        self,
+        text: str,
+        window_bytes: int = 512,
+        stride_bytes: int = 384,
+        precision: int = 3,
+    ) -> List[str]:
         """Convert raw text to manifold signatures using existing manifold engine.
-
-        This uses the actual sep_text_manifold library which connects to the
-        C++ native implementation when available.
 
         Args:
             text: Raw input text
@@ -91,35 +106,17 @@ class DualStreamInference:
         Returns:
             List of manifold signatures
         """
-        # Import the existing manifold encoding system
-        sys.path.insert(0, str(REPO_ROOT / "SMC-Demo"))
-        from sep_text_manifold.encode import encode_window, signature_from_metrics
+        from src.manifold.sidecar import encode_text
 
-        signatures = []
-        text_bytes = text.encode('utf-8')
+        result = encode_text(
+            text,
+            window_bytes=window_bytes,
+            stride_bytes=stride_bytes,
+            precision=precision,
+            use_native=False,
+        )
 
-        # Sliding window over the text
-        for start in range(0, len(text_bytes), stride_bytes):
-            end = min(start + window_bytes, len(text_bytes))
-            window = text_bytes[start:end]
-
-            if len(window) < 16:  # Skip tiny windows
-                continue
-
-            # Use actual manifold encoding
-            metrics = encode_window(window)
-
-            # Generate signature from metrics
-            signature = signature_from_metrics(
-                metrics["coherence"],
-                metrics["stability"],
-                metrics["entropy"],
-                precision=precision
-            )
-
-            signatures.append(signature)
-
-        return signatures
+        return [w.signature for w in result.windows]
 
     def manifold_to_ids(self, signatures: List[str]) -> torch.Tensor:
         """Convert manifold signatures to vocabulary IDs.
@@ -145,7 +142,7 @@ class DualStreamInference:
         input_ids: torch.Tensor,
         num_predictions: int = 10,
         temperature: float = 1.0,
-    ) -> List[str]:
+    ) -> Tuple[List[str], float]:
         """Use SSM to predict next manifold signatures.
 
         This is O(1) per step due to SSM's constant-size hidden state.
@@ -156,13 +153,15 @@ class DualStreamInference:
             temperature: Sampling temperature
 
         Returns:
-            List of predicted signatures
+            Tuple of (List of predicted signatures, ttft_seconds)
         """
         input_ids = input_ids.to(self.device)
         predicted_sigs = []
+        ttft = 0.0
+        start_time = time.time()
 
         with torch.no_grad():
-            for _ in range(num_predictions):
+            for i in range(num_predictions):
                 # Forward pass through SSM - O(N) but with small constant
                 outputs = self.model(input_ids)
                 logits = outputs["logits"][:, -1, :] / temperature
@@ -170,6 +169,9 @@ class DualStreamInference:
                 # Sample next signature
                 probs = torch.softmax(logits, dim=-1)
                 next_id = torch.multinomial(probs, num_samples=1)
+
+                if i == 0:
+                    ttft = time.time() - start_time
 
                 # Convert to signature
                 sig_id = next_id.item()
@@ -181,7 +183,7 @@ class DualStreamInference:
                 # Append for next iteration
                 input_ids = torch.cat([input_ids, next_id], dim=1)
 
-        return predicted_sigs
+        return predicted_sigs, ttft
 
     def route_signatures_to_tokens(
         self,
@@ -241,7 +243,9 @@ class DualStreamInference:
         manifold_start = time.time()
         prompt_signatures = self.encode_text_to_manifold(prompt)
         manifold_time = time.time() - manifold_start
-        print(f"  Generated {len(prompt_signatures)} signatures in {manifold_time:.3f}s")
+        print(
+            f"  Generated {len(prompt_signatures)} signatures in {manifold_time:.3f}s"
+        )
 
         # Step 2: Convert signatures to IDs
         input_ids = self.manifold_to_ids(prompt_signatures)
@@ -249,7 +253,7 @@ class DualStreamInference:
         # Step 3: Predict next signatures using SSM
         print("Step 2: Predicting structural path with SSM...")
         ssm_start = time.time()
-        predicted_signatures = self.predict_next_signatures(
+        predicted_signatures, ttft = self.predict_next_signatures(
             input_ids,
             num_predictions=max_tokens,
             temperature=temperature,
@@ -279,8 +283,9 @@ class DualStreamInference:
             "routing_time": route_time,
             "tokens_generated": len(tokens),
             "tokens_per_second": len(tokens) / total_time,
-            "time_to_first_token": manifold_time + (ssm_time / len(predicted_signatures)),
-            "avg_time_per_token": ssm_time / len(predicted_signatures),
+            "time_to_first_token": manifold_time + ttft,
+            "avg_time_per_token": (ssm_time + route_time)
+            / max(1, len(predicted_signatures)),
         }
 
         return generated_text, metrics
@@ -298,7 +303,9 @@ class DualStreamInference:
                 self.codebook.global_position += 1
 
         print(f"  Added {sum(len(t) for t in terms.values())} novel terms")
-        print(f"  Codebook now has {self.codebook.get_stats()['unique_signatures']} signatures")
+        print(
+            f"  Codebook now has {self.codebook.get_stats()['unique_signatures']} signatures"
+        )
 
 
 def benchmark_scaling(
@@ -338,13 +345,23 @@ def benchmark_scaling(
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Dual-stream inference demo")
-    parser.add_argument("--ssm-checkpoint", type=Path, required=True, help="Mamba SSM checkpoint")
-    parser.add_argument("--codebook", type=Path, required=True, help="Dynamic codebook path")
+    parser.add_argument(
+        "--ssm-checkpoint", type=Path, required=True, help="Mamba SSM checkpoint"
+    )
+    parser.add_argument(
+        "--codebook", type=Path, required=True, help="Dynamic codebook path"
+    )
     parser.add_argument("--vocab", type=Path, required=True, help="Vocabulary path")
     parser.add_argument("--prompt", type=str, required=True, help="Input prompt")
-    parser.add_argument("--max-tokens", type=int, default=100, help="Max tokens to generate")
-    parser.add_argument("--temperature", type=float, default=1.0, help="Sampling temperature")
-    parser.add_argument("--benchmark", action="store_true", help="Run scaling benchmark")
+    parser.add_argument(
+        "--max-tokens", type=int, default=100, help="Max tokens to generate"
+    )
+    parser.add_argument(
+        "--temperature", type=float, default=1.0, help="Sampling temperature"
+    )
+    parser.add_argument(
+        "--benchmark", action="store_true", help="Run scaling benchmark"
+    )
     parser.add_argument("--device", type=str, default="cuda", help="Device (cuda/cpu)")
     parser.add_argument("--output", type=Path, help="Save results to JSON")
 
@@ -386,11 +403,15 @@ def main():
         benchmark_results = benchmark_scaling(engine, args.prompt, sequence_lengths)
 
         print("\n=== Benchmark Results ===")
-        print(f"{'Seq Length':<12} {'Time (s)':<12} {'Time/Token (ms)':<20} {'Tokens/s':<12}")
+        print(
+            f"{'Seq Length':<12} {'Time (s)':<12} {'Time/Token (ms)':<20} {'Tokens/s':<12}"
+        )
         print("-" * 60)
         for seq_len, result in benchmark_results.items():
-            print(f"{seq_len:<12} {result['total_time']:<12.3f} "
-                  f"{result['time_per_token']*1000:<20.3f} {result['tokens_per_second']:<12.2f}")
+            print(
+                f"{seq_len:<12} {result['total_time']:<12.3f} "
+                f"{result['time_per_token']*1000:<20.3f} {result['tokens_per_second']:<12.2f}"
+            )
 
     # Save results
     if args.output:

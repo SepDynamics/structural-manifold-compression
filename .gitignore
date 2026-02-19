@@ -1,4 +1,5 @@
 __pycache__/
+wikitext-103/
 *.pyc
 build/
 *.so
