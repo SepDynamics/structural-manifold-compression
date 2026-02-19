@@ -36,6 +36,12 @@ def build_authentic_codebook(
     with open(corpus_path, "r", encoding="utf-8") as f:
         text = f.read(max_bytes)
 
+    print(f"Tokenizing entire corpus to establish global spatial index...")
+    token_matches = list(re.finditer(r"\b\w+\b", text))
+    token_starts = [m.start() for m in token_matches]
+    global_position = len(token_matches)
+    print(f"Corpus contains {global_position} tokens.")
+
     print(f"Encoding {len(text)} characters into manifold space...")
     encode_result = encode_text(
         text, window_bytes=512, stride_bytes=384, precision=3, use_native=False
@@ -44,48 +50,53 @@ def build_authentic_codebook(
 
     print(f"Generated {len(windows)} signatures.")
 
-    sig_token_counts = defaultdict(Counter)
+    sig_metadata = defaultdict(lambda: {"token_counts": Counter(), "positions": []})
 
-    for i, w in enumerate(windows):
+    import bisect
+
+    for w in windows:
         if w.signature not in signatures:
             continue
-        # Extract the span of text for this window
-        span = text[w.char_start : w.char_end]
-        tokens = [t.lower() for t in re.findall(r"\b\w+\b", span)]
-        if not tokens:
-            continue
 
-        # Pick central tokens from the window to map securely.
-        selected_tokens = tokens[len(tokens) // 3 : len(tokens) * 2 // 3][:5]
-        for token in selected_tokens:
-            if len(token) > 2:
-                sig_token_counts[w.signature][token] += 1
+        center_char = w.char_start + (w.char_end - w.char_start) // 2
+        idx = bisect.bisect_left(token_starts, center_char)
+
+        if idx < global_position:
+            match = token_matches[idx]
+            token_str = match.group(0).lower()
+            if len(token_str) > 2:
+                sig_metadata[w.signature]["token_counts"][token_str] += 1
+                sig_metadata[w.signature]["positions"].append(idx)
 
     codebook = {
         "window_size": 512,
         "decay_factor": 0.95,
-        "global_position": 10000,
+        "global_position": global_position,
         "entries": {},
         "spatial_index": {},
     }
 
     print(
-        f"Populating codebook with top tokens for {len(sig_token_counts)} unique signatures..."
+        f"Populating codebook with top tokens for {len(sig_metadata)} unique signatures..."
     )
 
     sig_list = []
 
     # Assign tokens to signatures based on frequency
-    for i, (sig, counter) in enumerate(sig_token_counts.items()):
-        if not counter:
+    for sig, meta in sig_metadata.items():
+        if not meta["token_counts"]:
             continue
-        top_tokens = [token for token, count in counter.most_common(5)]
+        top_tokens = [token for token, count in meta["token_counts"].most_common(5)]
+
+        positions = meta["positions"]
+        last_seen = max(positions) if positions else 0
+
         codebook["entries"][sig] = {
             "signature": sig,
             "tokens": top_tokens,
-            "positions": list(range(i * 10, i * 10 + len(top_tokens))),
-            "frequency": float(sum(counter.values())),
-            "last_seen": 10000,
+            "positions": sorted(list(set(positions))),
+            "frequency": float(sum(meta["token_counts"].values())),
+            "last_seen": last_seen,
         }
         sig_list.append(sig)
 

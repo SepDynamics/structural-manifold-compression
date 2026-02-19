@@ -78,21 +78,28 @@ class RMSNorm(nn.Module):
         self.weight = nn.Parameter(torch.ones(d_model))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        rms = torch.sqrt(torch.mean(x ** 2, dim=-1, keepdim=True) + self.eps)
+        rms = torch.sqrt(torch.mean(x**2, dim=-1, keepdim=True) + self.eps)
         return self.weight * (x / rms)
 
 
 class MambaBlock(nn.Module):
     """Mamba SSM block with residual connection."""
 
-    def __init__(self, d_model: int, ssm_cfg: Optional[dict] = None):
+    def __init__(
+        self,
+        d_model: int,
+        ssm_cfg: Optional[dict] = None,
+        layer_idx: Optional[int] = None,
+    ):
         super().__init__()
-        self.mamba = Mamba(d_model=d_model, **(ssm_cfg or {}))
+        self.mamba = Mamba(d_model=d_model, layer_idx=layer_idx, **(ssm_cfg or {}))
+        if layer_idx is not None:
+            self.mamba.layer_idx = layer_idx
         self.norm = RMSNorm(d_model)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, inference_params=None) -> torch.Tensor:
         # Residual connection with pre-normalization
-        return x + self.mamba(self.norm(x))
+        return x + self.mamba(self.norm(x), inference_params=inference_params)
 
 
 class MambaLM(nn.Module):
@@ -103,31 +110,39 @@ class MambaLM(nn.Module):
         self.config = config
 
         self.embedding = nn.Embedding(config.vocab_size, config.d_model)
-        self.layers = nn.ModuleList([
-            MambaBlock(config.d_model, config.ssm_cfg)
-            for _ in range(config.n_layer)
-        ])
+        self.layers = nn.ModuleList(
+            [
+                MambaBlock(config.d_model, config.ssm_cfg, layer_idx=i)
+                for i in range(config.n_layer)
+            ]
+        )
         self.norm_f = RMSNorm(config.d_model)
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
 
         # Tie weights between embedding and output projection
         self.lm_head.weight = self.embedding.weight
 
-    def forward(self, input_ids: torch.Tensor, labels: Optional[torch.Tensor] = None):
+    def forward(
+        self,
+        input_ids: torch.Tensor,
+        labels: Optional[torch.Tensor] = None,
+        inference_params=None,
+    ):
         """Forward pass through Mamba SSM.
 
         Args:
             input_ids: (batch_size, seq_len)
             labels: (batch_size, seq_len) for training
+            inference_params: Caching params for O(1) inference
 
         Returns:
             dict with 'logits' and optionally 'loss'
         """
         x = self.embedding(input_ids)
 
-        # Pass through Mamba layers - O(N) in sequence length
+        # Pass through Mamba layers - O(N) in sequence length or O(1) with inference cache
         for layer in self.layers:
-            x = layer(x)
+            x = layer(x, inference_params=inference_params)
 
         x = self.norm_f(x)
         logits = self.lm_head(x)
@@ -141,14 +156,18 @@ class MambaLM(nn.Module):
 
             loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
             loss = loss_fct(
-                shift_logits.view(-1, shift_logits.size(-1)),
-                shift_labels.view(-1)
+                shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1)
             )
             output["loss"] = loss
 
         return output
 
-    def generate(self, input_ids: torch.Tensor, max_new_tokens: int = 100, temperature: float = 1.0):
+    def generate(
+        self,
+        input_ids: torch.Tensor,
+        max_new_tokens: int = 100,
+        temperature: float = 1.0,
+    ):
         """O(1) per-step inference using SSM hidden state.
 
         This is the key advantage: SSM maintains a fixed-size hidden state,
@@ -231,14 +250,20 @@ def prepare_datasets(
         eval_dataset = None
 
     if max_train_samples is not None:
-        train_dataset = train_dataset.select(range(min(max_train_samples, len(train_dataset))))
+        train_dataset = train_dataset.select(
+            range(min(max_train_samples, len(train_dataset)))
+        )
     if eval_dataset is not None and max_eval_samples is not None:
-        eval_dataset = eval_dataset.select(range(min(max_eval_samples, len(eval_dataset))))
+        eval_dataset = eval_dataset.select(
+            range(min(max_eval_samples, len(eval_dataset)))
+        )
 
     return train_dataset, eval_dataset
 
 
-def save_checkpoint(model: MambaLM, optimizer, step: int, output_dir: Path, config: SSMConfig):
+def save_checkpoint(
+    model: MambaLM, optimizer, step: int, output_dir: Path, config: SSMConfig
+):
     """Save model checkpoint."""
     checkpoint_dir = output_dir / f"checkpoint-{step}"
     checkpoint_dir.mkdir(parents=True, exist_ok=True)
@@ -323,24 +348,50 @@ def evaluate(model: MambaLM, dataloader: DataLoader, device: torch.device):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Train Mamba SSM on manifold signatures")
-    parser.add_argument("--dataset-path", type=Path, required=True, help="Path to HF dataset")
-    parser.add_argument("--vocab-path", type=Path, required=True, help="Path to vocab.json")
-    parser.add_argument("--output-dir", type=Path, required=True, help="Output directory")
+    parser = argparse.ArgumentParser(
+        description="Train Mamba SSM on manifold signatures"
+    )
+    parser.add_argument(
+        "--dataset-path", type=Path, required=True, help="Path to HF dataset"
+    )
+    parser.add_argument(
+        "--vocab-path", type=Path, required=True, help="Path to vocab.json"
+    )
+    parser.add_argument(
+        "--output-dir", type=Path, required=True, help="Output directory"
+    )
 
     # Model architecture
     parser.add_argument("--d-model", type=int, default=768, help="Model dimension")
     parser.add_argument("--n-layer", type=int, default=16, help="Number of layers")
 
     # Training
-    parser.add_argument("--batch-size", type=int, default=4, help="Batch size per device")
-    parser.add_argument("--gradient-accumulation-steps", type=int, default=8, help="Gradient accumulation")
-    parser.add_argument("--learning-rate", type=float, default=1e-4, help="Learning rate")
+    parser.add_argument(
+        "--batch-size", type=int, default=4, help="Batch size per device"
+    )
+    parser.add_argument(
+        "--gradient-accumulation-steps",
+        type=int,
+        default=8,
+        help="Gradient accumulation",
+    )
+    parser.add_argument(
+        "--learning-rate", type=float, default=1e-4, help="Learning rate"
+    )
     parser.add_argument("--num-epochs", type=int, default=3, help="Number of epochs")
-    parser.add_argument("--eval-holdout", type=float, default=0.02, help="Eval split fraction")
+    parser.add_argument(
+        "--eval-holdout", type=float, default=0.02, help="Eval split fraction"
+    )
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
-    parser.add_argument("--resume", action="store_true", help="Resume from last checkpoint")
-    parser.add_argument("--checkpoint-every", type=int, default=1000, help="Save checkpoint every N steps")
+    parser.add_argument(
+        "--resume", action="store_true", help="Resume from last checkpoint"
+    )
+    parser.add_argument(
+        "--checkpoint-every",
+        type=int,
+        default=1000,
+        help="Save checkpoint every N steps",
+    )
 
     return parser.parse_args()
 
@@ -358,9 +409,7 @@ def main():
 
     # Prepare datasets
     train_dataset, eval_dataset = prepare_datasets(
-        args.dataset_path,
-        args.eval_holdout,
-        args.seed
+        args.dataset_path, args.eval_holdout, args.seed
     )
     print(f"Train samples: {len(train_dataset)}")
     if eval_dataset:

@@ -145,7 +145,7 @@ class DualStreamInference:
     ) -> Tuple[List[str], float]:
         """Use SSM to predict next manifold signatures.
 
-        This is O(1) per step due to SSM's constant-size hidden state.
+        This is O(1) per step using SSM's inference cache.
 
         Args:
             input_ids: Current signature IDs
@@ -160,28 +160,67 @@ class DualStreamInference:
         ttft = 0.0
         start_time = time.time()
 
-        with torch.no_grad():
-            for i in range(num_predictions):
-                # Forward pass through SSM - O(N) but with small constant
-                outputs = self.model(input_ids)
-                logits = outputs["logits"][:, -1, :] / temperature
+        try:
+            from mamba_ssm.utils.generation import InferenceParams
 
-                # Sample next signature
+            has_cache = True
+        except ImportError:
+            has_cache = False
+            print(
+                "Warning: mamba_ssm InferenceParams not available. Falling back to O(N^2) scaling."
+            )
+
+        with torch.no_grad():
+            if has_cache:
+                inference_params = InferenceParams(
+                    max_seqlen=input_ids.shape[1] + num_predictions, max_batch_size=1
+                )
+
+                # First pass processes the entire prompt and populates the cache
+                outputs = self.model(input_ids, inference_params=inference_params)
+                logits = outputs["logits"][:, -1, :] / temperature
                 probs = torch.softmax(logits, dim=-1)
                 next_id = torch.multinomial(probs, num_samples=1)
 
-                if i == 0:
-                    ttft = time.time() - start_time
-
-                # Convert to signature
+                ttft = time.time() - start_time
                 sig_id = next_id.item()
                 if sig_id in self.id_to_sig:
                     predicted_sigs.append(self.id_to_sig[sig_id])
                 else:
-                    predicted_sigs.append("c0.0_s0.0_e0.0")  # fallback
+                    predicted_sigs.append("c0.0_s0.0_e0.0")
 
-                # Append for next iteration
-                input_ids = torch.cat([input_ids, next_id], dim=1)
+                # Subsequent passes are O(1) and only process the single new token
+                for _ in range(1, num_predictions):
+                    outputs = self.model(next_id, inference_params=inference_params)
+                    logits = outputs["logits"][:, -1, :] / temperature
+                    probs = torch.softmax(logits, dim=-1)
+                    next_id = torch.multinomial(probs, num_samples=1)
+
+                    sig_id = next_id.item()
+                    if sig_id in self.id_to_sig:
+                        predicted_sigs.append(self.id_to_sig[sig_id])
+                    else:
+                        predicted_sigs.append("c0.0_s0.0_e0.0")
+
+            else:
+                # O(N^2) Fallback logic
+                for i in range(num_predictions):
+                    outputs = self.model(input_ids)
+                    logits = outputs["logits"][:, -1, :] / temperature
+
+                    probs = torch.softmax(logits, dim=-1)
+                    next_id = torch.multinomial(probs, num_samples=1)
+
+                    if i == 0:
+                        ttft = time.time() - start_time
+
+                    sig_id = next_id.item()
+                    if sig_id in self.id_to_sig:
+                        predicted_sigs.append(self.id_to_sig[sig_id])
+                    else:
+                        predicted_sigs.append("c0.0_s0.0_e0.0")
+
+                    input_ids = torch.cat([input_ids, next_id], dim=1)
 
         return predicted_sigs, ttft
 
