@@ -80,7 +80,13 @@ def _iter_jsonl_file(
             line = line.strip()
             if not line:
                 continue
-            record = json.loads(line)
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as e:
+                print(
+                    f"Warning: Skipping invalid JSON on line {idx} in {path.name}: {e}"
+                )
+                continue
             text = _extract_text(record, text_key)
             prefix = doc_prefix or path.stem
             doc_id = f"{prefix}__{idx:07d}"

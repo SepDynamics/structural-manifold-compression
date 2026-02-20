@@ -241,6 +241,14 @@ def prepare_datasets(
         raise TypeError(f"Expected a Dataset at {dataset_path}, found {type(dataset)}")
 
     shuffled = dataset.shuffle(seed=seed)
+
+    # Handle very small datasets to prevent train_test_split from failing
+    if len(shuffled) < 10:
+        print(
+            f"Warning: Dataset too small ({len(shuffled)} samples) for eval holdout. Using all for training."
+        )
+        eval_holdout = 0.0
+
     if eval_holdout > 0.0:
         split = shuffled.train_test_split(test_size=eval_holdout, seed=seed)
         train_dataset = split["train"]
