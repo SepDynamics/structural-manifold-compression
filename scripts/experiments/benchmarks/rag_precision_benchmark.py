@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 import time
 from dataclasses import dataclass
@@ -13,10 +14,16 @@ from typing import Dict, List, Tuple, Iterable
 
 import faiss  # type: ignore
 from sentence_transformers import SentenceTransformer  # type: ignore
+from tqdm import tqdm  # type: ignore
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+
+import warnings
+warnings.filterwarnings("ignore", message="to_int32")
+
+logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
 
 from src.manifold.router import TripartiteRouter
 
@@ -49,23 +56,28 @@ def iter_text_files(text_root: Path) -> Iterable[Tuple[str, str]]:
         yield doc_id, path.read_text(encoding="utf-8")
 
 
-def build_embedding_index(text_root: Path, model_name: str) -> Tuple[faiss.IndexFlatIP, List[str]]:
-    model = SentenceTransformer(model_name)
+def build_embedding_index(text_root: Path, model: SentenceTransformer) -> Tuple[faiss.IndexFlatIP, List[str]]:
     docs: List[str] = []
     doc_ids: List[str] = []
     for doc_id, text in iter_text_files(text_root):
         doc_ids.append(doc_id)
         docs.append(text)
-    embeddings = model.encode(docs, convert_to_numpy=True, show_progress_bar=True, normalize_embeddings=True)
+    print("Encoding documents for FAISS...")
+    embeddings = model.encode(
+        docs,
+        convert_to_numpy=True,
+        show_progress_bar=True,
+        normalize_embeddings=True,
+    )
     index = faiss.IndexFlatIP(embeddings.shape[1])
     index.add(embeddings)
     return index, doc_ids
 
 
-def evaluate_embedding_recall(index: faiss.IndexFlatIP, doc_ids: List[str], model_name: str, questions: List[Question]) -> Dict[str, float]:
-    model = SentenceTransformer(model_name)
+def evaluate_embedding_recall(index: faiss.IndexFlatIP, doc_ids: List[str], model: SentenceTransformer, questions: List[Question]) -> Dict[str, float]:
     correct = 0
-    for q in questions:
+    print("Evaluating FAISS Semantic Embeddings...")
+    for q in tqdm(questions, desc="FAISS Recall"):
         query_vec = model.encode([q.query], convert_to_numpy=True, normalize_embeddings=True)
         _, indices = index.search(query_vec, 1)
         top_id = doc_ids[int(indices[0][0])]
@@ -76,7 +88,8 @@ def evaluate_embedding_recall(index: faiss.IndexFlatIP, doc_ids: List[str], mode
 
 def evaluate_manifold_recall(router: TripartiteRouter, questions: List[Question]) -> Dict[str, float]:
     correct = 0
-    for q in questions:
+    print("Evaluating AGI-Lite Manifold Structural Engine...")
+    for q in tqdm(questions, desc="Manifold Recall"):
         _, _, _, matched = router.process_query(
             q.query,
             hazard_threshold=1.0,
@@ -88,6 +101,7 @@ def evaluate_manifold_recall(router: TripartiteRouter, questions: List[Question]
 
 
 def ingest_documents(router: TripartiteRouter, text_root: Path) -> None:
+    print("Ingesting documents into Valkey Structural Memory...")
     for doc_id, text in iter_text_files(text_root):
         router.wm.add_document(doc_id, text)
 
@@ -101,13 +115,17 @@ def main() -> None:
     args = parser.parse_args()
 
     questions = load_questions(args.questions)
-    index, doc_ids = build_embedding_index(args.text_root, args.model)
+
+    print(f"Loading SentenceTransformer model: {args.model}...")
+    model = SentenceTransformer(args.model)
+
+    index, doc_ids = build_embedding_index(args.text_root, model)
 
     router = TripartiteRouter()
     ingest_documents(router, args.text_root)
 
     start = time.time()
-    embedding_stats = evaluate_embedding_recall(index, doc_ids, args.model, questions)
+    embedding_stats = evaluate_embedding_recall(index, doc_ids, model, questions)
     embedding_stats["embedding_seconds"] = time.time() - start
 
     start = time.time()
@@ -122,6 +140,9 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(output, indent=2), encoding="utf-8")
+
+    print("\n=== Benchmark Complete ===")
+    print(json.dumps(output, indent=2))
 
 
 if __name__ == "__main__":

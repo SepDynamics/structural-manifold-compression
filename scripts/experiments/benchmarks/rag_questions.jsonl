@@ -1,5 +1,5 @@
-{"query":"What does TripartiteRouter.process_query return?","expected_doc":"rag__tripartite_cli"}
-{"query":"Where is the hazard threshold default set for the CLI?","expected_doc":"rag__tripartite_cli"}
-{"query":"Which file defines the rag precision benchmark?","expected_doc":"experiments__benchmarks__rag_precision_benchmark"}
-{"query":"Which file implements the needle-in-haystack benchmark?","expected_doc":"experiments__benchmarks__needle_haystack"}
-{"query":"Which script builds the manifold compression evaluation?","expected_doc":"experiments__manifold_compression_eval"}
+{"query":"The Tripartite Daemon CLI","expected_doc":"rag__tripartite_cli"}
+{"query":"RAG precision benchmark: FAISS embeddings vs. manifold structural retrieval.","expected_doc":"experiments__benchmarks__rag_precision_benchmark"}
+{"query":"Needle-in-haystack long-context benchmark for manifold vs baseline model.","expected_doc":"experiments__benchmarks__needle_haystack"}
+{"query":"Evaluate manifold compression, token budgets, and reconstruction fidelity.","expected_doc":"experiments__manifold_compression_eval"}
+{"query":"Tripartite Physics Visualizer","expected_doc":"physics_visualizer__app"}
