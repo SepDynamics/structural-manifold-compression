@@ -18,9 +18,23 @@ from src.manifold.valkey_client import ValkeyWorkingMemory
 from src.manifold.sidecar import verify_snippet
 
 
+class FreeEnergyCalculator:
+    def __init__(self, target_coverage: float = 50.0):
+        self.target_coverage = target_coverage
+
+    def compute(self, observed_coverage: float) -> float:
+        epsilon = self.target_coverage - observed_coverage
+        return 0.5 * (epsilon ** 2)
+
+    def normalized(self, observed_coverage: float) -> float:
+        free_energy = self.compute(observed_coverage)
+        return min(1.0, free_energy / 10000.0)
+
+
 class TripartiteRouter:
     def __init__(self):
         self.wm = ValkeyWorkingMemory()
+        self.free_energy = FreeEnergyCalculator()
 
     def generate_llm_response(self, query: str, context: str, endpoint: str) -> str:
         """Call the local LLM (e.g. Ollama) with the structurally retrieved context."""
@@ -85,6 +99,8 @@ User Query: {query}
         )
 
         coverage = result.coverage * 100
+        self.free_energy.target_coverage = coverage_threshold * 100
+        free_energy_norm = self.free_energy.normalized(coverage)
 
         # Grab context from Valkey based on matched documents
         context_blocks = []
@@ -98,7 +114,7 @@ User Query: {query}
         context_str = "\n".join(context_blocks)
 
         # 2. Heuristic Resolution (Tension Gate)
-        if result.verified:
+        if result.verified and free_energy_norm <= hazard_threshold:
             response = "\n".join(context_blocks) if context_blocks else "(No documents securely resolved, but coverage math passed the threshold.)"
         else:
             if not context_blocks:
