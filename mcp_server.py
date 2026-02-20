@@ -16,35 +16,15 @@ from mcp.server.fastmcp import FastMCP
 from src.manifold.sidecar import (
     encode_text,
     verify_snippet,
-    build_index,
-    ManifoldIndex,
 )
 
 # Initialize the MCP Server
 mcp = FastMCP("ManifoldEngine")
 
-# We will store the injected facts in an in-memory index for this session.
-# (This represents the Dynamic Semantic Codebook.)
-# Key: document ID, Value: plain text fact
-IN_MEMORY_DOCS = {}
-_ACTIVE_INDEX = None
+# We will store the injected facts in the persistent Valkey index.
+from src.manifold.valkey_client import ValkeyWorkingMemory
 
-
-def _get_or_build_index() -> ManifoldIndex | None:
-    """Helper to maintain the dynamic semantic codebook."""
-    global _ACTIVE_INDEX
-    if not IN_MEMORY_DOCS:
-        return None
-    # Rebuild index dynamically when accessed (mimics < 12ms injection)
-    # Optimization: In a more complex architecture, we'd incrementally update it.
-    _ACTIVE_INDEX = build_index(
-        IN_MEMORY_DOCS,
-        window_bytes=512,
-        stride_bytes=384,
-        precision=3,
-        use_native=True,  # leverage the C++ bindings for speed
-    )
-    return _ACTIVE_INDEX
+valkey_wm = ValkeyWorkingMemory()
 
 
 @mcp.tool()
@@ -93,13 +73,12 @@ def inject_semantic_fact(fact_id: str, fact_text: str) -> str:
     Returns:
         A success message indicating the fact was injected.
     """
-    global _ACTIVE_INDEX
-    IN_MEMORY_DOCS[fact_id] = fact_text
+    if not valkey_wm.ping():
+        return "❌ Error: Could not connect to local Valkey instance on port 6379."
 
-    # Invalidate the cache; it will rebuild on next verify
-    _ACTIVE_INDEX = None
+    valkey_wm.add_document(fact_id, fact_text)
 
-    return f"🚀 Fact '{fact_id}' assimilated into the Dynamic Semantic Codebook successfully."
+    return f"🚀 Fact '{fact_id}' assimilated into the persistent Dynamic Semantic Codebook successfully."
 
 
 @mcp.tool()
@@ -115,7 +94,7 @@ def verify_manifold_snippet(snippet: str, coverage_threshold: float = 0.5) -> st
     Returns:
         A verification report spanning the hit ratio and whether the snippet passed the hazard gate.
     """
-    index = _get_or_build_index()
+    index = valkey_wm.get_or_build_index()
     if index is None:
         return "❌ Error: The Working Memory Codebook is empty. Inject facts first using `inject_semantic_fact`."
 
