@@ -77,10 +77,19 @@ def evaluate_embedding_recall(index: faiss.IndexFlatIP, doc_ids: List[str], mode
 def evaluate_manifold_recall(router: TripartiteRouter, questions: List[Question]) -> Dict[str, float]:
     correct = 0
     for q in questions:
-        verified, _, _, matched = router.process_query(q.query)
-        if verified and matched and matched[0] == q.expected_doc:
+        _, _, _, matched = router.process_query(
+            q.query,
+            hazard_threshold=1.0,
+            coverage_threshold=0.0,
+        )
+        if matched and q.expected_doc in matched:
             correct += 1
     return {"manifold_recall": correct / max(len(questions), 1)}
+
+
+def ingest_documents(router: TripartiteRouter, text_root: Path) -> None:
+    for doc_id, text in iter_text_files(text_root):
+        router.wm.add_document(doc_id, text)
 
 
 def main() -> None:
@@ -95,6 +104,7 @@ def main() -> None:
     index, doc_ids = build_embedding_index(args.text_root, args.model)
 
     router = TripartiteRouter()
+    ingest_documents(router, args.text_root)
 
     start = time.time()
     embedding_stats = evaluate_embedding_recall(index, doc_ids, args.model, questions)

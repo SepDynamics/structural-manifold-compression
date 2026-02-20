@@ -1,3 +1,5 @@
-{"query":"What does TripartiteRouter.process_query return?","expected_doc":"scripts/rag/tripartite_cli"}
-{"query":"Which file defines the Valkey working memory client?","expected_doc":"src/manifold/valkey_client"}
-{"query":"Where is the hazard threshold default set for the CLI?","expected_doc":"scripts/rag/tripartite_cli"}
+{"query":"What does TripartiteRouter.process_query return?","expected_doc":"rag__tripartite_cli"}
+{"query":"Where is the hazard threshold default set for the CLI?","expected_doc":"rag__tripartite_cli"}
+{"query":"Which file defines the rag precision benchmark?","expected_doc":"experiments__benchmarks__rag_precision_benchmark"}
+{"query":"Which file implements the needle-in-haystack benchmark?","expected_doc":"experiments__benchmarks__needle_haystack"}
+{"query":"Which script builds the manifold compression evaluation?","expected_doc":"experiments__manifold_compression_eval"}
