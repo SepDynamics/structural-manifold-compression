@@ -1,0 +1,3 @@
+{"query":"What does TripartiteRouter.process_query return?","expected_doc":"scripts/rag/tripartite_cli"}
+{"query":"Which file defines the Valkey working memory client?","expected_doc":"src/manifold/valkey_client"}
+{"query":"Where is the hazard threshold default set for the CLI?","expected_doc":"scripts/rag/tripartite_cli"}

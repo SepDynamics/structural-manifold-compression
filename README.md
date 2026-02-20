@@ -317,6 +317,40 @@ The PDF includes methodology, metric definitions, full benchmark tables, DeepSee
 
 ---
 
+## Tripartite Benchmarks (MMLU, HellaSwag, Needle, RAG Precision)
+
+```bash
+# 1) Install benchmark dependencies
+pip install -r requirements.txt
+
+# 2) Run lm-eval (MMLU + HellaSwag) against a manifold LM checkpoint
+python scripts/experiments/benchmark_eval.py \
+  --lm-eval-model output/benchmarks/lm_weights \
+  --lm-eval-tasks mmlu,hellaswag \
+  --lm-eval-output-dir output/lm_eval_runs
+
+# 3) Needle-in-haystack TTFT/VRAM probe (baseline GPT-2)
+python scripts/experiments/benchmarks/needle_haystack.py \
+  --text-root data/raw_text \
+  --needle "The secret launch code is Omega-77" \
+  --model gpt2 \
+  --output output/benchmarks/needle_haystack.json
+
+# 4) RAG precision: FAISS + MiniLM vs. manifold router
+python scripts/experiments/benchmarks/rag_precision_benchmark.py \
+  --questions scripts/experiments/benchmarks/rag_questions.jsonl \
+  --text-root scripts \
+  --model all-MiniLM-L6-v2 \
+  --output output/benchmarks/rag_precision.json
+```
+
+Outputs:
+- `output/lm_eval_runs/results_summary.json` (MMLU + HellaSwag)
+- `output/benchmarks/needle_haystack.json` (TTFT + VRAM)
+- `output/benchmarks/rag_precision.json` (embedding vs manifold recall)
+
+---
+
 ## Release Channels & Hugging Face Space
 
 - **GitHub (this repo)** – canonical scripts, docs, and benchmarks. Open issues with the JSON/CSV outputs from `benchmark_eval.py` so we can reproduce quickly.
