@@ -1,5 +1,169 @@
-{"query":"TripartiteRouter.process_query","expected_doc":"rag__tripartite_cli"}
-{"query":"hazard_threshold default","expected_doc":"rag__tripartite_cli"}
-{"query":"evaluate_embedding_recall","expected_doc":"experiments__benchmarks__rag_precision_benchmark"}
-{"query":"needle_haystack","expected_doc":"experiments__benchmarks__needle_haystack"}
-{"query":"manifold_compression_eval","expected_doc":"experiments__manifold_compression_eval"}
+{"query": "ser = argparse.ArgumentP", "expected_doc": "experiments__perplexity_compare"}
+{"query": "DataCollator,", "expected_doc": "experiments__perplexity_compare"}
+{"query": "ifold_model,", "expected_doc": "experiments__perplexity_compare"}
+{"query": "manifold-dataset\"", "expected_doc": "experiments__perplexity_compare"}
+{"query": "manifold_compression_eval import build_compressed_repr", "expected_doc": "experiments__manifold_verification_demo"}
+{"query": "_root=text_r", "expected_doc": "experiments__manifold_verification_demo"}
+{"query": "window_bytes", "expected_doc": "experiments__manifold_verification_demo"}
+{"query": "e=Path, required=True, help=\"Destination ", "expected_doc": "experiments__manifold_verification_demo"}
+{"query": "t_distance_total\": total_token_edit", "expected_doc": "experiments__deepseek_ocr_runner"}
+{"query": "n.get(\"DEESEEK_OCR_TMP\", \"/tmp\")) / \"deepseek_ocr_runner", "expected_doc": "experiments__deepseek_ocr_runner"}
+{"query": "vidia.cusparselt", "expected_doc": "experiments__deepseek_ocr_runner"}
+{"query": " motif in mot", "expected_doc": "experiments__benchmarks__generate_motif_queries"}
+{"query": "in() -> None:", "expected_doc": "experiments__benchmarks__generate_motif_queries"}
+{"query": "ter_text_files(args.te", "expected_doc": "experiments__benchmarks__generate_motif_queries"}
+{"query": "h.insert(0, s", "expected_doc": "data__download_corpora"}
+{"query": " {source_root} -> {d", "expected_doc": "data__download_corpora"}
+{"query": "oad_tokenizer,", "expected_doc": "data__download_corpora"}
+{"query": "doc] syncing {source_root} -> {dest_root}\")", "expected_doc": "data__download_corpora"}
+{"query": "len(train_data", "expected_doc": "training__mamba_ssm_trainer"}
+{"query": "d_model: int,", "expected_doc": "training__mamba_ssm_trainer"}
+{"query": "arameters(), lr=args.lear", "expected_doc": "training__mamba_ssm_trainer"}
+{"query": "args.summary)", "expected_doc": "experiments__plot_curves"}
+{"query": "urn pd.DataFra", "expected_doc": "experiments__plot_curves"}
+{"query": "al Manifold\"", "expected_doc": "experiments__plot_curves"}
+{"query": "put.parent.mkdir(pa", "expected_doc": "experiments__plot_curves"}
+{"query": "eshold: floa", "expected_doc": "experiments__benchmarks__fep_learning_test"}
+{"query": "ding=\"utf-8\"", "expected_doc": "experiments__benchmarks__fep_learning_test"}
+{"query": "overage-threshold\", type=float, default=0", "expected_doc": "experiments__benchmarks__fep_learning_test"}
+{"query": "onversations) < 2:", "expected_doc": "experiments__prepare_benchmarks"}
+{"query": "t annotation", "expected_doc": "experiments__prepare_benchmarks"}
+{"query": "escription=\"Prepare Fox and OmniDocBench benchmark te", "expected_doc": "experiments__prepare_benchmarks"}
+{"query": "racters=len(targ", "expected_doc": "experiments__prepare_benchmarks"}
+{"query": "age_id\": page_i", "expected_doc": "experiments__build_manifest"}
+{"query": "sr/bin/env pytho", "expected_doc": "experiments__build_manifest"}
+{"query": "_path.open(\"w\", encoding=\"ut", "expected_doc": "experiments__build_manifest"}
+{"query": "LIT = \"test\"", "expected_doc": "experiments__build_manifest"}
+{"query": "to(Path.cwd()", "expected_doc": "experiments__run_optical_inference"}
+{"query": "\"--temperature\", type=float, help=\"Sampling te", "expected_doc": "experiments__run_optical_inference"}
+{"query": "n/env python3", "expected_doc": "experiments__run_optical_inference"}
+{"query": "if path.exists", "expected_doc": "experiments__manifold_compression_eval"}
+{"query": "r[-1] + 1,  ", "expected_doc": "experiments__manifold_compression_eval"}
+{"query": "s\": positive", "expected_doc": "experiments__manifold_compression_eval"}
+{"query": "el.to(device", "expected_doc": "experiments__benchmarks__needle_haystack"}
+{"query": "nizer, corpus,", "expected_doc": "experiments__benchmarks__needle_haystack"}
+{"query": "import torch", "expected_doc": "experiments__benchmarks__needle_haystack"}
+{"query": "= len(token_matche", "expected_doc": "data__build_real_codebook"}
+{"query": "s_path}...\")", "expected_doc": "data__build_real_codebook"}
+{"query": "codebook['entries'])} entries at {out", "expected_doc": "data__build_real_codebook"}
+{"query": "ppend(sig_list[", "expected_doc": "data__build_real_codebook"}
+{"query": "e__ == \"__main_", "expected_doc": "rag__prepare_corpus"}
+{"query": "file(doc_id: str, path: Pa", "expected_doc": "rag__prepare_corpus"}
+{"query": "doc_id = f\"{doc_id_prefix}#pag", "expected_doc": "rag__prepare_corpus"}
+{"query": "uery string.", "expected_doc": "rag__demo_rag"}
+{"query": "\"Naive vs manifold-verified RAG de", "expected_doc": "rag__demo_rag"}
+{"query": "build_index, loa", "expected_doc": "rag__demo_rag"}
+{"query": " numpy as np", "expected_doc": "rag__demo_rag"}
+{"query": " due to a fictional", "expected_doc": "experiments__benchmarks__fep_novel"}
+{"query": " free-energy spike.", "expected_doc": "experiments__benchmarks__fep_novel"}
+{"query": "ue to a fictiona", "expected_doc": "experiments__benchmarks__fep_novel"}
+{"query": "s the baseline to trigger a free-energy sp", "expected_doc": "experiments__benchmarks__fep_novel"}
+{"query": "sk = torch.ones", "expected_doc": "experiments__math_qa_demo"}
+{"query": "ion=precision", "expected_doc": "experiments__math_qa_demo"}
+{"query": "s=args.max_new_toke", "expected_doc": "experiments__math_qa_demo"}
+{"query": "ndidate in (MOD", "expected_doc": "experiments__math_qa_demo"}
+{"query": "ld_index/corpus.j", "expected_doc": "rag__README"}
+{"query": "ds `output/manifold_index/s", "expected_doc": "rag__README"}
+{"query": "ts/rag/build_manifold_index.p", "expected_doc": "rag__README"}
+{"query": "ts package ma", "expected_doc": "__init__"}
+{"query": " package mark", "expected_doc": "__init__"}
+{"query": "s package marker", "expected_doc": "__init__"}
+{"query": "tructural manifold scripts packa", "expected_doc": "__init__"}
+{"query": "return self.ge", "expected_doc": "tests__test_zero_shot_injection"}
+{"query": "mp(report, f, ", "expected_doc": "tests__test_zero_shot_injection"}
+{"query": "vel else \"FAIL\"", "expected_doc": "tests__test_zero_shot_injection"}
+{"query": "ed a list of", "expected_doc": "experiments__decode_signatures"}
+{"query": "precision=3,", "expected_doc": "experiments__decode_signatures"}
+{"query": "ids, inference_params=inference_pa", "expected_doc": "inference__dual_stream_inference"}
+{"query": "nerated_text", "expected_doc": "inference__dual_stream_inference"}
+{"query": "e for w in resu", "expected_doc": "inference__dual_stream_inference"}
+{"query": "tr = \"cuda\",", "expected_doc": "inference__dual_stream_inference"}
+{"query": "\"--lora-rank", "expected_doc": "training__run_pipeline"}
+{"query": "\"Which stage", "expected_doc": "training__run_pipeline"}
+{"query": "e_native=args.use_native,", "expected_doc": "rag__verify_snippet"}
+{"query": "nimum low-hazard coverage required to mark a snipp", "expected_doc": "rag__verify_snippet"}
+{"query": " in sys.path", "expected_doc": "rag__verify_snippet"}
+{"query": "rgs = parse_args", "expected_doc": "rag__verify_snippet"}
+{"query": "(iter_text_documents(text_root)", "expected_doc": "experiments__prototype_cache"}
+{"query": "lib import P", "expected_doc": "experiments__prototype_cache"}
+{"query": "ON storage.\"\"\"", "expected_doc": "experiments__prototype_cache"}
+{"query": "th: Path | Non", "expected_doc": "experiments__prototype_cache"}
+{"query": "atio = float(result[\"compression_", "expected_doc": "experiments__plot_manifold_sweep"}
+{"query": "positive_rate\": ", "expected_doc": "experiments__plot_manifold_sweep"}
+{"query": "em['window']}/S{item['stride']}\" for item in entries_s", "expected_doc": "experiments__plot_manifold_sweep"}
+{"query": "pe_field not i", "expected_doc": "experiments__eval_math_dataset"}
+{"query": "_ import anno", "expected_doc": "experiments__eval_math_dataset"}
+{"query": "e_cache import ensure_protot", "expected_doc": "experiments__eval_math_dataset"}
+{"query": "ion_eval impor", "expected_doc": "experiments__manifold_compression_grid"}
+{"query": "ent.mkdir(parents=True,", "expected_doc": "experiments__manifold_compression_grid"}
+{"query": "\"--text-root\", type=Path, required=True,", "expected_doc": "experiments__manifold_compression_grid"}
+{"query": "iform(1.0, 10.", "expected_doc": "tests__build_codebook"}
+{"query": "ighbors = []", "expected_doc": "tests__build_codebook"}
+{"query": "sig_list[j])", "expected_doc": "tests__build_codebook"}
+{"query": "ghbors.append(sig_list[j])", "expected_doc": "tests__build_codebook"}
+{"query": ".train_test_split(t", "expected_doc": "training__manifold_lm_trainer"}
+{"query": "ing=\"utf-8\")", "expected_doc": "training__manifold_lm_trainer"}
+{"query": "er.add_argument(", "expected_doc": "training__manifold_lm_trainer"}
+{"query": "return False", "expected_doc": "rag__active_watcher"}
+{"query": "ef on_created(", "expected_doc": "rag__active_watcher"}
+{"query": "onnection fai", "expected_doc": "rag__active_watcher"}
+{"query": "r/bin/env pyt", "expected_doc": "experiments__run_structural_metrics"}
+{"query": "ded_section =", "expected_doc": "experiments__run_structural_metrics"}
+{"query": "d\"] = decoded_sectio", "expected_doc": "experiments__run_structural_metrics"}
+{"query": "cord[\"page_id\"],", "expected_doc": "experiments__run_structural_metrics"}
+{"query": "m __future__ i", "expected_doc": "experiments__benchmarks__rag_precision_benchmark"}
+{"query": "pathlib import", "expected_doc": "experiments__benchmarks__rag_precision_benchmark"}
+{"query": "ride_bytes=s", "expected_doc": "experiments__benchmarks__rag_precision_benchmark"}
+{"query": "d11.get_include(),", "expected_doc": "utils__setup_quantum"}
+{"query": "cpp_src_dir, \"sep_c", "expected_doc": "utils__setup_quantum"}
+{"query": "ir, \"sep_quantum.cpp", "expected_doc": "utils__setup_quantum"}
+{"query": "ampleRecord] = []", "expected_doc": "training__ocr_trainer"}
+{"query": ": List[SampleRecord] = []", "expected_doc": "training__ocr_trainer"}
+{"query": "xt_path(str(record[\"text_path\"]), text", "expected_doc": "training__ocr_trainer"}
+{"query": " Path(__file__).resolve().parent.", "expected_doc": "training__ocr_trainer"}
+{"query": "in [1, 2, 3]", "expected_doc": "compute_st_validation"}
+{"query": " = df['ST'].quantile(0.5", "expected_doc": "compute_st_validation"}
+{"query": "': row['ts']", "expected_doc": "compute_st_validation"}
+{"query": "f[f'reversal_{hor}", "expected_doc": "compute_st_validation"}
+{"query": "n-Haystack Basel", "expected_doc": "experiments__plot_fep_curves"}
+{"query": "assimilate\"],", "expected_doc": "experiments__plot_fep_curves"}
+{"query": "s.fep, args.out_dir / \"f", "expected_doc": "experiments__plot_fep_curves"}
+{"query": "savefig(outp", "expected_doc": "experiments__plot_fep_curves"}
+{"query": "store_true\",", "expected_doc": "rag__build_manifold_index"}
+{"query": "=args.use_na", "expected_doc": "rag__build_manifold_index"}
+{"query": "(__file__).resolv", "expected_doc": "rag__build_manifold_index"}
+{"query": "parser.add_ar", "expected_doc": "data__download_finemath"}
+{"query": "le = open_shard(out_dir, args.pr", "expected_doc": "data__download_finemath"}
+{"query": "out_dir, args.prefix, shard_", "expected_doc": "data__download_finemath"}
+{"query": "config: str,", "expected_doc": "data__download_finemath"}
+{"query": " Sort by score and return", "expected_doc": "inference__dynamic_codebook"}
+{"query": "in/env python3", "expected_doc": "inference__dynamic_codebook"}
+{"query": "ional[List[str]] =", "expected_doc": "inference__dynamic_codebook"}
+{"query": "data[\"frequency\"", "expected_doc": "inference__dynamic_codebook"}
+{"query": "te_stats(paths.stats,", "expected_doc": "data__prepare_causal_dataset"}
+{"query": "rd_from_chunk(chunk_signatures, d", "expected_doc": "data__prepare_causal_dataset"}
+{"query": "\": str(text_roo", "expected_doc": "data__prepare_causal_dataset"}
+{"query": "on used as basel", "expected_doc": "experiments__benchmarks__fep_baseline"}
+{"query": ",458 meters per second", "expected_doc": "experiments__benchmarks__fep_baseline"}
+{"query": "as baseline co", "expected_doc": "experiments__benchmarks__fep_baseline"}
+{"query": "s definition used as baseline", "expected_doc": "experiments__benchmarks__fep_baseline"}
+{"query": "al blending used by SCORE comp", "expected_doc": "experiments__build_causal_domain"}
+{"query": "window and any historical reco", "expected_doc": "experiments__build_causal_domain"}
+{"query": "n accumulator", "expected_doc": "experiments__build_causal_domain"}
+{"query": " in entry.items", "expected_doc": "experiments__build_causal_domain"}
+{"query": "_path = args.output.resolve(", "expected_doc": "experiments__build_hybrid_report"}
+{"query": "(record[\"doc_id\"]", "expected_doc": "experiments__build_hybrid_report"}
+{"query": "ain() -> Non", "expected_doc": "experiments__build_hybrid_report"}
+{"query": "rd[key_fields[1]", "expected_doc": "experiments__build_hybrid_report"}
+{"query": "pdate(str(token) for ", "expected_doc": "experiments__build_prototype_cache"}
+{"query": "import argpar", "expected_doc": "experiments__build_prototype_cache"}
+{"query": "ndex, (_, text) in enumerate(iter_text_do", "expected_doc": "experiments__build_prototype_cache"}
+{"query": "ignature-file.\")", "expected_doc": "experiments__build_prototype_cache"}
+{"query": "ops=estimated_flops", "expected_doc": "benchmarks__compute_economics_benchmark"}
+{"query": "en = [r.time_per_toke", "expected_doc": "benchmarks__compute_economics_benchmark"}
+{"query": "dual_stream_result", "expected_doc": "benchmarks__compute_economics_benchmark"}
+{"query": "ter.writerows(", "expected_doc": "experiments__benchmark_eval"}
+{"query": "tasks=tasks,", "expected_doc": "experiments__benchmark_eval"}
+{"query": "untimeError(f\"lm-eval failed: {proc.stder", "expected_doc": "experiments__benchmark_eval"}
+{"query": "add_argument(", "expected_doc": "rag__tripartite_cli"}
+{"query": "lm_endpoint,", "expected_doc": "rag__tripartite_cli"}
