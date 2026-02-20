@@ -1,0 +1,2 @@
+The speed of light in vacuum is approximately 299,792,458 meters per second.
+This is a standard physics definition used as baseline context.

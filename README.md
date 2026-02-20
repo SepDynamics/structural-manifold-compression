@@ -351,6 +351,25 @@ Outputs:
 
 ---
 
+## Latest Concept-Driven Benchmark Results
+
+- **Grid Cell Spatial Benchmark (RAG Precision):**
+  - Embedding recall: 0.2
+  - Manifold recall: 0.6
+  - Timing: 0.058s (embedding) vs 0.010s (manifold)
+  - Source: `output/benchmarks/rag_precision.json`
+- **Predictive Coding / FEP Learning:**
+  - Baseline query time: 0.0148s
+  - Spike-to-assimilate time: 0.0063s
+  - Source: `output/benchmarks/fep_learning_test.json`
+- **Needle-in-Haystack (Baseline GPT-2):**
+  - TTFT: 0.300s
+  - VRAM: 652,881,408 bytes
+  - Corpus: 81,967 bytes
+  - Source: `output/benchmarks/needle_haystack.json`
+
+---
+
 ## Release Channels & Hugging Face Space
 
 - **GitHub (this repo)** – canonical scripts, docs, and benchmarks. Open issues with the JSON/CSV outputs from `benchmark_eval.py` so we can reproduce quickly.
