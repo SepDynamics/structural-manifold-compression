@@ -1,6 +1,6 @@
 def complex_topological_function(manifold_points):
     """
-    This function analyzes the continuous phase state of the 
+    This function analyzes the continuous phase state of the
     structure to see if we can trigger the FEP gate and force
     the latent semantic adapter to guess the rest of the code!
     """

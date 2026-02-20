@@ -3,10 +3,10 @@
 Tripartite Router Module
 Shared logic for processing queries through the structural manifold engine.
 """
-
+import re
 import sys
 import requests
-import re
+from valkey
 from pathlib import Path
 from typing import Tuple, List
 

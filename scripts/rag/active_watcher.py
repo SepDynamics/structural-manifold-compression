@@ -8,16 +8,16 @@ manifold signatures, and streams the updates to the active Valkey memory.
 import sys
 import time
 import argparse
+
 from pathlib import Path
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from src.manifold.valkey_client import ValkeyWorkingMemory
 
 # Provide access to local project modules
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
-
-from src.manifold.valkey_client import ValkeyWorkingMemory
 
 VALID_EXTENSIONS = {
     ".py",

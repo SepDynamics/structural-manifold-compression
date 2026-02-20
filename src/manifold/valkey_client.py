@@ -1,4 +1,4 @@
-import redis
+import valkey
 import json
 from typing import Dict, Optional
 
@@ -12,7 +12,7 @@ class ValkeyWorkingMemory:
     """
 
     def __init__(self, host: str = "localhost", port: int = 6379, db: int = 0):
-        self.r = redis.Redis(host=host, port=port, db=db, decode_responses=True)
+        self.r = valkey.Redis(host=host, port=port, db=db, decode_responses=True)
         self.doc_prefix = "manifold:docs:"
         self.index_key = "manifold:active_index"
 
@@ -20,7 +20,7 @@ class ValkeyWorkingMemory:
         """Check if Valkey is alive."""
         try:
             return self.r.ping()
-        except redis.ConnectionError:
+        except valkey.ConnectionError:
             return False
 
     def add_document(self, doc_id: str, text: str) -> None:

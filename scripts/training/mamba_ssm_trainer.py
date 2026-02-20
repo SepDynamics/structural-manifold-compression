@@ -111,10 +111,17 @@ class MambaLM(nn.Module):
         self.config = config
 
         self.embedding = nn.Embedding(config.vocab_size, config.d_model)
-        self.layers = nn.ModuleList(
+        # Replace single stream with 3 parallel Cortical Columns
+        self.num_columns = 3
+        self.columns = nn.ModuleList(
             [
-                MambaBlock(config.d_model, config.ssm_cfg, layer_idx=i)
-                for i in range(config.n_layer)
+                nn.ModuleList(
+                    [
+                        MambaBlock(config.d_model, config.ssm_cfg, layer_idx=i)
+                        for i in range(config.n_layer)
+                    ]
+                )
+                for _ in range(self.num_columns)
             ]
         )
         self.norm_f = RMSNorm(config.d_model)
@@ -141,9 +148,17 @@ class MambaLM(nn.Module):
         """
         x = self.embedding(input_ids)
 
-        # Pass through Mamba layers - O(N) in sequence length or O(1) with inference cache
-        for layer in self.layers:
-            x = layer(x, inference_params=inference_params)
+        # Pass through the parallel Cortical Columns
+        column_outputs = []
+        for col in self.columns:
+            h = x
+            for layer in col:
+                h = layer(h, inference_params=inference_params)
+            column_outputs.append(h)
+
+        # Heterarchical Voting (Consensus Mechanism)
+        # We take the mean across all 3 cortical columns to minimize global structural tension
+        x = torch.mean(torch.stack(column_outputs), dim=0)
 
         x = self.norm_f(x)
         logits = self.lm_head(x)
@@ -377,42 +392,45 @@ def train_epoch(
                 # to the layers by adjusting weights in direction of the local error
                 # For simplicity in this architectural milestone, we apply the FEP error
                 # directly to the final projection of the Mamba layers
-                for layer in model.layers:
-                    if hasattr(layer.mamba, "out_proj"):
-                        # Local structural update: shift weights toward resolving the physical discrepancy
-                        # dW = error * input^T
-                        layer_out = layer.mamba.out_proj
-                        err_flat = hidden_error.view(-1, hidden_error.size(-1))
-                        # In a true local Hebbian, we'd use the layer's local input, but as a proxy
-                        # we use the recurrent state to push the output projection.
-                        dW_layer = err_flat.t().mm(hidden_flat) / max(
-                            hidden_flat.size(0), 1
-                        )
-                        w_out = layer_out.weight
-                        if w_out.size(1) != dW_layer.size(1):
-                            repeats = w_out.size(1) // dW_layer.size(1)
-                            if repeats > 0:
-                                dW_layer = dW_layer.repeat(1, repeats)
-                            if dW_layer.size(1) != w_out.size(1):
-                                dW_layer = F.pad(
-                                    dW_layer, (0, w_out.size(1) - dW_layer.size(1))
-                                )
+                for col in model.columns:
+                    for layer in col:
+                        if hasattr(layer.mamba, "out_proj"):
+                            # Local structural update: shift weights toward resolving the physical discrepancy
+                            # dW = error * input^T
+                            layer_out = layer.mamba.out_proj
+                            err_flat = hidden_error.view(-1, hidden_error.size(-1))
+                            # In a true local Hebbian, we'd use the layer's local input, but as a proxy
+                            # we use the recurrent state to push the output projection.
+                            dW_layer = err_flat.t().mm(hidden_flat) / max(
+                                hidden_flat.size(0), 1
+                            )
+                            w_out = layer_out.weight
+                            if w_out.size(1) != dW_layer.size(1):
+                                repeats = w_out.size(1) // dW_layer.size(1)
+                                if repeats > 0:
+                                    dW_layer = dW_layer.repeat(1, repeats)
+                                if dW_layer.size(1) != w_out.size(1):
+                                    dW_layer = F.pad(
+                                        dW_layer, (0, w_out.size(1) - dW_layer.size(1))
+                                    )
 
-                        # 2. Oja's Weight Decay for the Layer Parameter
-                        y_sq_layer = (err_flat**2).mean(dim=0).unsqueeze(1)
-                        if y_sq_layer.size(0) != w_out.size(0):
-                            repeats_y = w_out.size(0) // y_sq_layer.size(0)
-                            if repeats_y > 0:
-                                y_sq_layer = y_sq_layer.repeat(repeats_y, 1)
+                            # 2. Oja's Weight Decay for the Layer Parameter
+                            y_sq_layer = (err_flat**2).mean(dim=0).unsqueeze(1)
                             if y_sq_layer.size(0) != w_out.size(0):
-                                y_sq_layer = F.pad(
-                                    y_sq_layer,
-                                    (0, 0, 0, w_out.size(0) - y_sq_layer.size(0)),
-                                )
+                                repeats_y = w_out.size(0) // y_sq_layer.size(0)
+                                if repeats_y > 0:
+                                    y_sq_layer = y_sq_layer.repeat(repeats_y, 1)
+                                if y_sq_layer.size(0) != w_out.size(0):
+                                    y_sq_layer = F.pad(
+                                        y_sq_layer,
+                                        (0, 0, 0, w_out.size(0) - y_sq_layer.size(0)),
+                                    )
 
-                        decay_layer = y_sq_layer * w_out
+                            decay_layer = y_sq_layer * w_out
 
-                        layer_out.weight.add_(learning_rate * (dW_layer - decay_layer))
+                            layer_out.weight.add_(
+                                learning_rate * (dW_layer - decay_layer)
+                            )
         else:
             loss.backward()
 

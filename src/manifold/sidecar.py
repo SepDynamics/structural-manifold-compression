@@ -10,7 +10,10 @@ from typing import Dict, Iterable, List, Mapping, MutableMapping, Sequence, Tupl
 
 import numpy as np
 
-from scripts.experiments.manifold_compression_eval import iter_text_documents, sliding_windows
+from scripts.experiments.manifold_compression_eval import (
+    iter_text_documents,
+    sliding_windows,
+)
 from sep_text_manifold import encode, native
 
 FORMAT_VERSION = "1"
@@ -170,7 +173,9 @@ def encode_text(
     prototypes: Dict[str, str] = {}
     hazards: List[float] = []
 
-    for window_index, (offset, chunk) in enumerate(sliding_windows(text_bytes, window_bytes, stride_bytes)):
+    for window_index, (offset, chunk) in enumerate(
+        sliding_windows(text_bytes, window_bytes, stride_bytes)
+    ):
         metrics = encode.encode_window(bytes(chunk))
         signature = encode.signature_from_metrics(
             metrics["coherence"],
@@ -197,10 +202,14 @@ def encode_text(
         )
 
         if signature not in prototypes:
-            prototypes[signature] = text_bytes[byte_start:byte_end].decode("utf-8", errors="replace")
+            prototypes[signature] = text_bytes[byte_start:byte_end].decode(
+                "utf-8", errors="replace"
+            )
         hazards.append(hazard)
 
-    hazard_threshold = float(np.quantile(np.array(hazards), hazard_percentile)) if hazards else 0.0
+    hazard_threshold = (
+        float(np.quantile(np.array(hazards), hazard_percentile)) if hazards else 0.0
+    )
     return EncodeResult(
         windows=windows,
         prototypes=prototypes,
@@ -295,7 +304,12 @@ def _aggregate_index(
                         "char_end": window.char_end,
                     },
                     "occurrences": [],
-                    "hazard": {"min": window.hazard, "max": window.hazard, "sum": 0.0, "count": 0},
+                    "hazard": {
+                        "min": window.hazard,
+                        "max": window.hazard,
+                        "sum": 0.0,
+                        "count": 0,
+                    },
                 }
                 signatures[window.signature] = entry
 
@@ -320,7 +334,9 @@ def _aggregate_index(
     for entry in signatures.values():
         entry["hazard"] = _finalise_hazard_stats(entry["hazard"])
 
-    hazard_threshold = float(np.quantile(np.array(hazards), hazard_percentile)) if hazards else 0.0
+    hazard_threshold = (
+        float(np.quantile(np.array(hazards), hazard_percentile)) if hazards else 0.0
+    )
     meta = {
         "window_bytes": window_bytes,
         "stride_bytes": stride_bytes,
@@ -374,7 +390,9 @@ def build_manifold_index(
 
     docs: Dict[str, str] = {}
     processed = 0
-    for doc_index, (doc_id, text) in enumerate(iter_text_documents(text_root, json_text_key=json_text_key)):
+    for doc_index, (doc_id, text) in enumerate(
+        iter_text_documents(text_root, json_text_key=json_text_key)
+    ):
         if doc_index < max(document_offset, 0):
             continue
         if max_documents is not None and processed >= max_documents:
@@ -426,7 +444,10 @@ def reconstruct_from_windows(
             return win.to_dict()
         return win
 
-    sorted_windows = sorted((_window_dict(w) for w in windows), key=lambda item: int(item.get("byte_start", 0)))
+    sorted_windows = sorted(
+        (_window_dict(w) for w in windows),
+        key=lambda item: int(item.get("byte_start", 0)),
+    )
     result = bytearray()
     for window in sorted_windows:
         signature = str(window.get("signature", ""))
@@ -463,13 +484,21 @@ def verify_snippet(
     Coverage = low-hazard matched windows / total windows. Uses hazard gate from index unless overridden.
     """
 
-    meta = index.meta if isinstance(index, ManifoldIndex) else (index.get("meta", {}) if isinstance(index, Mapping) else {})
+    meta = (
+        index.meta
+        if isinstance(index, ManifoldIndex)
+        else (index.get("meta", {}) if isinstance(index, Mapping) else {})
+    )
     signatures = index.signatures if isinstance(index, ManifoldIndex) else index.get("signatures", {})  # type: ignore[arg-type]
 
     window_bytes = window_bytes or int(meta.get("window_bytes", 512))
     stride_bytes = stride_bytes or int(meta.get("stride_bytes", 384))
     precision = precision or int(meta.get("precision", 3))
-    hazard_threshold = hazard_threshold if hazard_threshold is not None else float(meta.get("hazard_threshold", 0.0))
+    hazard_threshold = (
+        hazard_threshold
+        if hazard_threshold is not None
+        else float(meta.get("hazard_threshold", 0.0))
+    )
 
     encoded = encode_text(
         text,
@@ -489,7 +518,11 @@ def verify_snippet(
     for window in windows:
         entry = signatures.get(window.signature, {})
         occurrences = entry.get("occurrences", []) if isinstance(entry, Mapping) else []
-        safe_occurrences = [occ for occ in occurrences if float(occ.get("hazard", 0.0)) <= hazard_threshold]
+        safe_occurrences = [
+            occ
+            for occ in occurrences
+            if float(occ.get("hazard", 0.0)) <= hazard_threshold
+        ]
         hazard_ok = window.hazard <= hazard_threshold
         has_match = bool(occurrences)
 
@@ -513,10 +546,13 @@ def verify_snippet(
     match_ratio = matched_windows / total if total else 0.0
     verified = coverage >= coverage_threshold
 
-    prototypes = {sig: sig_entry.get("prototype", {}) for sig, sig_entry in signatures.items()}
-    reconstruction = (
-        reconstruct_from_windows(window_results, prototypes) if include_reconstruction else None
-    )
+    if include_reconstruction:
+        prototypes = {
+            sig: sig_entry.get("prototype", {}) for sig, sig_entry in signatures.items()
+        }
+        reconstruction = reconstruct_from_windows(window_results, prototypes)
+    else:
+        reconstruction = None
 
     return VerificationResult(
         verified=verified,
@@ -540,7 +576,9 @@ def load_index(path: Path) -> ManifoldIndex:
         raise ValueError(f"Invalid index payload in {path}")
     version = str(data.get("format_version", "") or "")
     if version and version != FORMAT_VERSION:
-        raise ValueError(f"Unsupported index version {version}, expected {FORMAT_VERSION}")
+        raise ValueError(
+            f"Unsupported index version {version}, expected {FORMAT_VERSION}"
+        )
     hazard_threshold = data.get("hazard_threshold")
     meta = data.get("meta", {})
     if hazard_threshold is not None:
