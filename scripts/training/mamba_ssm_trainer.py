@@ -374,6 +374,18 @@ def train_epoch(
                         dW_layer = err_flat.t().mm(hidden_flat) / max(
                             hidden_flat.size(0), 1
                         )
+                        w_out = layer_out.weight
+                        if w_out.size(1) != dW_layer.size(1):
+                            repeats = w_out.size(1) // dW_layer.size(1)
+                            if repeats > 0:
+                                dW_layer = dW_layer.repeat(1, repeats)
+                            if dW_layer.size(1) != w_out.size(1):
+                                import torch.nn.functional as F
+
+                                dW_layer = F.pad(
+                                    dW_layer, (0, w_out.size(1) - dW_layer.size(1))
+                                )
+
                         layer_out.weight.add_(learning_rate * dW_layer)
         else:
             loss.backward()

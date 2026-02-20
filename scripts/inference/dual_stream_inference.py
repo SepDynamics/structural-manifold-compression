@@ -161,13 +161,13 @@ class DualStreamInference:
         start_time = time.time()
 
         try:
-            from mamba_ssm.utils.generation import InferenceParams
+            from mamba.utils.generation import InferenceParams
 
             has_cache = True
         except ImportError:
             has_cache = False
             print(
-                "Warning: mamba_ssm InferenceParams not available. Falling back to O(N^2) scaling."
+                "Warning: mamba InferenceParams not available. Falling back to O(N^2) scaling."
             )
 
         with torch.no_grad():

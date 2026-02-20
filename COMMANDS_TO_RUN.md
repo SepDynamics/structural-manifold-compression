@@ -15,7 +15,7 @@ chmod +x run_quick_demo.sh
 ```
 
 This will:
-1. Install dependencies (mamba-ssm, torch)
+1. Install dependencies (mamba, torch)
 2. Create a minimal dataset
 3. Train a tiny SSM (256-dim, 4 layers)
 4. Generate sample text
