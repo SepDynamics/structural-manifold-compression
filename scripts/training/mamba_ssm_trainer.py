@@ -330,19 +330,51 @@ def train_epoch(
             shift_hidden = outputs["hidden"][..., :-1, :].contiguous()
             shift_labels = labels[..., 1:].contiguous()
 
+            # 1. Update the LM Head (and implicitly the tied Embedding)
             vocab_size = shift_logits.size(-1)
             probs = torch.softmax(shift_logits, dim=-1)
+            # Create target distribution
+            valid_labels = shift_labels.clamp_min(0)
             one_hot = torch.zeros_like(probs).scatter_(
-                -1, shift_labels.unsqueeze(-1).clamp_min(0), 1.0
+                -1, valid_labels.unsqueeze(-1), 1.0
             )
-            error = one_hot - probs
 
+            # The error in probabilities
+            error = one_hot - probs
             error_flat = error.view(-1, vocab_size)
             hidden_flat = shift_hidden.view(-1, shift_hidden.size(-1))
-            dW = error_flat.t().mm(hidden_flat) / max(hidden_flat.size(0), 1)
+
+            # Gradient for LM Head
+            dW_head = error_flat.t().mm(hidden_flat) / max(hidden_flat.size(0), 1)
 
             with torch.no_grad():
-                model.lm_head.weight.add_(learning_rate * dW)
+                model.lm_head.weight.add_(
+                    learning_rate * 10 * dW_head
+                )  # Boosted LR for head
+
+                # 2. Predictive Coding for the SSM Manifold (Deep Hebbian)
+                # Instead of backprop, we use the actual next token embedding as the local target
+                # for the current hidden state.
+                # e_l = Target - Predicted
+                target_hidden = model.embedding(valid_labels)
+                hidden_error = target_hidden - shift_hidden
+
+                # We apply a simplified Oja's/Hebbian rule to the norm layer and implicitly
+                # to the layers by adjusting weights in direction of the local error
+                # For simplicity in this architectural milestone, we apply the FEP error
+                # directly to the final projection of the Mamba layers
+                for layer in model.layers:
+                    if hasattr(layer.mamba, "out_proj"):
+                        # Local structural update: shift weights toward resolving the physical discrepancy
+                        # dW = error * input^T
+                        layer_out = layer.mamba.out_proj
+                        err_flat = hidden_error.view(-1, hidden_error.size(-1))
+                        # In a true local Hebbian, we'd use the layer's local input, but as a proxy
+                        # we use the recurrent state to push the output projection.
+                        dW_layer = err_flat.t().mm(hidden_flat) / max(
+                            hidden_flat.size(0), 1
+                        )
+                        layer_out.weight.add_(learning_rate * dW_layer)
         else:
             loss.backward()
 

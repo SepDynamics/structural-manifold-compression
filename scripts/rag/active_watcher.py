@@ -19,7 +19,19 @@ if str(REPO_ROOT) not in sys.path:
 
 from src.manifold.valkey_client import ValkeyWorkingMemory
 
-VALID_EXTENSIONS = {".py", ".md", ".txt", ".json", ".c", ".cpp", ".h", ".hpp", ".sh"}
+VALID_EXTENSIONS = {
+    ".py",
+    ".md",
+    ".txt",
+    ".json",
+    ".c",
+    ".cpp",
+    ".h",
+    ".hpp",
+    ".sh",
+    ".wav",
+    ".dat",
+}
 EXCLUDE_DIRS = {".git", "__pycache__", ".venv", "node_modules", "output", "build"}
 
 wm = ValkeyWorkingMemory()
@@ -52,9 +64,18 @@ class TripartiteSensoryHandler(FileSystemEventHandler):
         try:
             # We add a slight delay to ensure file writing is complete before reading
             time.sleep(0.1)
-            text = file_path.read_text(encoding="utf-8")
-            if not text.strip():
-                return
+
+            # Multi-Modal Boundary: Read raw bytes if audio/data, else text
+            if file_path.suffix.lower() in [".wav", ".dat"]:
+                raw_bytes = file_path.read_bytes()
+                if not raw_bytes:
+                    return
+                # Convert raw bytes to a storable hex string representation for Valkey
+                text = raw_bytes.hex()
+            else:
+                text = file_path.read_text(encoding="utf-8")
+                if not text.strip():
+                    return
 
             doc_id = str(file_path.relative_to(REPO_ROOT))
             print(f"👁️ [SENSORY INGESTION] Encoding changes in {doc_id}...")
