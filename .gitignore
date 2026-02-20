@@ -1,4 +1,6 @@
-__pycache__/
+output/findings/*
+output/figures/*
+output/figures/*
 wikitext-103/
 *.pyc
 build/
