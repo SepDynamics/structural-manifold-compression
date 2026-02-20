@@ -5,10 +5,9 @@ Shared logic for processing queries through the structural manifold engine.
 """
 
 import sys
-import json
 import requests
 from pathlib import Path
-from typing import Tuple, List, Optional
+from typing import Tuple, List
 
 # Provide access to local project modules
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
