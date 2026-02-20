@@ -341,6 +341,12 @@ def train_epoch(
 
             # The error in probabilities
             error = one_hot - probs
+
+            import torch.nn.functional as F
+
+            # 1. Normalize the Error Term (L2 Normalization acting as refractory period constraint)
+            error = F.normalize(error, p=2, dim=-1)
+
             error_flat = error.view(-1, vocab_size)
             hidden_flat = shift_hidden.view(-1, shift_hidden.size(-1))
 
@@ -348,8 +354,12 @@ def train_epoch(
             dW_head = error_flat.t().mm(hidden_flat) / max(hidden_flat.size(0), 1)
 
             with torch.no_grad():
+                # 2. Map Oja's Weight Decay: ∆W = η(dW - y^2 W)
+                y_sq_head = (error_flat**2).mean(dim=0).unsqueeze(1)
+                decay_head = y_sq_head * model.lm_head.weight
+
                 model.lm_head.weight.add_(
-                    learning_rate * 10 * dW_head
+                    learning_rate * 10 * (dW_head - decay_head)
                 )  # Boosted LR for head
 
                 # 2. Predictive Coding for the SSM Manifold (Deep Hebbian)
@@ -358,6 +368,9 @@ def train_epoch(
                 # e_l = Target - Predicted
                 target_hidden = model.embedding(valid_labels)
                 hidden_error = target_hidden - shift_hidden
+
+                # 1. Normalize the Hidden Error Term
+                hidden_error = F.normalize(hidden_error, p=2, dim=-1)
 
                 # We apply a simplified Oja's/Hebbian rule to the norm layer and implicitly
                 # to the layers by adjusting weights in direction of the local error
@@ -380,13 +393,25 @@ def train_epoch(
                             if repeats > 0:
                                 dW_layer = dW_layer.repeat(1, repeats)
                             if dW_layer.size(1) != w_out.size(1):
-                                import torch.nn.functional as F
-
                                 dW_layer = F.pad(
                                     dW_layer, (0, w_out.size(1) - dW_layer.size(1))
                                 )
 
-                        layer_out.weight.add_(learning_rate * dW_layer)
+                        # 2. Oja's Weight Decay for the Layer Parameter
+                        y_sq_layer = (err_flat**2).mean(dim=0).unsqueeze(1)
+                        if y_sq_layer.size(0) != w_out.size(0):
+                            repeats_y = w_out.size(0) // y_sq_layer.size(0)
+                            if repeats_y > 0:
+                                y_sq_layer = y_sq_layer.repeat(repeats_y, 1)
+                            if y_sq_layer.size(0) != w_out.size(0):
+                                y_sq_layer = F.pad(
+                                    y_sq_layer,
+                                    (0, 0, 0, w_out.size(0) - y_sq_layer.size(0)),
+                                )
+
+                        decay_layer = y_sq_layer * w_out
+
+                        layer_out.weight.add_(learning_rate * (dW_layer - decay_layer))
         else:
             loss.backward()
 
@@ -449,7 +474,7 @@ def parse_args():
         help="Gradient accumulation",
     )
     parser.add_argument(
-        "--learning-rate", type=float, default=1e-4, help="Learning rate"
+        "--learning-rate", type=float, default=5e-6, help="Learning rate"
     )
     parser.add_argument("--num-epochs", type=int, default=3, help="Number of epochs")
     parser.add_argument(
