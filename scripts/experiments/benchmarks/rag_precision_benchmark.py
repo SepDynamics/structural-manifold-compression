@@ -25,7 +25,7 @@ warnings.filterwarnings("ignore", message="to_int32")
 
 logging.getLogger("transformers.modeling_utils").setLevel(logging.ERROR)
 
-from src.manifold.router import TripartiteRouter
+from src.manifold.sidecar import build_index, verify_snippet
 
 
 @dataclass
@@ -86,24 +86,31 @@ def evaluate_embedding_recall(index: faiss.IndexFlatIP, doc_ids: List[str], mode
     return {"embedding_recall": correct / max(len(questions), 1)}
 
 
-def evaluate_manifold_recall(router: TripartiteRouter, questions: List[Question]) -> Dict[str, float]:
+def evaluate_manifold_recall(index, questions: List[Question], window_bytes: int, stride_bytes: int) -> Dict[str, float]:
     correct = 0
     print("Evaluating AGI-Lite Manifold Structural Engine...")
     for q in tqdm(questions, desc="Manifold Recall"):
-        _, _, _, matched = router.process_query(
-            q.query,
+        result = verify_snippet(
+            text=q.query,
+            index=index,
             hazard_threshold=1.0,
             coverage_threshold=0.0,
+            window_bytes=window_bytes,
+            stride_bytes=stride_bytes,
+            precision=3,
+            use_native=True,
         )
+        matched = result.matched_documents
         if matched and q.expected_doc in str(matched):
             correct += 1
     return {"manifold_recall": correct / max(len(questions), 1)}
 
 
-def ingest_documents(router: TripartiteRouter, text_root: Path) -> None:
-    print("Ingesting documents into Valkey Structural Memory...")
+def build_manifold_docs(text_root: Path) -> Dict[str, str]:
+    docs: Dict[str, str] = {}
     for doc_id, text in iter_text_files(text_root):
-        router.wm.add_document(doc_id, text)
+        docs[doc_id] = text
+    return docs
 
 
 def main() -> None:
@@ -119,17 +126,26 @@ def main() -> None:
     print(f"Loading SentenceTransformer model: {args.model}...")
     model = SentenceTransformer(args.model)
 
-    index, doc_ids = build_embedding_index(args.text_root, model)
+    faiss_index, doc_ids = build_embedding_index(args.text_root, model)
 
-    router = TripartiteRouter()
-    ingest_documents(router, args.text_root)
+    docs = build_manifold_docs(args.text_root)
+    min_query_bytes = min(len(q.query.encode("utf-8")) for q in questions)
+    window_bytes = max(16, min_query_bytes)
+    stride_bytes = max(8, window_bytes // 2)
+    manifold_index = build_index(
+        docs,
+        window_bytes=window_bytes,
+        stride_bytes=stride_bytes,
+        precision=3,
+        use_native=True,
+    )
 
     start = time.time()
-    embedding_stats = evaluate_embedding_recall(index, doc_ids, model, questions)
+    embedding_stats = evaluate_embedding_recall(faiss_index, doc_ids, model, questions)
     embedding_stats["embedding_seconds"] = time.time() - start
 
     start = time.time()
-    manifold_stats = evaluate_manifold_recall(router, questions)
+    manifold_stats = evaluate_manifold_recall(manifold_index, questions, window_bytes, stride_bytes)
     manifold_stats["manifold_seconds"] = time.time() - start
 
     output = {
