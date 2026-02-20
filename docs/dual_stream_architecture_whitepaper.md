@@ -60,6 +60,11 @@ Functioning analogously to the biological thalamus, the system maintains a "Rece
 
 This mechanism mathematically guarantees that the high-variance LLM fallback operates inside a tightly constrained, biologically plausible soft-prompt, dramatically reducing inference compute while eliminating semantic hallucination.
 
+### 3.5 The Cortical Voting Loop (Consensus Mechanism)
+In the AGI-Lite framework, learning is a heterarchical consensus process. As the sensory manifold (C++ Encoder) moves through the byte-stream, Level 1 (SSM) generates a continuous prediction state. When a motif collision occurs—detected as a spike in Variational Free Energy ($F$)—the system invokes lateral "voting" via the Valkey Grid Cell Memory.
+
+The Latent Semantic Adapter projects a constrained activation buffer (Recency List) to the heuristic generator. The generator evaluates the consensus based on top-down priors. Once the prediction error ($\epsilon$) is minimized, the local Hebbian update loop applies a normalized refractory cap and Oja's weight decay to physically burn the new state into the Long-Term Memory (SSM weights), eliminating the need for a global frozen backward pass.
+
 ---
 
 ## Section 4: Empirical Findings (The Benchmarks)
