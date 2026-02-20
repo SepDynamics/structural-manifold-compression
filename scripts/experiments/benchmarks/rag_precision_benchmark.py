@@ -95,7 +95,7 @@ def evaluate_manifold_recall(router: TripartiteRouter, questions: List[Question]
             hazard_threshold=1.0,
             coverage_threshold=0.0,
         )
-        if matched and q.expected_doc in matched:
+        if matched and q.expected_doc in str(matched):
             correct += 1
     return {"manifold_recall": correct / max(len(questions), 1)}
 
