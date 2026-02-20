@@ -22,6 +22,7 @@ if str(REPO_ROOT) not in sys.path:
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from datasets import Dataset, load_from_disk
 from torch.utils.data import DataLoader
 from transformers.trainer_utils import get_last_checkpoint

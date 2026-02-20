@@ -25,7 +25,7 @@ class PairProgrammerHandler(FileSystemEventHandler):
         self.router = router
         self.last_trigger = 0.0
 
-    def on_modified(self, event):
+    def _process_event(self, event):
         if event.is_directory or not event.src_path.endswith(".py"):
             return
 
@@ -69,6 +69,12 @@ class PairProgrammerHandler(FileSystemEventHandler):
 
         except Exception as e:
             pass
+
+    def on_modified(self, event):
+        self._process_event(event)
+
+    def on_created(self, event):
+        self._process_event(event)
 
 
 def main():
