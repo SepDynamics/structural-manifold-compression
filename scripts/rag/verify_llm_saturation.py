@@ -66,17 +66,27 @@ def main():
 
     print("\n--- LLM FEP Saturation Sequence ---")
 
-    # We will run 3 highly complex, multi-scale abstract queries to generate maximum collisions
-    # We expect these to fail the deterministic coverage check and fire an LLM generation.
+    # We will run highly complex, multi-scale abstract queries that use some physical elements from the corpus
+    # (e.g. math syntax, continuous functions) but in illogical overlapping ways to generate High Hazard Tension.
+    # This will trigger the Latent Semantic Adapter to intercept the prompt with the Recency Buffer instead of raw text.
+
+    import json
+
+    corpus_path = REPO_ROOT / "data/raw_math/synthetic_linear_qa.jsonl"
+    with open(corpus_path, "r") as f:
+        real_text = json.loads(f.readline())["text"]
 
     queries = [
-        "Synthesize the relationship and step-by-step logic between integrating a quadratic equation and defining a continuous geometric topology.",
-        "If a linear function overlaps precisely with a logarithmic derivative at point X, what does that imply for absolute zero?",
-        "Compare the mathematical proof of prime factorization limits with the philosophical limits of infinite calculus.",
+        # Query 1: Exactly matches the first 600 bytes to overlap structurally,
+        # then collapses rapidly with philosophical ambiguity to trigger the LLM Latent Semantic Adapter.
+        real_text[:600]
+        + "\n\nAND THEN THE UNIVERSE EXPANDED INTO A KALEIDOSCOPE OF PHILOSOPHICAL EPISTEMOLOGY BEYOND THE TENSION GATE!"
+        * 5,
     ]
 
     for q in queries:
         test_fep_saturation(router, q)
+        print("-" * 60)
         time.sleep(1)  # Breath between LLM generations
 
 

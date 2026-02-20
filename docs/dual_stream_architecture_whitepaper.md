@@ -51,6 +51,14 @@ The Long-Term memory engine. Replaces Transformer attention with an SSM to maint
 ### 3.3 Layer 3: Associative Grid Memory (Valkey) & The "ADHD" Transformer
 The Collision Resolver. Valkey serves as the spatial Grid Cells, maintaining the continuous environmental map. When physical queries collide in high structural tension, the system acts as an "ADHD" Transformer—triggering an energetic LLM heuristic burst localized purely on the failing spatial coordinates to disambiguate the physical collision context.
 
+### 3.4 Layer 4: The Latent Semantic Adapter (The Recency Buffer)
+To bridge the discrete world of the Transformer and the continuous world of the Manifold without losing the speed of either, we introduce the **Latent Semantic Adapter**. This component acts as the system's Thalamus and Global Workspace.
+
+When the Quantum Failure Hazard ($\lambda$) spikes and triggers a collision, traditional RAG architectures would abruptly drop 5,000 raw text tokens into an LLM context window—forcing the model to waste compute re-reading raw bytes. Instead, the Tripartite Daemon:
+1. Translates the topological geometry of the collision into the **Top 50 Semantic Tokens** (the Recency List) currently "glowing" in the Valkey buffer.
+2. Injects these 50 words into the LLM as highly weighted soft-prompts or a constrained semantic context vector, acting as the "back of the mind" consciousness.
+3. Allows the LLM heuristic to rapidly guess the missing link using this severely restricted vocabulary sequence, eliminating massive text-window compute while retaining biological plausibility.
+
 ---
 
 ## Section 4: Empirical Findings (The Benchmarks)

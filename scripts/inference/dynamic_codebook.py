@@ -121,6 +121,29 @@ class DynamicCodebook:
                 if i != j:
                     self.spatial_index[sig].add(signatures[j])
 
+    def get_activation_buffer(
+        self, recent_signatures: List[str], top_n: int = 50
+    ) -> List[str]:
+        """Get the top-N highly active semantic tokens based on recent spatial signatures.
+
+        This acts as the Latent Semantic Adapter (Recency Buffer) bridging
+        the structural manifold to the LLM context.
+        """
+        scores = defaultdict(float)
+        for sig in recent_signatures:
+            tokens_with_scores = self.lookup(
+                sig, context_signatures=recent_signatures, top_k=top_n
+            )
+            for token, score in tokens_with_scores:
+                scores[token] += score
+
+        return [
+            tok
+            for tok, score in sorted(scores.items(), key=lambda x: x[1], reverse=True)[
+                :top_n
+            ]
+        ]
+
     def lookup(
         self,
         signature: str,
@@ -271,7 +294,9 @@ class DynamicCodebook:
         """Get codebook statistics."""
         unique_signatures = len(self.entries)
         total_tokens = sum(len(entry.tokens) for entry in self.entries.values())
-        avg_tokens_per_sig = total_tokens / unique_signatures if unique_signatures > 0 else 0
+        avg_tokens_per_sig = (
+            total_tokens / unique_signatures if unique_signatures > 0 else 0
+        )
 
         return {
             "unique_signatures": unique_signatures,
@@ -299,8 +324,10 @@ def build_codebook_from_corpus(
     codebook = DynamicCodebook(window_size=window_size)
 
     # Load corpus and signatures
-    with open(corpus_path, "r", encoding="utf-8") as corpus_file, \
-         open(manifold_signatures_path, "r", encoding="utf-8") as sig_file:
+    with (
+        open(corpus_path, "r", encoding="utf-8") as corpus_file,
+        open(manifold_signatures_path, "r", encoding="utf-8") as sig_file,
+    ):
 
         for position, (corpus_line, sig_line) in enumerate(zip(corpus_file, sig_file)):
             corpus_data = json.loads(corpus_line)
@@ -333,10 +360,18 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Build dynamic codebook from corpus")
-    parser.add_argument("--corpus", type=Path, required=True, help="Tokenized corpus (JSONL)")
-    parser.add_argument("--signatures", type=Path, required=True, help="Manifold signatures (JSONL)")
-    parser.add_argument("--output", type=Path, required=True, help="Output codebook path")
-    parser.add_argument("--window-size", type=int, default=512, help="Context window size")
+    parser.add_argument(
+        "--corpus", type=Path, required=True, help="Tokenized corpus (JSONL)"
+    )
+    parser.add_argument(
+        "--signatures", type=Path, required=True, help="Manifold signatures (JSONL)"
+    )
+    parser.add_argument(
+        "--output", type=Path, required=True, help="Output codebook path"
+    )
+    parser.add_argument(
+        "--window-size", type=int, default=512, help="Context window size"
+    )
 
     args = parser.parse_args()
 

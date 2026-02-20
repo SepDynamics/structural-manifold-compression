@@ -39,5 +39,11 @@ Transition AGI-Lite from global backprop training to a continuous, locally updat
 - Enable continuous top-down priors into Valkey.
 - Persist bottom-up motif evidence alongside priors for reconciliation.
 
+### Milestone 4: Latent Semantic Adapter (Recency Buffer)
+**Targets:** `scripts/inference/dynamic_codebook.py`, `src/manifold/router.py`
+**Goal:** Replace raw text RAG contexts with constrained biological vocabulary lists during FEP spikes.
+- **Step 1:** Modify `dynamic_codebook.py` to maintain a rolling "Activation Buffer" of the top 50 highly active tokens corresponding to the most recent spatial signatures.
+- **Step 2:** Refactor `router.py`'s LLM generation call (`generate_llm_response`). Instead of pasting 5,000 raw text tokens into the prompt, inject the active tokens as a semantic context vector or soft-prompt, drastically reducing compute overhead and mimicking biological cortical states (Thalamus/Global Workspace).
+
 ## 5. Immediate Next Step
 Begin Milestone 1: implement free-energy computation and gating in `src/manifold/router.py` with minimal changes to existing query flow.
