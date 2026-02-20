@@ -147,7 +147,7 @@ class MambaLM(nn.Module):
         x = self.norm_f(x)
         logits = self.lm_head(x)
 
-        output = {"logits": logits}
+        output = {"logits": logits, "hidden": x}
 
         if labels is not None:
             # Shift for causal LM: predict next token
@@ -302,6 +302,8 @@ def train_epoch(
     optimizer,
     device: torch.device,
     gradient_accumulation_steps: int = 1,
+    local_hebbian: bool = False,
+    learning_rate: float = 1e-4,
 ):
     """Train for one epoch."""
     model.train()
@@ -315,11 +317,30 @@ def train_epoch(
         outputs = model(input_ids, labels=labels)
         loss = outputs["loss"] / gradient_accumulation_steps
 
-        loss.backward()
+        if local_hebbian:
+            shift_logits = outputs["logits"][..., :-1, :].contiguous()
+            shift_hidden = outputs["hidden"][..., :-1, :].contiguous()
+            shift_labels = labels[..., 1:].contiguous()
 
-        if (batch_idx + 1) % gradient_accumulation_steps == 0:
-            optimizer.step()
-            optimizer.zero_grad()
+            vocab_size = shift_logits.size(-1)
+            probs = torch.softmax(shift_logits, dim=-1)
+            one_hot = torch.zeros_like(probs).scatter_(
+                -1, shift_labels.unsqueeze(-1).clamp_min(0), 1.0
+            )
+            error = one_hot - probs
+
+            error_flat = error.view(-1, vocab_size)
+            hidden_flat = shift_hidden.view(-1, shift_hidden.size(-1))
+            dW = error_flat.t().mm(hidden_flat) / max(hidden_flat.size(0), 1)
+
+            with torch.no_grad():
+                model.lm_head.weight.add_(learning_rate * dW)
+        else:
+            loss.backward()
+
+            if (batch_idx + 1) % gradient_accumulation_steps == 0:
+                optimizer.step()
+                optimizer.zero_grad()
 
         total_loss += loss.item() * gradient_accumulation_steps
         num_batches += 1
@@ -391,6 +412,11 @@ def parse_args():
         type=int,
         default=1000,
         help="Save checkpoint every N steps",
+    )
+    parser.add_argument(
+        "--local-hebbian",
+        action="store_true",
+        help="Use local Hebbian updates instead of global backprop",
     )
 
     return parser.parse_args()
@@ -466,7 +492,13 @@ def main():
         epoch_start = time.time()
 
         avg_loss = train_epoch(
-            model, train_loader, optimizer, device, args.gradient_accumulation_steps
+            model,
+            train_loader,
+            optimizer,
+            device,
+            args.gradient_accumulation_steps,
+            local_hebbian=args.local_hebbian,
+            learning_rate=args.learning_rate,
         )
 
         epoch_time = time.time() - epoch_start
