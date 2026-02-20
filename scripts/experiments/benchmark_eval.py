@@ -7,9 +7,11 @@ import argparse
 import csv
 import json
 import sys
+import subprocess
+import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List, Any
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
@@ -22,6 +24,15 @@ from scripts.experiments.manifold_compression_eval import evaluate_manifold  # n
 class DatasetConfig:
     label: str
     text_root: Path
+
+
+@dataclass
+class LmEvalConfig:
+    model_path: Path
+    tasks: List[str]
+    batch_size: int
+    device: str
+    output_path: Path
 
 
 def parse_dataset_args(dataset_args: Iterable[str]) -> List[DatasetConfig]:
@@ -39,10 +50,48 @@ def parse_dataset_args(dataset_args: Iterable[str]) -> List[DatasetConfig]:
     return configs
 
 
-def flatten_summary(label: str, summary: Dict[str, object]) -> Dict[str, object]:
-    token_metrics = summary.get("token_metrics", {})
-    character_metrics = summary.get("character_metrics", {})
-    verification = summary.get("verification", {})
+def run_lm_eval(config: LmEvalConfig) -> Dict[str, object]:
+    """Run EleutherAI lm-eval harness for the specified tasks."""
+    cmd = [
+        sys.executable,
+        "-m",
+        "lm_eval",
+        "--model",
+        "hf",
+        "--model_args",
+        f"pretrained={config.model_path}",
+        "--tasks",
+        ",".join(config.tasks),
+        "--batch_size",
+        str(config.batch_size),
+        "--device",
+        config.device,
+        "--output_path",
+        str(config.output_path),
+    ]
+    start = time.time()
+    proc = subprocess.run(cmd, capture_output=True, text=True)
+    duration = time.time() - start
+    if proc.returncode != 0:
+        raise RuntimeError(f"lm-eval failed: {proc.stderr}")
+    results_path = config.output_path / "results.json"
+    if not results_path.exists():
+        raise FileNotFoundError("lm-eval output results.json not found")
+    results = json.loads(results_path.read_text(encoding="utf-8"))
+    results["runtime_seconds"] = duration
+    return results
+
+
+def flatten_summary(label: str, summary: Dict[str, Any]) -> Dict[str, Any]:
+    token_metrics = summary.get("token_metrics") or {}
+    character_metrics = summary.get("character_metrics") or {}
+    verification = summary.get("verification") or {}
+    if not isinstance(token_metrics, dict):
+        token_metrics = {}
+    if not isinstance(character_metrics, dict):
+        character_metrics = {}
+    if not isinstance(verification, dict):
+        verification = {}
     return {
         "label": label,
         "documents": summary.get("documents"),
@@ -107,35 +156,85 @@ def main() -> None:
         default=0,
         help="Skip the first N documents for each dataset before processing.",
     )
+    parser.add_argument(
+        "--lm-eval-model",
+        type=Path,
+        help="Path to manifold LM directory (HF format) for lm-eval harness.",
+    )
+    parser.add_argument(
+        "--lm-eval-tasks",
+        type=str,
+        default="mmlu,hellaswag",
+        help="Comma-separated lm-eval tasks to run.",
+    )
+    parser.add_argument(
+        "--lm-eval-batch-size",
+        type=int,
+        default=8,
+        help="Batch size for lm-eval harness.",
+    )
+    parser.add_argument(
+        "--lm-eval-device",
+        type=str,
+        default="cuda",
+        choices=["cuda", "cpu"],
+        help="Device for lm-eval harness.",
+    )
+    parser.add_argument(
+        "--lm-eval-output-dir",
+        type=Path,
+        default=REPO_ROOT / "output" / "lm_eval_runs",
+        help="Output directory for lm-eval harness results.",
+    )
     args = parser.parse_args()
 
-    configs = parse_dataset_args(args.dataset or [])
-
-    args.output_dir.mkdir(parents=True, exist_ok=True)
+    if args.dataset is None and args.lm_eval_model is None:
+        raise ValueError("Provide at least one --dataset or --lm-eval-model")
 
     flat_rows: List[Dict[str, object]] = []
     combined: Dict[str, Dict[str, object]] = {}
 
-    for config in configs:
-        summary = evaluate_manifold(
-            text_root=config.text_root,
-            window_bytes=args.window_bytes,
-            stride_bytes=args.stride_bytes,
-            precision=args.precision,
-            tokenizer_name=args.tokenizer,
-            tokenizer_trust_remote_code=args.tokenizer_trust_remote_code,
-            max_documents=args.max_documents,
-            use_native=args.use_native,
-            json_text_key=args.json_text_key,
-            document_offset=args.document_offset,
-        )
-        json_path = args.output_dir / f"{config.label}.json"
-        json_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
-        flat_rows.append(flatten_summary(config.label, summary))
-        combined[config.label] = summary
+    if args.dataset:
+        configs = parse_dataset_args(args.dataset)
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        for config in configs:
+            summary = evaluate_manifold(
+                text_root=config.text_root,
+                window_bytes=args.window_bytes,
+                stride_bytes=args.stride_bytes,
+                precision=args.precision,
+                tokenizer_name=args.tokenizer,
+                tokenizer_trust_remote_code=args.tokenizer_trust_remote_code,
+                max_documents=args.max_documents,
+                use_native=args.use_native,
+                json_text_key=args.json_text_key,
+                document_offset=args.document_offset,
+            )
+            json_path = args.output_dir / f"{config.label}.json"
+            json_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+            flat_rows.append(flatten_summary(config.label, summary))
+            combined[config.label] = summary
 
-    write_csv(args.output_dir / "summary.csv", flat_rows)
-    (args.output_dir / "summary.json").write_text(json.dumps(combined, indent=2), encoding="utf-8")
+        write_csv(args.output_dir / "summary.csv", flat_rows)
+        (args.output_dir / "summary.json").write_text(
+            json.dumps(combined, indent=2), encoding="utf-8"
+        )
+
+    if args.lm_eval_model:
+        tasks = [task.strip() for task in args.lm_eval_tasks.split(",") if task.strip()]
+        lm_eval_output_dir = args.lm_eval_output_dir
+        lm_eval_output_dir.mkdir(parents=True, exist_ok=True)
+        lm_eval_config = LmEvalConfig(
+            model_path=args.lm_eval_model,
+            tasks=tasks,
+            batch_size=args.lm_eval_batch_size,
+            device=args.lm_eval_device,
+            output_path=lm_eval_output_dir,
+        )
+        lm_eval_results = run_lm_eval(lm_eval_config)
+        (lm_eval_output_dir / "results_summary.json").write_text(
+            json.dumps(lm_eval_results, indent=2), encoding="utf-8"
+        )
 
 
 if __name__ == "__main__":
