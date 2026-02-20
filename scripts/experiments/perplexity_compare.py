@@ -23,11 +23,18 @@ if str(REPO_ROOT) not in sys.path:
 
 from datasets import load_from_disk  # type: ignore  # noqa: E402
 
-from scripts.training.manifold_lm_trainer import ManifoldDataCollator, load_vocab  # noqa: E402
-from scripts.experiments.manifold_compression_eval import iter_text_documents  # noqa: E402
+from scripts.training.manifold_lm_trainer import (
+    ManifoldDataCollator,
+    load_vocab,
+)  # noqa: E402
+from scripts.experiments.manifold_compression_eval import (
+    iter_text_documents,
+)  # noqa: E402
 
 
-def select_eval_subset(dataset, max_samples: Optional[int], eval_fraction: float, seed: int):
+def select_eval_subset(
+    dataset, max_samples: Optional[int], eval_fraction: float, seed: int
+):
     if max_samples:
         return dataset.select(range(min(max_samples, len(dataset))))
     eval_size = max(1, int(len(dataset) * eval_fraction))
@@ -51,7 +58,9 @@ def evaluate_manifold(
     subset = select_eval_subset(dataset, max_samples, eval_fraction, seed)
     loader = DataLoader(subset, batch_size=batch_size, collate_fn=collator)
 
-    model = AutoModelForCausalLM.from_pretrained(str(model_path), torch_dtype=torch.float16 if device.type == "cuda" else torch.float32)
+    model = AutoModelForCausalLM.from_pretrained(
+        str(model_path), torch_dtype=torch.float32
+    )
     model.to(device)
     model.eval()
 
@@ -81,7 +90,9 @@ def evaluate_manifold(
     }
 
 
-def chunk_tokens(tokens: Iterable[int], block_size: int) -> Iterable[Tuple[torch.Tensor, torch.Tensor]]:
+def chunk_tokens(
+    tokens: Iterable[int], block_size: int
+) -> Iterable[Tuple[torch.Tensor, torch.Tensor]]:
     token_list = list(tokens)
     if len(token_list) < 2:
         return
@@ -91,7 +102,9 @@ def chunk_tokens(tokens: Iterable[int], block_size: int) -> Iterable[Tuple[torch
         labels = token_list[start + 1 : end + 1]
         if not labels:
             continue
-        yield torch.tensor(input_ids, dtype=torch.long), torch.tensor(labels, dtype=torch.long)
+        yield torch.tensor(input_ids, dtype=torch.long), torch.tensor(
+            labels, dtype=torch.long
+        )
 
 
 def evaluate_gpt2(
@@ -105,7 +118,10 @@ def evaluate_gpt2(
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-    model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16 if device.type == "cuda" else torch.float32)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name,
+        torch_dtype=torch.float32,
+    )
     model.to(device)
     model.eval()
 
@@ -141,20 +157,74 @@ def evaluate_gpt2(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Compare manifold LM vs GPT-2 perplexity.")
-    parser.add_argument("--manifold-model", type=Path, required=True, help="Path to manifold LM directory (HF format).")
-    parser.add_argument("--manifold-dataset", type=Path, required=True, help="Path to Hugging Face dataset built from manifold signatures.")
-    parser.add_argument("--manifold-vocab", type=Path, required=True, help="Path to vocab.json emitted by the dataset builder.")
-    parser.add_argument("--manifold-eval-fraction", type=float, default=0.1, help="Fraction of manifold dataset to evaluate if --manifold-max-samples is not set.")
-    parser.add_argument("--manifold-max-samples", type=int, help="Optional cap on number of manifold sequences to evaluate.")
+    parser = argparse.ArgumentParser(
+        description="Compare manifold LM vs GPT-2 perplexity."
+    )
+    parser.add_argument(
+        "--manifold-model",
+        type=Path,
+        required=True,
+        help="Path to manifold LM directory (HF format).",
+    )
+    parser.add_argument(
+        "--manifold-dataset",
+        type=Path,
+        required=True,
+        help="Path to Hugging Face dataset built from manifold signatures.",
+    )
+    parser.add_argument(
+        "--manifold-vocab",
+        type=Path,
+        required=True,
+        help="Path to vocab.json emitted by the dataset builder.",
+    )
+    parser.add_argument(
+        "--manifold-eval-fraction",
+        type=float,
+        default=0.1,
+        help="Fraction of manifold dataset to evaluate if --manifold-max-samples is not set.",
+    )
+    parser.add_argument(
+        "--manifold-max-samples",
+        type=int,
+        help="Optional cap on number of manifold sequences to evaluate.",
+    )
     parser.add_argument("--manifold-batch-size", type=int, default=8)
-    parser.add_argument("--gpt2-model", type=str, default="gpt2-medium", help="Hugging Face model id for the baseline.")
-    parser.add_argument("--raw-text", type=Path, required=True, help="Raw text corpus (JSON/JSONL/txt) for GPT-2 evaluation.")
-    parser.add_argument("--json-text-key", type=str, default="text", help="Field that contains text within JSON/JSONL corpora.")
-    parser.add_argument("--gpt2-block-size", type=int, default=1024, help="Chunk size (in tokens) for GPT-2 loss evaluation.")
-    parser.add_argument("--gpt2-max-documents", type=int, help="Optional cap on documents when evaluating GPT-2.")
-    parser.add_argument("--output", type=Path, help="Optional JSON file to write results.")
-    parser.add_argument("--device", type=str, default="auto", choices=["auto", "cpu", "cuda"])
+    parser.add_argument(
+        "--gpt2-model",
+        type=str,
+        default="gpt2-medium",
+        help="Hugging Face model id for the baseline.",
+    )
+    parser.add_argument(
+        "--raw-text",
+        type=Path,
+        required=True,
+        help="Raw text corpus (JSON/JSONL/txt) for GPT-2 evaluation.",
+    )
+    parser.add_argument(
+        "--json-text-key",
+        type=str,
+        default="text",
+        help="Field that contains text within JSON/JSONL corpora.",
+    )
+    parser.add_argument(
+        "--gpt2-block-size",
+        type=int,
+        default=1024,
+        help="Chunk size (in tokens) for GPT-2 loss evaluation.",
+    )
+    parser.add_argument(
+        "--gpt2-max-documents",
+        type=int,
+        help="Optional cap on documents when evaluating GPT-2.",
+    )
+    parser.add_argument(
+        "--output", type=Path, help="Optional JSON file to write results."
+    )
+    parser.add_argument(
+        "--device", type=str, default="auto", choices=["auto", "cpu", "cuda"]
+    )
     parser.add_argument("--seed", type=int, default=13)
     args = parser.parse_args()
 
@@ -185,7 +255,9 @@ def main() -> None:
 
     compression_ratio = None
     if manifold_stats["tokens_evaluated"] and gpt2_stats["raw_tokens_total"]:
-        compression_ratio = gpt2_stats["raw_tokens_total"] / manifold_stats["tokens_evaluated"]
+        compression_ratio = (
+            gpt2_stats["raw_tokens_total"] / manifold_stats["tokens_evaluated"]
+        )
 
     summary = {
         "manifold_eval": manifold_stats,

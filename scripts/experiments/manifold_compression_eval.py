@@ -15,6 +15,7 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
+
 def _maybe_extend_sys_path() -> None:
     candidates = [
         REPO_ROOT / "score" / "src",
@@ -58,12 +59,12 @@ def _iter_text_directory(root: Path, text_key: str) -> Iterable[Tuple[str, str]]
         if not path.is_file():
             continue
         suffix = path.suffix.lower()
-        if suffix not in {".txt", ".jsonl", ".ndjson", ".json"}:
+        if suffix not in {".txt", ".jsonl", ".ndjson", ".json", ".tokens"}:
             continue
         relative = path.relative_to(root).as_posix()
-        base = relative[:-len(path.suffix)] if path.suffix else relative
+        base = relative[: -len(path.suffix)] if path.suffix else relative
         base_id = base.replace("/", "__")
-        if suffix == ".txt":
+        if suffix in {".txt", ".tokens"}:
             yield base_id, path.read_text(encoding="utf-8")
         elif suffix in {".jsonl", ".ndjson"}:
             yield from _iter_jsonl_file(path, text_key, doc_prefix=base_id)
@@ -71,7 +72,9 @@ def _iter_text_directory(root: Path, text_key: str) -> Iterable[Tuple[str, str]]
             yield from _iter_json_file(path, text_key, doc_prefix=base_id)
 
 
-def _iter_jsonl_file(path: Path, text_key: str, doc_prefix: str | None = None) -> Iterable[Tuple[str, str]]:
+def _iter_jsonl_file(
+    path: Path, text_key: str, doc_prefix: str | None = None
+) -> Iterable[Tuple[str, str]]:
     with path.open("r", encoding="utf-8") as handle:
         for idx, line in enumerate(handle):
             line = line.strip()
@@ -84,7 +87,9 @@ def _iter_jsonl_file(path: Path, text_key: str, doc_prefix: str | None = None) -
             yield doc_id, text
 
 
-def _iter_json_file(path: Path, text_key: str, doc_prefix: str | None = None) -> Iterable[Tuple[str, str]]:
+def _iter_json_file(
+    path: Path, text_key: str, doc_prefix: str | None = None
+) -> Iterable[Tuple[str, str]]:
     data = json.loads(path.read_text(encoding="utf-8"))
     prefix = doc_prefix or path.stem
     if isinstance(data, list):
@@ -99,7 +104,9 @@ def _iter_json_file(path: Path, text_key: str, doc_prefix: str | None = None) ->
     raise TypeError(f"Unsupported JSON structure in {path}")
 
 
-def iter_text_documents(root: Path, json_text_key: str = "text") -> Iterable[Tuple[str, str]]:
+def iter_text_documents(
+    root: Path, json_text_key: str = "text"
+) -> Iterable[Tuple[str, str]]:
     if root.is_dir():
         yield from _iter_text_directory(root, json_text_key)
         return
@@ -114,7 +121,9 @@ def iter_text_documents(root: Path, json_text_key: str = "text") -> Iterable[Tup
     yield root.stem, root.read_text(encoding="utf-8")
 
 
-def sliding_windows(data: bytes, window_bytes: int, stride_bytes: int) -> Iterable[Tuple[int, bytes]]:
+def sliding_windows(
+    data: bytes, window_bytes: int, stride_bytes: int
+) -> Iterable[Tuple[int, bytes]]:
     if not data:
         return
     if len(data) <= window_bytes:
@@ -163,7 +172,9 @@ def build_compressed_representation(
 
     processed_docs = 0
     start_index = max(document_offset, 0)
-    for doc_index, (doc_id, text) in enumerate(iter_text_documents(text_root, json_text_key=json_text_key)):
+    for doc_index, (doc_id, text) in enumerate(
+        iter_text_documents(text_root, json_text_key=json_text_key)
+    ):
         if doc_index < start_index:
             continue
         if max_documents is not None and processed_docs >= max_documents:
@@ -201,7 +212,9 @@ def build_compressed_representation(
     return compressed, doc_windows, doc_texts, doc_sizes, prototypes
 
 
-def normalise_compressed(compressed: Dict[str, Dict[str, Dict[str, float]]]) -> Dict[str, Dict[str, Dict[str, float]]]:
+def normalise_compressed(
+    compressed: Dict[str, Dict[str, Dict[str, float]]],
+) -> Dict[str, Dict[str, Dict[str, float]]]:
     normalised: Dict[str, Dict[str, Dict[str, float]]] = {}
     for doc_id, signatures in compressed.items():
         doc_bucket: Dict[str, Dict[str, float]] = {}
@@ -239,7 +252,11 @@ def evaluate_verification(
                 if record.signature in signatures:
                     doc_false_pos += 1
                     false_positive += 1
-        precision = doc_true_pos / (doc_true_pos + doc_false_pos) if (doc_true_pos + doc_false_pos) else 1.0
+        precision = (
+            doc_true_pos / (doc_true_pos + doc_false_pos)
+            if (doc_true_pos + doc_false_pos)
+            else 1.0
+        )
         fpr = doc_false_pos / doc_neg if doc_neg else 0.0
         recall = 1.0 if doc_pos else 0.0
         per_doc_stats[doc_id] = {
@@ -250,10 +267,18 @@ def evaluate_verification(
             "precision": precision,
             "false_positive_rate": fpr,
             "recall": recall,
-            "f1": (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0,
+            "f1": (
+                (2 * precision * recall / (precision + recall))
+                if (precision + recall)
+                else 0.0
+            ),
         }
 
-    precision = true_positive / (true_positive + false_positive) if (true_positive + false_positive) else 1.0
+    precision = (
+        true_positive / (true_positive + false_positive)
+        if (true_positive + false_positive)
+        else 1.0
+    )
     recall = true_positive / positives if positives else 0.0
     false_positive_rate = false_positive / negatives if negatives else 0.0
 
@@ -265,7 +290,11 @@ def evaluate_verification(
         "precision": precision,
         "recall": recall,
         "false_positive_rate": false_positive_rate,
-        "f1": (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0,
+        "f1": (
+            (2 * precision * recall / (precision + recall))
+            if (precision + recall)
+            else 0.0
+        ),
     }
     return overall, per_doc_stats, negatives
 
@@ -334,7 +363,7 @@ def levenshtein_distance(a: Sequence[int], b: Sequence[int]) -> int:
             curr.append(
                 min(
                     curr[-1] + 1,  # insertion
-                    prev[j] + 1,    # deletion
+                    prev[j] + 1,  # deletion
                     prev[j - 1] + cost,
                 )
             )
@@ -342,7 +371,9 @@ def levenshtein_distance(a: Sequence[int], b: Sequence[int]) -> int:
     return prev[-1]
 
 
-def compute_token_metrics(original: str, reconstructed: str, tokenizer: TokenizerRuntime) -> Dict[str, float]:
+def compute_token_metrics(
+    original: str, reconstructed: str, tokenizer: TokenizerRuntime
+) -> Dict[str, float]:
     original_tokens = tokenizer.encode(original)
     reconstructed_tokens = tokenizer.encode(reconstructed)
     distance = levenshtein_distance(original_tokens, reconstructed_tokens)
@@ -352,7 +383,9 @@ def compute_token_metrics(original: str, reconstructed: str, tokenizer: Tokenize
     accuracy = 1.0 - (distance / denom)
     precision = 1.0 - (distance / max(reconstructed_len, 1))
     recall = 1.0 - (distance / max(original_len, 1))
-    f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
+    f1 = (
+        (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
+    )
     return {
         "original_tokens": original_len,
         "reconstructed_tokens": reconstructed_len,
@@ -374,7 +407,9 @@ def compute_character_metrics(original: str, reconstructed: str) -> Dict[str, fl
     accuracy = 1.0 - (distance / denom)
     precision = 1.0 - (distance / max(reconstructed_len, 1))
     recall = 1.0 - (distance / max(original_len, 1))
-    f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
+    f1 = (
+        (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
+    )
     normalized_distance = distance / denom
     return {
         "original_characters": original_len,
@@ -419,14 +454,21 @@ def evaluate_manifold(
         document_offset=document_offset,
     )
     compressed = normalise_compressed(compressed_raw)
-    doc_signatures = {doc_id: set(bucket.keys()) for doc_id, bucket in compressed.items()}
+    doc_signatures = {
+        doc_id: set(bucket.keys()) for doc_id, bucket in compressed.items()
+    }
     tokenizer_runtime = TokenizerRuntime(tokenizer_name, tokenizer_trust_remote_code)
 
     storage_bytes_per_sig = signature_storage_bytes(precision)
-    doc_compressed_size = {doc_id: len(signatures) * storage_bytes_per_sig for doc_id, signatures in doc_signatures.items()}
+    doc_compressed_size = {
+        doc_id: len(signatures) * storage_bytes_per_sig
+        for doc_id, signatures in doc_signatures.items()
+    }
     compressed_size = sum(doc_compressed_size.values())
     original_size = sum(doc_sizes.values())
-    compression_ratio = (original_size / compressed_size) if compressed_size else float("inf")
+    compression_ratio = (
+        (original_size / compressed_size) if compressed_size else float("inf")
+    )
 
     signature_doc_counts = Counter()
     for doc_id, signatures in doc_signatures.items():
@@ -434,7 +476,9 @@ def evaluate_manifold(
             signature_doc_counts[signature] += 1
     shared_signatures = sum(1 for count in signature_doc_counts.values() if count > 1)
 
-    verification_metrics, per_doc_verification, negatives = evaluate_verification(doc_signatures, doc_windows)
+    verification_metrics, per_doc_verification, negatives = evaluate_verification(
+        doc_signatures, doc_windows
+    )
 
     per_doc_summary = {}
     total_text_tokens = 0
@@ -448,9 +492,13 @@ def evaluate_manifold(
 
     for doc_id, windows in doc_windows.items():
         original_text = doc_texts[doc_id]
-        reconstructed_bytes = reconstruct_document(windows, prototypes[doc_id], stride_bytes)
+        reconstructed_bytes = reconstruct_document(
+            windows, prototypes[doc_id], stride_bytes
+        )
         reconstructed_text = reconstructed_bytes.decode("utf-8", errors="replace")
-        token_metrics = compute_token_metrics(original_text, reconstructed_text, tokenizer_runtime)
+        token_metrics = compute_token_metrics(
+            original_text, reconstructed_text, tokenizer_runtime
+        )
         character_metrics = compute_character_metrics(original_text, reconstructed_text)
 
         stream_tokens = len(windows)
@@ -479,10 +527,14 @@ def evaluate_manifold(
             "character_metrics": character_metrics,
             "normalized_edit_distance": character_metrics["normalized_edit_distance"],
             "token_compression_unique": (
-                token_metrics["original_tokens"] / unique_tokens if unique_tokens else float("inf")
+                token_metrics["original_tokens"] / unique_tokens
+                if unique_tokens
+                else float("inf")
             ),
             "token_compression_stream": (
-                token_metrics["original_tokens"] / stream_tokens if stream_tokens else float("inf")
+                token_metrics["original_tokens"] / stream_tokens
+                if stream_tokens
+                else float("inf")
             ),
             "verification": per_doc_verification.get(doc_id, {}),
         }
@@ -494,23 +546,37 @@ def evaluate_manifold(
         total_text_tokens / total_stream_tokens if total_stream_tokens else float("inf")
     )
     token_accuracy = 1.0 - (
-        total_token_edit_distance / max(total_text_tokens, total_reconstructed_tokens, 1)
+        total_token_edit_distance
+        / max(total_text_tokens, total_reconstructed_tokens, 1)
     )
-    token_precision = 1.0 - (total_token_edit_distance / max(total_reconstructed_tokens, 1))
+    token_precision = 1.0 - (
+        total_token_edit_distance / max(total_reconstructed_tokens, 1)
+    )
     token_recall = 1.0 - (total_token_edit_distance / max(total_text_tokens, 1))
-    token_f1 = (2 * token_precision * token_recall / (token_precision + token_recall)) if (
-        token_precision + token_recall
-    ) else 0.0
+    token_f1 = (
+        (2 * token_precision * token_recall / (token_precision + token_recall))
+        if (token_precision + token_recall)
+        else 0.0
+    )
 
-    normalized_char_edit_distance = (
-        total_char_edit_distance / max(total_characters, total_reconstructed_characters, 1)
+    normalized_char_edit_distance = total_char_edit_distance / max(
+        total_characters, total_reconstructed_characters, 1
     )
     character_accuracy = 1.0 - normalized_char_edit_distance
-    character_precision = 1.0 - (total_char_edit_distance / max(total_reconstructed_characters, 1))
+    character_precision = 1.0 - (
+        total_char_edit_distance / max(total_reconstructed_characters, 1)
+    )
     character_recall = 1.0 - (total_char_edit_distance / max(total_characters, 1))
-    character_f1 = (2 * character_precision * character_recall / (character_precision + character_recall)) if (
-        character_precision + character_recall
-    ) else 0.0
+    character_f1 = (
+        (
+            2
+            * character_precision
+            * character_recall
+            / (character_precision + character_recall)
+        )
+        if (character_precision + character_recall)
+        else 0.0
+    )
 
     try:
         text_root_rel = str(text_root.relative_to(REPO_ROOT))
@@ -530,7 +596,9 @@ def evaluate_manifold(
         "original_size_bytes": original_size,
         "compressed_size_bytes": compressed_size,
         "compression_ratio": compression_ratio,
-        "unique_signatures": sum(len(signatures) for signatures in doc_signatures.values()),
+        "unique_signatures": sum(
+            len(signatures) for signatures in doc_signatures.values()
+        ),
         "shared_signatures": shared_signatures,
         "verification": verification_metrics,
         "per_document": per_doc_summary,
@@ -565,13 +633,30 @@ def evaluate_manifold(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Evaluate manifold compression fidelity")
-    parser.add_argument("--text-root", type=Path, required=True, help="Root directory of UTF-8 text files")
-    parser.add_argument("--output", type=Path, required=True, help="Destination JSON summary")
-    parser.add_argument("--window-bytes", type=int, default=256, help="Sliding window size")
-    parser.add_argument("--stride-bytes", type=int, default=192, help="Sliding window stride")
-    parser.add_argument("--precision", type=int, default=2, help="Signature precision (decimal places)")
-    parser.add_argument("--tokenizer", type=str, default="gpt2", help="Tokenizer name or local path")
+    parser = argparse.ArgumentParser(
+        description="Evaluate manifold compression fidelity"
+    )
+    parser.add_argument(
+        "--text-root",
+        type=Path,
+        required=True,
+        help="Root directory of UTF-8 text files",
+    )
+    parser.add_argument(
+        "--output", type=Path, required=True, help="Destination JSON summary"
+    )
+    parser.add_argument(
+        "--window-bytes", type=int, default=256, help="Sliding window size"
+    )
+    parser.add_argument(
+        "--stride-bytes", type=int, default=192, help="Sliding window stride"
+    )
+    parser.add_argument(
+        "--precision", type=int, default=2, help="Signature precision (decimal places)"
+    )
+    parser.add_argument(
+        "--tokenizer", type=str, default="gpt2", help="Tokenizer name or local path"
+    )
     parser.add_argument(
         "--tokenizer-trust-remote-code",
         action="store_true",
@@ -583,9 +668,22 @@ def main() -> None:
         default="text",
         help="Field name to read when ingesting JSON/JSONL corpora",
     )
-    parser.add_argument("--max-documents", type=int, help="Optional cap on number of documents to process")
-    parser.add_argument("--document-offset", type=int, default=0, help="Skip the first N documents before processing")
-    parser.add_argument("--use-native", action="store_true", help="Prefer the native manifold kernel if available")
+    parser.add_argument(
+        "--max-documents",
+        type=int,
+        help="Optional cap on number of documents to process",
+    )
+    parser.add_argument(
+        "--document-offset",
+        type=int,
+        default=0,
+        help="Skip the first N documents before processing",
+    )
+    parser.add_argument(
+        "--use-native",
+        action="store_true",
+        help="Prefer the native manifold kernel if available",
+    )
     args = parser.parse_args()
 
     text_root = args.text_root.resolve()

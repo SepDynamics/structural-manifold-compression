@@ -84,9 +84,13 @@ def prepare_datasets(
         train_dataset = shuffled
         eval_dataset = None
     if max_train_samples is not None:
-        train_dataset = train_dataset.select(range(min(max_train_samples, len(train_dataset))))
+        train_dataset = train_dataset.select(
+            range(min(max_train_samples, len(train_dataset)))
+        )
     if eval_dataset is not None and max_eval_samples is not None:
-        eval_dataset = eval_dataset.select(range(min(max_eval_samples, len(eval_dataset))))
+        eval_dataset = eval_dataset.select(
+            range(min(max_eval_samples, len(eval_dataset)))
+        )
     return train_dataset, eval_dataset
 
 
@@ -116,15 +120,46 @@ def compute_training_overview(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Train a GPT-style manifold LM on a single 3080 Ti.")
-    parser.add_argument("--dataset-path", type=Path, required=True, help="Path to hf_dataset produced by prepare_causal_dataset.py")
-    parser.add_argument("--vocab-path", type=Path, required=True, help="Path to vocab.json emitted by dataset prep")
-    parser.add_argument("--output-dir", type=Path, required=True, help="Directory for checkpoints + logs")
-    parser.add_argument("--n-layer", type=int, default=12, help="Transformer decoder layers (12 ≈124M params)")
+    parser = argparse.ArgumentParser(
+        description="Train a GPT-style manifold LM on a single 3080 Ti."
+    )
+    parser.add_argument(
+        "--dataset-path",
+        type=Path,
+        required=True,
+        help="Path to hf_dataset produced by prepare_causal_dataset.py",
+    )
+    parser.add_argument(
+        "--vocab-path",
+        type=Path,
+        required=True,
+        help="Path to vocab.json emitted by dataset prep",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        required=True,
+        help="Directory for checkpoints + logs",
+    )
+    parser.add_argument(
+        "--n-layer",
+        type=int,
+        default=12,
+        help="Transformer decoder layers (12 ≈124M params)",
+    )
     parser.add_argument("--n-head", type=int, default=12, help="Attention heads")
-    parser.add_argument("--n-embd", type=int, default=768, help="Model width / embedding dim")
-    parser.add_argument("--n-inner", type=int, help="Optional MLP hidden size (defaults to 4 * n_embd)")
-    parser.add_argument("--context-length", type=int, default=512, help="Maximum manifold tokens per sample")
+    parser.add_argument(
+        "--n-embd", type=int, default=768, help="Model width / embedding dim"
+    )
+    parser.add_argument(
+        "--n-inner", type=int, help="Optional MLP hidden size (defaults to 4 * n_embd)"
+    )
+    parser.add_argument(
+        "--context-length",
+        type=int,
+        default=512,
+        help="Maximum manifold tokens per sample",
+    )
     parser.add_argument("--learning-rate", type=float, default=2e-4)
     parser.add_argument("--weight-decay", type=float, default=0.01)
     parser.add_argument("--warmup-steps", type=int, default=200)
@@ -136,14 +171,35 @@ def main() -> None:
     parser.add_argument("--eval-steps", type=int, default=500)
     parser.add_argument("--save-steps", type=int, default=500)
     parser.add_argument("--save-total-limit", type=int, default=3)
-    parser.add_argument("--fp16", action="store_true", help="Enable torch.float16 training")
+    parser.add_argument(
+        "--fp16", action="store_true", help="Enable torch.float16 training"
+    )
     parser.add_argument("--bf16", action="store_true")
-    parser.add_argument("--gradient-checkpointing", action="store_true", help="Enable gradient checkpointing")
-    parser.add_argument("--eval-holdout", type=float, default=0.02, help="Fraction of samples reserved for eval")
-    parser.add_argument("--max-train-samples", type=int, help="Optional limit on training samples (debug)")
-    parser.add_argument("--max-eval-samples", type=int, help="Optional limit on eval samples (debug)")
+    parser.add_argument(
+        "--gradient-checkpointing",
+        action="store_true",
+        help="Enable gradient checkpointing",
+    )
+    parser.add_argument(
+        "--eval-holdout",
+        type=float,
+        default=0.02,
+        help="Fraction of samples reserved for eval",
+    )
+    parser.add_argument(
+        "--max-train-samples",
+        type=int,
+        help="Optional limit on training samples (debug)",
+    )
+    parser.add_argument(
+        "--max-eval-samples", type=int, help="Optional limit on eval samples (debug)"
+    )
     parser.add_argument("--seed", type=int, default=13)
-    parser.add_argument("--resume", action="store_true", help="Resume from the latest checkpoint in output-dir if present")
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="Resume from the latest checkpoint in output-dir if present",
+    )
     parser.add_argument("--overwrite-output-dir", action="store_true")
     parser.add_argument("--report-to", nargs="*", default=["tensorboard"])
     args = parser.parse_args()
@@ -155,7 +211,8 @@ def main() -> None:
 
     _, vocab_size = load_vocab(vocab_path)
     pad_token_id = vocab_size  # append pad token
-    vocab_size_with_pad = vocab_size + 1
+    base_vocab_size = vocab_size + 1
+    vocab_size_with_pad = ((base_vocab_size + 63) // 64) * 64
 
     train_dataset, eval_dataset = prepare_datasets(
         dataset_path,
@@ -190,7 +247,6 @@ def main() -> None:
 
     training_kwargs = {
         "output_dir": str(output_dir),
-        "overwrite_output_dir": args.overwrite_output_dir,
         "per_device_train_batch_size": args.per_device_train_batch_size,
         "per_device_eval_batch_size": args.per_device_eval_batch_size,
         "gradient_accumulation_steps": args.gradient_accumulation_steps,
@@ -212,8 +268,12 @@ def main() -> None:
     if training_args_supports("save_strategy"):
         training_kwargs["save_strategy"] = "steps"
     if training_args_supports("evaluation_strategy"):
-        training_kwargs["evaluation_strategy"] = "steps" if eval_dataset is not None else "no"
-    elif eval_dataset is not None and training_args_supports("evaluate_during_training"):
+        training_kwargs["evaluation_strategy"] = (
+            "steps" if eval_dataset is not None else "no"
+        )
+    elif eval_dataset is not None and training_args_supports(
+        "evaluate_during_training"
+    ):
         training_kwargs["evaluate_during_training"] = True
     training_kwargs["do_eval"] = bool(eval_dataset)
 
@@ -268,7 +328,9 @@ def main() -> None:
 
     if eval_dataset is not None:
         metrics = trainer.evaluate()
-        perplexity = math.exp(metrics["eval_loss"]) if "eval_loss" in metrics else float("nan")
+        perplexity = (
+            math.exp(metrics["eval_loss"]) if "eval_loss" in metrics else float("nan")
+        )
         metrics["perplexity"] = perplexity
         print(json.dumps(metrics, indent=2))
 
