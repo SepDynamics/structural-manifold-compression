@@ -95,16 +95,24 @@ def parse_dataset_args(dataset_args: Iterable[str]) -> List[DatasetTask]:
         manifest_path = Path(manifest_str).expanduser().resolve()
         image_root = Path(image_root_str).expanduser().resolve()
         if not manifest_path.exists():
-            raise FileNotFoundError(f"Manifest not found for dataset '{label}': {manifest_path}")
+            raise FileNotFoundError(
+                f"Manifest not found for dataset '{label}': {manifest_path}"
+            )
         if not image_root.exists():
-            raise FileNotFoundError(f"Image root not found for dataset '{label}': {image_root}")
-        tasks.append(DatasetTask(label=label, manifest=manifest_path, image_root=image_root))
+            raise FileNotFoundError(
+                f"Image root not found for dataset '{label}': {image_root}"
+            )
+        tasks.append(
+            DatasetTask(label=label, manifest=manifest_path, image_root=image_root)
+        )
     if not tasks:
         raise ValueError("At least one --dataset entry is required.")
     return tasks
 
 
-def load_manifest(manifest_path: Path, limit: Optional[int] = None) -> List[Dict[str, object]]:
+def load_manifest(
+    manifest_path: Path, limit: Optional[int] = None
+) -> List[Dict[str, object]]:
     records: List[Dict[str, object]] = []
     with manifest_path.open("r", encoding="utf-8") as handle:
         for idx, line in enumerate(handle):
@@ -126,8 +134,12 @@ class DeepSeekWrapper:
     ) -> None:
         self.device = device
         self.dtype = dtype
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=trust_remote_code)
-        self._scratch_dir = Path(os.environ.get("DEESEEK_OCR_TMP", "/tmp")) / "deepseek_ocr_runner"
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            model_name, trust_remote_code=trust_remote_code
+        )
+        self._scratch_dir = (
+            Path(os.environ.get("DEESEEK_OCR_TMP", "/tmp")) / "deepseek_ocr_runner"
+        )
         self._scratch_dir.mkdir(parents=True, exist_ok=True)
         self.model = AutoModel.from_pretrained(
             model_name,
@@ -168,7 +180,9 @@ class DeepSeekWrapper:
             return str(result["text"])
         if isinstance(result, str) and result.strip():
             return result
-        raise RuntimeError("DeepSeek-OCR inference did not return textual output. Enable --eval-mode.")
+        raise RuntimeError(
+            "DeepSeek-OCR inference did not return textual output. Enable --eval-mode."
+        )
 
 
 def aggregate_metrics(records: List[Dict[str, object]]) -> Dict[str, object]:
@@ -192,21 +206,34 @@ def aggregate_metrics(records: List[Dict[str, object]]) -> Dict[str, object]:
     token_accuracy = 1.0 - (
         total_token_edit_distance / max(total_tokens, total_reconstructed_tokens, 1)
     )
-    token_precision = 1.0 - (total_token_edit_distance / max(total_reconstructed_tokens, 1))
+    token_precision = 1.0 - (
+        total_token_edit_distance / max(total_reconstructed_tokens, 1)
+    )
     token_recall = 1.0 - (total_token_edit_distance / max(total_tokens, 1))
-    token_f1 = (2 * token_precision * token_recall / (token_precision + token_recall)) if (
-        token_precision + token_recall
-    ) else 0.0
+    token_f1 = (
+        (2 * token_precision * token_recall / (token_precision + token_recall))
+        if (token_precision + token_recall)
+        else 0.0
+    )
 
-    normalized_char_edit_distance = (
-        total_char_edit_distance / max(total_characters, total_reconstructed_characters, 1)
+    normalized_char_edit_distance = total_char_edit_distance / max(
+        total_characters, total_reconstructed_characters, 1
     )
     character_accuracy = 1.0 - normalized_char_edit_distance
-    character_precision = 1.0 - (total_char_edit_distance / max(total_reconstructed_characters, 1))
+    character_precision = 1.0 - (
+        total_char_edit_distance / max(total_reconstructed_characters, 1)
+    )
     character_recall = 1.0 - (total_char_edit_distance / max(total_characters, 1))
-    character_f1 = (2 * character_precision * character_recall / (character_precision + character_recall)) if (
-        character_precision + character_recall
-    ) else 0.0
+    character_f1 = (
+        (
+            2
+            * character_precision
+            * character_recall
+            / (character_precision + character_recall)
+        )
+        if (character_precision + character_recall)
+        else 0.0
+    )
 
     return {
         "records": len(records),
@@ -233,21 +260,42 @@ def aggregate_metrics(records: List[Dict[str, object]]) -> Dict[str, object]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Evaluate DeepSeek-OCR on benchmark manifests.")
+    parser = argparse.ArgumentParser(
+        description="Evaluate DeepSeek-OCR on benchmark manifests."
+    )
     parser.add_argument(
         "--dataset",
         action="append",
         help="Dataset specification as LABEL=MANIFEST_PATH:IMAGE_ROOT. Repeat for multiple datasets.",
     )
-    parser.add_argument("--output-dir", type=Path, default=REPO_ROOT / "output" / "deepseek_runs")
-    parser.add_argument("--model-name", type=str, default=str(REPO_ROOT / "external" / "DeepSeek-OCR" / "weights"))
+    parser.add_argument(
+        "--output-dir", type=Path, default=REPO_ROOT / "output" / "deepseek_runs"
+    )
+    parser.add_argument(
+        "--model-name",
+        type=str,
+        default=str(REPO_ROOT / "external" / "DeepSeek-OCR" / "weights"),
+    )
     parser.add_argument("--prompt", type=str, default="<image>\nFree OCR.")
     parser.add_argument("--base-size", type=int, default=1024)
     parser.add_argument("--image-size", type=int, default=640)
-    parser.add_argument("--crop-mode", action="store_true", help="Enable crop_mode for model.infer")
-    parser.add_argument("--no-test-compress", action="store_true", help="Disable model infer compression testing")
-    parser.add_argument("--save-results", action="store_true", help="Ask model to save visual artifacts")
-    parser.add_argument("--attn-impl", type=str, default="sdpa", help="Attention implementation (sdpa or flash_attention_2)")
+    parser.add_argument(
+        "--crop-mode", action="store_true", help="Enable crop_mode for model.infer"
+    )
+    parser.add_argument(
+        "--no-test-compress",
+        action="store_true",
+        help="Disable model infer compression testing",
+    )
+    parser.add_argument(
+        "--save-results", action="store_true", help="Ask model to save visual artifacts"
+    )
+    parser.add_argument(
+        "--attn-impl",
+        type=str,
+        default="sdpa",
+        help="Attention implementation (sdpa or flash_attention_2)",
+    )
     parser.add_argument(
         "--dtype",
         type=str,
@@ -255,11 +303,19 @@ def main() -> None:
         choices=["bfloat16", "float16", "float32"],
         help="Torch dtype for model weights",
     )
-    parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
-    parser.add_argument("--trust-remote-code", action="store_true", help="Allow remote code when loading the model")
+    parser.add_argument(
+        "--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu"
+    )
+    parser.add_argument(
+        "--trust-remote-code",
+        action="store_true",
+        help="Allow remote code when loading the model",
+    )
     parser.add_argument("--tokenizer", type=str, default="gpt2")
     parser.add_argument("--tokenizer-trust-remote-code", action="store_true")
-    parser.add_argument("--max-records", type=int, help="Optional cap on records per dataset")
+    parser.add_argument(
+        "--max-records", type=int, help="Optional cap on records per dataset"
+    )
     parser.add_argument(
         "--no-eval-mode",
         action="store_true",
@@ -285,7 +341,9 @@ def main() -> None:
         trust_remote_code=args.trust_remote_code,
     )
 
-    tokenizer_runtime = TokenizerRuntime(args.tokenizer, args.tokenizer_trust_remote_code)
+    tokenizer_runtime = TokenizerRuntime(
+        args.tokenizer, args.tokenizer_trust_remote_code
+    )
 
     summary_payload: Dict[str, object] = {
         "model_name": args.model_name,
@@ -304,7 +362,9 @@ def main() -> None:
         manifest_records = load_manifest(dataset.manifest, limit=args.max_records)
         dataset_results: List[Dict[str, object]] = []
 
-        for record in tqdm(manifest_records, desc=f"DeepSeek {dataset.label}", unit="doc"):
+        for record in tqdm(
+            manifest_records, desc=f"DeepSeek {dataset.label}", unit="doc"
+        ):
             text_path = REPO_ROOT / record["text_path"]
             image_path = dataset.image_root / record["source_path"]
             original_text = text_path.read_text(encoding="utf-8")
@@ -319,7 +379,9 @@ def main() -> None:
                 save_results=args.save_results,
                 eval_mode=not args.no_eval_mode,
             )
-            token_metrics = compute_token_metrics(original_text, prediction, tokenizer_runtime)
+            token_metrics = compute_token_metrics(
+                original_text, prediction, tokenizer_runtime
+            )
             character_metrics = compute_character_metrics(original_text, prediction)
             dataset_results.append(
                 {
@@ -342,7 +404,9 @@ def main() -> None:
             for record in dataset_results:
                 handle.write(json.dumps(record, ensure_ascii=False) + "\n")
 
-    (args.output_dir / "summary.json").write_text(json.dumps(summary_payload, indent=2), encoding="utf-8")
+    (args.output_dir / "summary.json").write_text(
+        json.dumps(summary_payload, indent=2), encoding="utf-8"
+    )
 
 
 if __name__ == "__main__":

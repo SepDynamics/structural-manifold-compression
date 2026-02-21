@@ -6,7 +6,8 @@ Shared logic for processing queries through the structural manifold engine.
 import re
 import sys
 import requests
-from valkey
+from src.manifold.valkey_client import ValkeyWorkingMemory
+from src.manifold.sidecar import verify_snippet
 from pathlib import Path
 from typing import Tuple, List
 
@@ -15,8 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from src.manifold.valkey_client import ValkeyWorkingMemory
-from src.manifold.sidecar import verify_snippet
+
 from scripts.inference.dynamic_codebook import DynamicCodebook
 
 

@@ -7,10 +7,6 @@ It acts as the "Highway Stress Test" for the Tripartite Daemon architecture.
 """
 from __future__ import annotations
 
-from src.manifold.valkey_client import ValkeyWorkingMemory
-from src.manifold.sidecar import encode_text
-from scripts.experiments.manifold_compression_eval import iter_text_documents
-
 import argparse
 import sys
 import time
@@ -19,12 +15,26 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+if str(REPO_ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from manifold.valkey_client import ValkeyWorkingMemory
+from manifold.sidecar import encode_text
+from scripts.experiments.manifold_compression_eval import iter_text_documents
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Bulk Ingest Corpus to Valkey")
     parser.add_argument(
-        "--dataset", type=Path, required=True, help="Path to text root or JSONL file"
+        "--input-dir",
+        "--dataset",
+        type=Path,
+        required=True,
+        dest="dataset",
+        help="Path to text root or JSONL file",
+    )
+    parser.add_argument(
+        "--use-native", action="store_true", help="Use native C++ encoder"
     )
     parser.add_argument(
         "--json-text-key", type=str, default="text", help="JSON key containing text"
@@ -77,7 +87,7 @@ def main():
     # Pre-fetch the cached index to aggressively mutate and push it
     index = valkey.get_cached_index()
     if index is None:
-        from src.manifold.sidecar import ManifoldIndex
+        from manifold.sidecar import ManifoldIndex
 
         index = ManifoldIndex(
             meta={
@@ -117,7 +127,7 @@ def main():
             window_bytes=args.window_bytes,
             stride_bytes=args.stride_bytes,
             precision=3,
-            use_native=True,
+            use_native=args.use_native,
             hazard_percentile=0.8,
         )
 

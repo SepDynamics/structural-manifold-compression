@@ -8,6 +8,7 @@ the fully saturated Valkey Working Memory.
 from __future__ import annotations
 import sys
 import time
+import argparse
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
@@ -46,6 +47,12 @@ def test_query_latency(
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Latency Verification Benchmark")
+    parser.add_argument(
+        "--queries", type=int, default=3, help="Number of queries to run"
+    )
+    args = parser.parse_args()
+
     print("Initializing Tripartite Router against live Valkey DB...")
     router = TripartiteRouter()
 
@@ -69,19 +76,21 @@ def main():
 
     print("\n--- Latency Verification Sequence ---")
 
-    # Query 1: A highly specific, mathematical query likely to hit exact geometries
-    # but since this is synthetic math data, finding an exact match might be hard. We want to test the ANN math speed regardless.
-    test_query_latency(router, "Solve for x in the equation 2x + 5 = 15")
+    base_queries = [
+        ("Solve for x in the equation 2x + 5 = 15", "Deterministic"),
+        ("Determine the derivative of f(x) = x^2", "Deterministic"),
+        (
+            "What is the philosophical meaning of linear algebra in quantum physics",
+            "LLM",
+        ),
+    ]
 
-    # Query 2: A shorter sequence to see if bounding box lookups are faster
-    test_query_latency(router, "Determine the derivative of f(x) = x^2")
+    for i in range(args.queries):
+        query_text, query_type = base_queries[i % len(base_queries)]
 
-    # Query 3: A long abstract sequence designed to trigger a total scatter (high hazard)
-    test_query_latency(
-        router,
-        "What is the philosophical meaning of linear algebra in quantum physics",
-        expected_type="LLM",
-    )
+        # Optionally vary query slightly to simulate unique streams if running many queries
+        test_text = f"{query_text} (iteration {i})" if args.queries > 3 else query_text
+        test_query_latency(router, test_text, expected_type=query_type)
 
 
 if __name__ == "__main__":

@@ -21,8 +21,6 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from datasets import Dataset, load_from_disk
 from torch.utils.data import DataLoader
 from transformers.trainer_utils import get_last_checkpoint
@@ -357,8 +355,6 @@ def train_epoch(
 
             # The error in probabilities
             error = one_hot - probs
-
-            import torch.nn.functional as F
 
             # 1. Normalize the Error Term (L2 Normalization acting as refractory period constraint)
             error = F.normalize(error, p=2, dim=-1)
