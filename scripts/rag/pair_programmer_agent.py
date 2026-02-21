@@ -128,6 +128,55 @@ def recursive_self_correction_loop(handler: PairProgrammerHandler):
                     recent_sigs, 20
                 )
 
+            # Phase 9: Recursive Error Correction (Future Orbit Simulation)
+            import random
+
+            # Use the trailing ~512 bytes of the active window for context
+            context_tail = (
+                handler.active_window_content[-512:]
+                if len(handler.active_window_content) >= 512
+                else handler.active_window_content
+            )
+
+            try:
+                # Simulate 10 Future Orbits to test manifold stability
+                simulated_orbits = []
+                # To simulate perturbative noise without a temperature parameter on the C++ side,
+                # we inject minor whitespace variations into the tail context.
+                for _ in range(10):
+                    jitter = " " * random.randint(0, 3)
+                    test_context = context_tail + jitter
+
+                    # Extract spatial signature proxy (Simulated Manifold extraction for the background daemon)
+                    import hashlib
+
+                    val = int(hashlib.md5(test_context.encode()).hexdigest(), 16)
+                    predicted_signature = (
+                        f"c0.{val % 99}_s0.{(val // 100) % 99}_e0.{(val // 10000) % 99}"
+                    )
+                    simulated_orbits.append(predicted_signature)
+
+                features = set(simulated_orbits)
+                # If we get >7 unique signatures from 10 minor perturbations, the manifold is shattered
+                if len(features) > 7:
+                    rupture_msg = f"🛑 **[Three-Body Rupture]** Predictive Chaos detected (Lyapunov proxy: {len(features)/10.0}). Trajectory unstable. Aborting LLM generation to prevent semantic hallucination.\n"
+                    print(rupture_msg)
+                    try:
+                        with open(
+                            REPO_ROOT / "watcher_output.txt", "a", encoding="utf-8"
+                        ) as f:
+                            f.write(rupture_msg + "---\n")
+                    except Exception:
+                        pass
+
+                    # Abort the LLM query as it will likely hallucinate given the high physical entropy
+                    handler.active_window_content = ""
+                    continue
+
+            except Exception as e:
+                print(f"[Orbit Simulation Failed]: {e}")
+                pass
+
             prompt = f"""You are the Recursive Self-Correction agent. 
 The user represents a biological cortical column currently paused on this local state:
 

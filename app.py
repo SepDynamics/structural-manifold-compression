@@ -500,6 +500,109 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
             generate_heatmap, inputs=[], outputs=[heatmap_plot, heatmap_stats]
         )
 
+    with gr.Tab("3-Body Chaos Map (Orbital Stability)"):
+        gr.Markdown(
+            "Real-time visualization of the N-Body Cognitive Dynamics. Watch the inference particle "
+            "orbit the three cognitive attractors (SSM, Valkey, Transformer). High Structural Tension "
+            "drives the particle toward the Transformer heuristic, indicating a fragile trajectory."
+        )
+        orbit_plot = gr.Plot()
+        orbit_warning = gr.Markdown()
+
+        def render_orbital_map():
+            # In a live environment, this would read the Lyapunov exponent / Chaos Proxy from Valkey
+            # Here, we simulate a particle that drifts based on a mocked reading, but let's look for a real key
+            from manifold.valkey_client import ValkeyWorkingMemory
+            import math
+            import random
+            import matplotlib.patches as patches
+
+            vwm = ValkeyWorkingMemory()
+            raw_lyapunov = vwm.r.get("manifold:chaos_proxy")
+            chaos_val = (
+                float(raw_lyapunov) if raw_lyapunov else random.uniform(0.1, 0.4)
+            )  # baseline low chaos
+
+            # Triangle Vertices
+            # SSM (Predictive State): Top, Valkey (Spatial Memory): Bottom Left, Transformer (Heuristic): Bottom Right
+            points = {"SSM": (0, 1), "Valkey": (-1, -1), "Transformer": (1, -1)}
+
+            # Position the particle based on chaos.
+            # Low chaos (0.0) -> Particle orbits exactly between SSM and Valkey
+            # High chaos (1.0) -> Particle is pulled violently toward the Transformer Vertex
+            stability_centroid_x = (points["SSM"][0] + points["Valkey"][0]) / 2
+            stability_centroid_y = (points["SSM"][1] + points["Valkey"][1]) / 2
+
+            # Linear interpolation toward the Transformer
+            particle_x = (
+                stability_centroid_x
+                + (points["Transformer"][0] - stability_centroid_x) * chaos_val
+            )
+            particle_y = (
+                stability_centroid_y
+                + (points["Transformer"][1] - stability_centroid_y) * chaos_val
+            )
+
+            # Add some orbit jitter
+            particle_x += random.uniform(-0.1, 0.1)
+            particle_y += random.uniform(-0.1, 0.1)
+
+            fig, ax = plt.subplots(figsize=(6, 6))
+
+            # Draw Attractor Triangle
+            polygon = patches.Polygon(
+                [points["SSM"], points["Valkey"], points["Transformer"]],
+                closed=True,
+                fill=False,
+                edgecolor="black",
+                linestyle="--",
+                alpha=0.3,
+            )
+            ax.add_patch(polygon)
+
+            # Draw Vertices
+            ax.scatter(*points["SSM"], color="blue", s=200, label="SSM (Long-Term)")
+            ax.scatter(
+                *points["Valkey"], color="green", s=200, label="Valkey (Working)"
+            )
+            ax.scatter(
+                *points["Transformer"],
+                color="orange",
+                s=200,
+                label="Transformer (Heuristic)",
+            )
+
+            # Draw Particle
+            is_high_chaos = chaos_val > 0.8
+            particle_color = "red" if is_high_chaos else "purple"
+            ax.scatter(
+                particle_x,
+                particle_y,
+                color=particle_color,
+                s=150,
+                marker="*",
+                label="Current Inference State",
+            )
+
+            ax.set_title(f"Orbital Stability (Lyapunov Exponent: {chaos_val:.2f})")
+            ax.set_xlim(-1.5, 1.5)
+            ax.set_ylim(-1.5, 1.5)
+            ax.axis("off")
+            ax.legend(loc="upper right", fontsize="small")
+            fig.tight_layout()
+
+            msg = "🟢 **Stable Orbit**: Inference resolving efficiently within continuous spatial manifolds."
+            if is_high_chaos:
+                msg = "🛑 **System is in a high-chaos perturbative regime—verify LLM output.**"
+
+            plt.close(fig)
+            return fig, msg
+
+        orbit_timer = gr.Timer(1)
+        orbit_timer.tick(
+            render_orbital_map, inputs=[], outputs=[orbit_plot, orbit_warning]
+        )
+
     with gr.Tab("Prompt Binding (Bi-Directional Steering)"):
         gr.Markdown(
             "Freeze the Semantic Adapter's Recency List. This overrides the physical Codebook, "

@@ -153,7 +153,12 @@ class VotingProcessor(nn.Module):
         weights = precision / torch.sum(precision, dim=0, keepdim=True)
 
         # 5. Apply adaptive voting
-        return torch.sum(stacked_outputs * weights, dim=0)
+        consensus = torch.sum(stacked_outputs * weights, dim=0)
+
+        # 6. Orbital Eccentricity (Mean Chaos across the sequence)
+        orbital_eccentricity = column_variance.mean().item()
+
+        return consensus, orbital_eccentricity
 
 
 class MambaLM(nn.Module):
@@ -196,12 +201,12 @@ class MambaLM(nn.Module):
             dict with 'logits' and optionally 'loss'
         """
         x = self.embedding(input_ids)
-        x = self.voting_processor(x, inference_params=inference_params)
+        x, eccentricity = self.voting_processor(x, inference_params=inference_params)
 
         x = self.norm_f(x)
         logits = self.lm_head(x)
 
-        output = {"logits": logits, "hidden": x}
+        output = {"logits": logits, "hidden": x, "eccentricity": eccentricity}
 
         if labels is not None:
             # Shift for causal LM: predict next token
@@ -384,6 +389,15 @@ def train_epoch(
             shift_hidden = outputs["hidden"][..., :-1, :].contiguous()
             shift_labels = labels[..., 1:].contiguous()
 
+            # Calculate Consensus Cooling (Dynamic Learning Rate)
+            # Eccentricity ranges generally from 0.0 (perfect consensus) to >>1.0 (chaos)
+            # We scale the learning rate down linearly or exponentially as eccentricity rises.
+            eccentricity = outputs.get("eccentricity", 0.0)
+
+            # Thermodynamic Simulated Annealing: e^(-eccentricity * scale)
+            cooling_factor = math.exp(-eccentricity * 10.0)
+            dynamic_lr = learning_rate * cooling_factor
+
             # 1. Update the LM Head (and implicitly the tied Embedding)
             vocab_size = shift_logits.size(-1)
             probs = torch.softmax(shift_logits, dim=-1)
@@ -411,7 +425,7 @@ def train_epoch(
                 decay_head = y_sq_head * model.lm_head.weight
 
                 model.lm_head.weight.add_(
-                    learning_rate * 10 * (dW_head - decay_head)
+                    dynamic_lr * 10 * (dW_head - decay_head)
                 )  # Boosted LR for head
 
                 # 2. Predictive Coding for the SSM Manifold (Deep Hebbian)
@@ -464,9 +478,7 @@ def train_epoch(
 
                             decay_layer = y_sq_layer * w_out
 
-                            layer_out.weight.add_(
-                                learning_rate * (dW_layer - decay_layer)
-                            )
+                            layer_out.weight.add_(dynamic_lr * (dW_layer - decay_layer))
         else:
             loss.backward()
 

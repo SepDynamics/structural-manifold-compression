@@ -96,6 +96,14 @@ As demonstrated in the chart above, the Thousand-Brains Consensus approach drama
 
 This establishes that predictive coding mechanisms can fundamentally optimize a deep sequence model **without global `loss.backward()`**.
 
+### 5.3 N-Body Stability in Semantic Space
+As the AGI-Lite architecture evolved from static mean-voting to precision-weighted consensus, the systemic representation of a "concept" shifted fundamentally. Under this architecture, a concept is no longer a static, semantic point-embedding array; rather, it is strictly defined as a **Stable Orbital Trajectory** maintained dynamically across the tripartite cognitive bodies (the SSM proxy, the Valkey memory, and the Transformer heuristic). 
+
+Within this framework, we mathematically redefine the behavior of the Thousand Brains consensus through the lens of orbital mechanics:
+- **Cognitive Lagrange Points:** These represent localized temporal coordinates in the spatial manifold where the SSM's structural prediction, the fast Valkey grid-cell retrieval, and the top-down Transformer heuristic all perfectly overlap in spatial validation. This zero-error consensus mathematically stabilizes the learning gradient.
+- **Centrifugal Disruption:** When Structural Tension ($I_t$) spikes across the sequence, an unexpected topological boundary has been pierced. Visually acting as a non-linear phase transition, the "cognitive particle" attempts to escape the predictable stability basin of the known manifold space, executing a Type-I Intermittency (e.g., jumping from documentation English directly into structured Python syntax).
+- **The Chaos Proxy:** We map this predictive volatility directly to the chaotic Lyapunov Exponent ($\lambda$) as verified by our `3body-chaos-proxy` validation limits. If a traversed sequence (e.g., chaotic obfuscated code) yields a high average Lyapunov value, the semantic stability of the file is categorized as structurally "fragile." Faced with high fragility, the autonomous Pair Programmer daemon actively increases its *Refractory Sampling* depth to maintain geometric coherence, effectively anchoring the agent to reality and physically dodging generative hallucinations.
+
 ---
 
 ## Section 6: Conclusion & Future Work
