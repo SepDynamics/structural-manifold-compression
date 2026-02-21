@@ -14,13 +14,11 @@ Usage:
     python scripts/rag/system_sensor.py --dmesg
 """
 
-import os
 import sys
 import time
 import argparse
 import subprocess
 import requests
-import hashlib
 from pathlib import Path
 
 # Add project root to path
@@ -28,7 +26,6 @@ REPO_ROOT = Path(__file__).parent.parent.parent
 sys.path.append(str(REPO_ROOT))
 
 from src.manifold.valkey_client import ValkeyWorkingMemory
-from src.manifold.sidecar import generate_hash  # Using this or hashlib as the C++ proxy
 
 
 class SystemsPathologist:
@@ -76,20 +73,42 @@ class SystemsPathologist:
 
     def extract_spatial_topology(self, raw_telemetry: str):
         """
-        Pass telemetry through the simulated C++ manifold encoder.
-        We use a chaotic hash projection to map the telemetry to
-        Coherence, Stability, and Entropy phase space (the Grid Cell).
+        Pass telemetry through the real C++ continuous spatial manifold encoder.
+        Extracts physical bounding metrics directly from the temporal byte sequence.
         """
-        # Simulated topological projection (acting as our O(1) C++ physics engine)
-        val = int(hashlib.md5(raw_telemetry.encode("utf-8")).hexdigest(), 16)
+        from src.manifold.sidecar import encode_text
 
-        # Normalize structural properties to [0, 1] range
-        coherence = (val % 1000) / 1000.0
-        stability = ((val // 1000) % 1000) / 1000.0
-        entropy = ((val // 1000000) % 1000) / 1000.0
+        # Ensure we have enough data for the engine window
+        if len(raw_telemetry.encode("utf-8")) < 256:
+            raw_telemetry = (raw_telemetry + " " * 256)[:256]
 
-        signature = f"c{coherence:.3f}_s{stability:.3f}_e{entropy:.3f}"
-        return signature, coherence, stability, entropy
+        try:
+            # O(1) mathematical execution against the stream
+            encoded = encode_text(
+                raw_telemetry,
+                window_bytes=256,
+                stride_bytes=128,
+                precision=3,
+                use_native=True,
+            )
+
+            if not encoded.windows:
+                return "c0.000_s0.000_e0.000", 0.0, 0.0, 0.0
+
+            window = encoded.windows[-1]
+            sig = window.signature
+
+            # The format is c<coherence>_s<stability>_e<entropy>
+            parts = sig.split("_")
+
+            c = float(parts[0][1:]) if len(parts) > 0 else 0.0
+            s = float(parts[1][1:]) if len(parts) > 1 else 0.0
+            e = float(parts[2][1:]) if len(parts) > 2 else 0.0
+
+            return sig, c, s, e
+
+        except Exception as err:
+            return "c0.000_s0.000_e0.000", 0.0, 0.0, 0.0
 
     def run_inference_loop(self):
         """Indefinite low-overhead polling loop"""

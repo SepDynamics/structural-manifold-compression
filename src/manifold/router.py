@@ -100,6 +100,12 @@ User Query: {query}
         self.free_energy.target_coverage = coverage_threshold * 100
         free_energy_norm = self.free_energy.normalized(coverage)
 
+        # Real Tripartite tension telemetry sent to Valkey Phase Space Map
+        try:
+            self.wm.r.set("manifold:chaos_proxy", str(free_energy_norm))
+        except Exception:
+            pass
+
         # Dynamically populate the Activation Buffer based on physical collision neighborhood
         index_cache = self.wm.get_cached_index()
         prototypes = index_cache.signatures if index_cache else {}

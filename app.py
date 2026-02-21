@@ -520,8 +520,8 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
             vwm = ValkeyWorkingMemory()
             raw_lyapunov = vwm.r.get("manifold:chaos_proxy")
             chaos_val = (
-                float(raw_lyapunov) if raw_lyapunov else random.uniform(0.1, 0.4)
-            )  # baseline low chaos
+                float(raw_lyapunov) if raw_lyapunov else 0.0
+            )  # baseline zero chaos unless active
 
             # Triangle Vertices
             # SSM (Predictive State): Top, Valkey (Spatial Memory): Bottom Left, Transformer (Heuristic): Bottom Right
