@@ -16,3 +16,4 @@ output/
 manim/
 *.log
 models/
+logs/

@@ -1,3 +1,0 @@
-⚠️ [Predictive Hazard Warning]
-Attempting to append an integer value to a string target 'five million signatures' will result in a type error.
----
