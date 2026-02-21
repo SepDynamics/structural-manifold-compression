@@ -1,8 +1,9 @@
 import valkey
 import json
-from typing import Dict, Optional
+from typing import Dict, Optional, TYPE_CHECKING
 
-from .sidecar import ManifoldIndex
+if TYPE_CHECKING:
+    from .sidecar import ManifoldIndex
 
 
 class ValkeyWorkingMemory:
@@ -36,11 +37,11 @@ class ValkeyWorkingMemory:
             docs[doc_id] = self.r.get(key)
         return docs
 
-    def store_cached_index(self, index: ManifoldIndex) -> None:
+    def store_cached_index(self, index: "ManifoldIndex") -> None:
         """Cache the computed ManifoldIndex in Valkey for instant retrieval."""
         self.r.set(self.index_key, json.dumps(index.to_dict()))
 
-    def get_cached_index(self) -> Optional[ManifoldIndex]:
+    def get_cached_index(self) -> Optional["ManifoldIndex"]:
         """Retrieve the cached ManifoldIndex from Valkey if it exists."""
         data = self.r.get(self.index_key)
         if not data:
@@ -50,6 +51,8 @@ class ValkeyWorkingMemory:
         meta = parsed.get("meta", {})
         signatures = parsed.get("signatures", {})
         documents = parsed.get("documents", {})
+
+        from .sidecar import ManifoldIndex
 
         return ManifoldIndex(meta=meta, signatures=signatures, documents=documents)
 
@@ -62,7 +65,7 @@ class ValkeyWorkingMemory:
         for key in self.r.scan_iter("manifold:*"):
             self.r.delete(key)
 
-    def get_or_build_index(self) -> Optional[ManifoldIndex]:
+    def get_or_build_index(self) -> Optional["ManifoldIndex"]:
         """Fetch the cached index from Valkey, or build and cache a new one if missing."""
         if not self.ping():
             return None
