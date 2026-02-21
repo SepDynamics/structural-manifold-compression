@@ -80,12 +80,16 @@ The complete Mathematical Methodology, DeepSeek-OCR comparisons, and limits are 
 make report   # compiles docs/manifold_vs_optical/report.pdf
 ```
 
-### Multimodal Geometric Proof
-To verify that the engine fundamentally acts as a "Language of Everything" (distinguishing raw topological structure from pure static noise natively, without domain-specific audio encoders):
+### Multimodal Geometric Proof (Objective Audio Topology)
+To definitively verify that the engine fundamentally acts as a native "Language of Everything", we map the multi-dimensional topology of 5 distinct physical audio signals (Silence, White Noise, Sine Wave, Square Wave, Impulse) in real-time.
+
+Run the visualizer:
 ```bash
-python scripts/rag/generate_audio_tick_data.py
+python scripts/experiments/visualize_audio_manifold.py
 ```
-*Creates two 16-bit synthetic `.wav` files and confirms that the repeating geometric motif establishes a massively higher Topological Rupture than unstructured chaotic static.*
+*The script synthesizes the 16-bit `.wav` files and streams them blindly through the C++ byte engine (no audio-encoders). The resulting Matplotlib graph proves the native geometry organically differentiates the physical signals:*
+
+![Objective Audio Topology Mapping](docs/assets/audio_topology.png)
 
 ## License & Citation
 
