@@ -65,7 +65,17 @@ def _iter_text_directory(root: Path, text_key: str) -> Iterable[Tuple[str, str]]
         base = relative[: -len(path.suffix)] if path.suffix else relative
         base_id = base.replace("/", "__")
         if suffix in {".txt", ".tokens"}:
-            yield base_id, path.read_text(encoding="utf-8")
+            with open(path, "r", encoding="utf-8") as f:
+                chunk = []
+                chunk_index = 0
+                for line in f:
+                    chunk.append(line)
+                    if len(chunk) >= 10000:
+                        yield f"{base_id}__chunk{chunk_index:05d}", "".join(chunk)
+                        chunk = []
+                        chunk_index += 1
+                if chunk:
+                    yield f"{base_id}__chunk{chunk_index:05d}", "".join(chunk)
         elif suffix in {".jsonl", ".ndjson"}:
             yield from _iter_jsonl_file(path, text_key, doc_prefix=base_id)
         elif suffix == ".json":
