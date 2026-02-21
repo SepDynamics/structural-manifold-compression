@@ -37,13 +37,18 @@ Launch the Tripartite loop with just three commands:
    ```bash
    valkey-server
    ```
-2. **Launch the Autonomous Watcher (Terminal 2)**
+3. **Index Your Codebase (Terminal 2)**
+   *The Pair Programmer requires a fresh spatial layout of your specific repository to prevent stale codebook mapping.*
    ```bash
    cd structural-manifold-compression
    source .venv/bin/activate
+   python scripts/rag/bulk_valkey_ingest.py ./
+   ```
+4. **Launch the Autonomous Watcher (Terminal 2)**
+   ```bash
    python scripts/rag/pair_programmer_agent.py
    ```
-3. **Open the 3-Body Telemetry UI (Terminal 3)**
+5. **Open the 3-Body Telemetry UI (Terminal 3)**
    ```bash
    source .venv/bin/activate
    python app.py
@@ -51,6 +56,11 @@ Launch the Tripartite loop with just three commands:
    *Navigate to `http://localhost:7860` in your browser.*
 
 Try it: Open any `.py` file in the `structural-manifold-compression` repository. Write a function that geometrically contradicts the established coding patterns and save the file. The `pair_programmer_agent.py` daemon will intercept the live save, process the code through the C++ engine without tokenizing it, and flag a massive **Architectural Alignment / Structural Tension** spike in real-time.
+
+### The "Aha Moment" (Real-time $O(1)$ Spike Detection)
+Watch the state manifold immediately jump to the "Heuristic Fallback" vertex when chaotic syntax disrupts the structural continuity:
+
+![Aha Moment Demo Video](docs/assets/demo.mp4)
 
 ---
 
