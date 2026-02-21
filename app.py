@@ -69,7 +69,9 @@ def _extract_text_from_file(file_obj) -> Tuple[Optional[str], Optional[str]]:
         return path.name, text
     if suffix == ".pdf":
         if pdfplumber is None:
-            raise RuntimeError("pdfplumber is required for PDF ingestion. Install with `pip install pdfplumber`.")
+            raise RuntimeError(
+                "pdfplumber is required for PDF ingestion. Install with `pip install pdfplumber`."
+            )
         with pdfplumber.open(io.BytesIO(raw_bytes)) as pdf:
             pages = [page.extract_text() or "" for page in pdf.pages]
         text = "\n\n".join(pages).strip()
@@ -94,7 +96,9 @@ def _preview(text: str, limit: int = 2000) -> str:
     return text[:limit] + f"\n\n… [truncated {len(text) - limit} chars]"
 
 
-def _chunk_text(text: str, chunk_size: int = 512, overlap: int = 128) -> list[tuple[str, str]]:
+def _chunk_text(
+    text: str, chunk_size: int = 512, overlap: int = 128
+) -> list[tuple[str, str]]:
     chunks = []
     start = 0
     text_len = len(text)
@@ -139,7 +143,14 @@ def handle_compress(file, raw_text):
             text_source = "pasted"
             text_content = raw_text
         if not text_content or not text_content.strip():
-            return "No text provided.", "", "", "", None, gr.update(choices=list(docs_store.keys()), value=None)
+            return (
+                "No text provided.",
+                "",
+                "",
+                "",
+                None,
+                gr.update(choices=list(docs_store.keys()), value=None),
+            )
 
         doc_id = _next_doc_id()
         docs_store[doc_id] = text_content
@@ -173,7 +184,12 @@ def handle_compress(file, raw_text):
         fig = _make_hazard_plot(hazards)
         if encoded.hazard_threshold and hazards:
             ax = fig.axes[0]
-            ax.axvline(encoded.hazard_threshold, color="red", linestyle="--", label="hazard gate")
+            ax.axvline(
+                encoded.hazard_threshold,
+                color="red",
+                linestyle="--",
+                label="hazard gate",
+            )
             ax.legend()
 
         dropdown_update = gr.update(choices=list(docs_store.keys()), value=doc_id)
@@ -186,7 +202,14 @@ def handle_compress(file, raw_text):
             dropdown_update,
         )
     except Exception as exc:  # pragma: no cover - UI surface
-        return f"Error: {exc}", "", "", "", None, gr.update(choices=list(docs_store.keys()), value=None)
+        return (
+            f"Error: {exc}",
+            "",
+            "",
+            "",
+            None,
+            gr.update(choices=list(docs_store.keys()), value=None),
+        )
 
 
 def _ensure_index() -> Optional[ManifoldIndex]:
@@ -246,7 +269,9 @@ def handle_verify(selected_doc, snippet, coverage_threshold):
         hz = float(match.get("hazard", 0.0))
         occ = match.get("occurrences", []) or []
         first_doc = occ[0].get("doc_id") if occ else ""
-        lines.append(f"- `{sig}` hazard={hz:.3f} occurrences={len(occ)} doc={first_doc}")
+        lines.append(
+            f"- `{sig}` hazard={hz:.3f} occurrences={len(occ)} doc={first_doc}"
+        )
     matches_md = "\n".join(lines) if lines else "_No matches_"
     if too_short and not lines:
         matches_md = (
@@ -293,7 +318,9 @@ def handle_retrieve(question, top_k, coverage_threshold, hazard_threshold):
     for rank, idx in enumerate(top_indices, start=1):
         doc_id, chunk_id, chunk_text = chunks[int(idx)]
         score = float(scores[int(idx)])
-        naive_lines.append(f"- [{rank}] {doc_id}::{chunk_id} score={score:.3f}\n  {chunk_text[:200]}...")
+        naive_lines.append(
+            f"- [{rank}] {doc_id}::{chunk_id} score={score:.3f}\n  {chunk_text[:200]}..."
+        )
 
         result = verify_snippet(
             chunk_text,
@@ -316,19 +343,25 @@ def handle_retrieve(question, top_k, coverage_threshold, hazard_threshold):
             f"(hazard_gate ≤ {hazard_threshold:.3f})"
         )
     naive_md = "\n".join(naive_lines) if naive_lines else "_No chunks_"
-    verified_md = "\n".join(verified_lines) if verified_lines else "_No verified chunks_"
+    verified_md = (
+        "\n".join(verified_lines) if verified_lines else "_No verified chunks_"
+    )
     return "Retrieved top-k chunks:", naive_md, verified_md
 
 
 with gr.Blocks(title="Structural Manifold Sidecar") as demo:
-    gr.Markdown("# Structural Manifold Sidecar\nCompression + verification for RAG provenance.")
+    gr.Markdown(
+        "# Structural Manifold Sidecar\nCompression + verification for RAG provenance."
+    )
 
     with gr.Tab("Compress & Reconstruct (Structural Manifolds)"):
         gr.Markdown(
             "Upload a document or paste text. We encode it into structural manifolds, reconstruct an approximate "
             "version, and show compression + hazard stats."
         )
-        file_input = gr.File(label="Upload (.pdf, .txt, .md)", file_types=[".pdf", ".txt", ".md"])
+        file_input = gr.File(
+            label="Upload (.pdf, .txt, .md)", file_types=[".pdf", ".txt", ".md"]
+        )
         text_input = gr.Textbox(label="Or paste text", lines=6)
         run_btn = gr.Button("Run structural manifold")
         doc_msg = gr.Markdown()
@@ -372,7 +405,9 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
                 "Chunk-level RAG demo: retrieve top-k chunks via embeddings, then hazard-gate them with manifold verification."
             )
             question_box = gr.Textbox(label="Question / query", lines=3)
-            topk_slider = gr.Slider(minimum=1, maximum=10, value=5, step=1, label="Top-k chunks")
+            topk_slider = gr.Slider(
+                minimum=1, maximum=10, value=5, step=1, label="Top-k chunks"
+            )
             rag_coverage = gr.Slider(
                 minimum=0.0,
                 maximum=1.0,
@@ -392,11 +427,41 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         naive_rag = gr.Markdown(label="Naive retrieval")
         verified_rag = gr.Markdown(label="Hazard-gated retrieval (secondary demo)")
 
+    with gr.Tab("Proactive Agent (Hazards)"):
+        gr.Markdown(
+            "Live predictive hazards detected autonomously by the Pair Programmer daemon. "
+            "Polled every 2 seconds via `watcher_output.txt`."
+        )
+        hazard_box = gr.Textbox(label="Predictive Hazards", lines=15, interactive=False)
+
+        def read_hazards():
+            import os
+
+            hazard_file = os.path.join(os.path.dirname(__file__), "watcher_output.txt")
+            if os.path.exists(hazard_file):
+                try:
+                    with open(hazard_file, "r", encoding="utf-8") as f:
+                        content = f.read().strip()
+                        return content if content else "No hazards detected..."
+                except Exception:
+                    return "Waiting for agent..."
+            return "File watcher_output.txt not found. Is pair_programmer_agent.py running?"
+
+        demo.load(read_hazards, inputs=[], outputs=[hazard_box], every=2)
+
     run_btn.click(
         handle_compress,
         inputs=[file_input, text_input],
-        outputs=[doc_msg, original_box, recon_box, stats_box, hazard_plot, doc_dropdown],
+        outputs=[
+            doc_msg,
+            original_box,
+            recon_box,
+            stats_box,
+            hazard_plot,
+            doc_dropdown,
+        ],
     )
+
     def bound_verify(snippet, coverage, hazard):
         # stash hazard threshold on the function object so handle_verify can read it without changing signature
         handle_verify.hazard_threshold = hazard  # type: ignore[attr-defined]

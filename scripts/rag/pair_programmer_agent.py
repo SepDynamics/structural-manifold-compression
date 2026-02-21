@@ -61,10 +61,15 @@ class PairProgrammerHandler(FileSystemEventHandler):
             )
 
             if not verified:
-                print(
-                    f"⚡ [FEP Spike | Coverage: {coverage:.2f}%] Pre-generating contextual completion..."
-                )
-                print(f"🤖 LLM Suggestion:\n{response}\n")
+                msg = f"⚡ [FEP Spike | Coverage: {coverage:.2f}%] Pre-generating contextual completion...\n🤖 LLM Suggestion:\n{response}\n"
+                print(msg)
+                try:
+                    with open(
+                        REPO_ROOT / "watcher_output.txt", "a", encoding="utf-8"
+                    ) as f:
+                        f.write(msg + "\n---\n")
+                except Exception:
+                    pass
             else:
                 print(
                     f"✅ Structural tension low (Coverage: {coverage:.2f}%). No completion needed."
@@ -126,7 +131,15 @@ If you find a hazard, reply with a 'Predictive Hazard Warning:' followed by a 1-
                 if response.status_code == 200:
                     ans = response.json().get("response", "").strip()
                     if "SAFE" not in ans and len(ans) > 5:
-                        print(f"⚠️ [Predictive Hazard Warning]\n{ans}\n")
+                        msg = f"⚠️ [Predictive Hazard Warning]\n{ans}\n"
+                        print(msg)
+                        try:
+                            with open(
+                                REPO_ROOT / "watcher_output.txt", "a", encoding="utf-8"
+                            ) as f:
+                                f.write(msg + "\n---\n")
+                        except Exception:
+                            pass
             except Exception:
                 pass
 

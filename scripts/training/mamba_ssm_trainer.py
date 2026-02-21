@@ -45,6 +45,7 @@ class SSMConfig:
     rms_norm: bool = True
     fused_add_norm: bool = True
     residual_in_fp32: bool = True
+    num_columns: int = 3
 
     def to_dict(self):
         return {
@@ -55,6 +56,7 @@ class SSMConfig:
             "rms_norm": self.rms_norm,
             "fused_add_norm": self.fused_add_norm,
             "residual_in_fp32": self.residual_in_fp32,
+            "num_columns": self.num_columns,
         }
 
     @classmethod
@@ -67,6 +69,7 @@ class SSMConfig:
             rms_norm=config_dict.get("rms_norm", True),
             fused_add_norm=config_dict.get("fused_add_norm", True),
             residual_in_fp32=config_dict.get("residual_in_fp32", True),
+            num_columns=config_dict.get("num_columns", 3),
         )
 
 
@@ -103,16 +106,13 @@ class MambaBlock(nn.Module):
         return x + self.mamba(self.norm(x), inference_params=inference_params)
 
 
-class MambaLM(nn.Module):
-    """Mamba-based Language Model for manifold signatures."""
+class VotingProcessor(nn.Module):
+    """Thousand Brains Consensus Mechanism. Branches input into parallel Cortical Columns
+    and uses heterarchical voting to minimize prediction error."""
 
     def __init__(self, config: SSMConfig):
         super().__init__()
-        self.config = config
-
-        self.embedding = nn.Embedding(config.vocab_size, config.d_model)
-        # Replace single stream with 3 parallel Cortical Columns
-        self.num_columns = 3
+        self.num_columns = config.num_columns
         self.columns = nn.ModuleList(
             [
                 nn.ModuleList(
@@ -124,7 +124,36 @@ class MambaLM(nn.Module):
                 for _ in range(self.num_columns)
             ]
         )
+
+    def forward(self, x: torch.Tensor, inference_params=None) -> torch.Tensor:
+        column_outputs = []
+        for col in self.columns:
+            h = x
+            for layer in col:
+                h = layer(h, inference_params=inference_params)
+            column_outputs.append(h)
+
+        # Heterarchical Voting (Consensus Mechanism)
+        # We take the mean across all cortical columns to minimize global structural tension
+        if len(column_outputs) == 1:
+            return column_outputs[0]
+        return torch.mean(torch.stack(column_outputs), dim=0)
+
+
+class MambaLM(nn.Module):
+    """Mamba-based Language Model for manifold signatures."""
+
+    def __init__(self, config: SSMConfig):
+        super().__init__()
+        self.config = config
+
+        self.embedding = nn.Embedding(config.vocab_size, config.d_model)
+
+        # The explicit Consensus Voting mechanism
+        self.voting_processor = VotingProcessor(config)
+
         self.norm_f = RMSNorm(config.d_model)
+
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
 
         # Tie weights between embedding and output projection
@@ -151,18 +180,7 @@ class MambaLM(nn.Module):
             dict with 'logits' and optionally 'loss'
         """
         x = self.embedding(input_ids)
-
-        # Pass through the parallel Cortical Columns
-        column_outputs = []
-        for col in self.columns:
-            h = x
-            for layer in col:
-                h = layer(h, inference_params=inference_params)
-            column_outputs.append(h)
-
-        # Heterarchical Voting (Consensus Mechanism)
-        # We take the mean across all 3 cortical columns to minimize global structural tension
-        x = torch.mean(torch.stack(column_outputs), dim=0)
+        x = self.voting_processor(x, inference_params=inference_params)
 
         x = self.norm_f(x)
         logits = self.lm_head(x)
@@ -394,7 +412,7 @@ def train_epoch(
                 # to the layers by adjusting weights in direction of the local error
                 # For simplicity in this architectural milestone, we apply the FEP error
                 # directly to the final projection of the Mamba layers
-                for col in model.columns:
+                for col in model.voting_processor.columns:
                     for layer in col:
                         if hasattr(layer.mamba, "out_proj"):
                             # Local structural update: shift weights toward resolving the physical discrepancy
@@ -519,6 +537,11 @@ def parse_args():
         action="store_true",
         help="Use local Hebbian updates instead of global backprop",
     )
+    parser.add_argument(
+        "--single-stream",
+        action="store_true",
+        help="Use 1 Cortical Column instead of 3 for baseline comparison",
+    )
 
     return parser.parse_args()
 
@@ -568,6 +591,7 @@ def main():
         d_model=args.d_model,
         n_layer=args.n_layer,
         vocab_size=vocab_size,
+        num_columns=1 if args.single_stream else 3,
     )
     model = MambaLM(config).to(device)
     print(f"Model parameters: {sum(p.numel() for p in model.parameters()):,}")
