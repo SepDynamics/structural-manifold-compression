@@ -95,62 +95,11 @@ def recursive_self_correction_loop(handler: PairProgrammerHandler):
     """
     Background thread that autonomously probes the Recency Buffer when the user
     stops typing. It hunts for architectural inconsistencies using the heuristic LLM.
-    Also acts as a Predictive Debugger by polling ~/.bash_history.
     """
-    bash_history_path = Path.home() / ".bash_history"
-    last_bash_cmd = ""
-    # Try to init last command
-    if bash_history_path.exists():
-        try:
-            with open(bash_history_path, "r", encoding="utf-8") as f:
-                lines = f.readlines()
-                if lines:
-                    last_bash_cmd = lines[-1].strip()
-        except:
-            pass
-
     while True:
-        time.sleep(1.0)  # Speed up polling for bash and responsiveness
+        time.sleep(1.0)
         now = time.time()
 
-        # Phase 10: Predictive Debugging (Bash Hook)
-        if bash_history_path.exists():
-            try:
-                with open(bash_history_path, "r", encoding="utf-8") as f:
-                    lines = f.readlines()
-                    if lines:
-                        current_cmd = lines[-1].strip()
-                        if current_cmd and current_cmd != last_bash_cmd:
-                            last_bash_cmd = current_cmd
-                            print(
-                                f"\n[Predictive Debugging] Intercepted shell command: {current_cmd}"
-                            )
-
-                            # Analyze command against Latent Semantic Adapter
-                            verified, response, coverage, _ = (
-                                handler.router.process_query(
-                                    query=f"Execute Terminal Command: {current_cmd}",
-                                    hazard_threshold=0.8,
-                                    coverage_threshold=0.5,
-                                    llm_endpoint="http://localhost:11434/api/generate",
-                                    use_native=True,
-                                )
-                            )
-                            if not verified:
-                                # High topological rupture detected in bash command
-                                msg = f"⚠️ [Predictive Debugging Hazard | Coverage: {coverage:.2f}%]\nHigh-Chaos Command Detected: `{current_cmd}`\n🤖 System Pathologist Warning:\n{response}\n"
-                                print(msg)
-                                try:
-                                    with open(
-                                        REPO_ROOT / "watcher_output.txt",
-                                        "a",
-                                        encoding="utf-8",
-                                    ) as f:
-                                        f.write(msg + "---\n")
-                                except Exception:
-                                    pass
-            except Exception:
-                pass
         # If the user hasn't typed in 5 seconds and we have an active buffer
         if now - handler.last_trigger > 5.0 and handler.active_window_content:
             # Sort entries by last_seen to get the true Recency Buffer
@@ -279,7 +228,7 @@ def main():
         print("❌ CRITICAL: Valkey Work Memory is offline.")
         sys.exit(1)
 
-    watch_path = REPO_ROOT / "scripts"  # Monitor just scripts to avoid noise
+    watch_path = REPO_ROOT
     print(f"👀 Watching codebase for typing patterns in {watch_path}...")
 
     event_handler = PairProgrammerHandler(router)

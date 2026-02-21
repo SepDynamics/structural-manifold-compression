@@ -500,11 +500,11 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
             generate_heatmap, inputs=[], outputs=[heatmap_plot, heatmap_stats]
         )
 
-    with gr.Tab("3-Body Chaos Map (Orbital Stability)"):
+    with gr.Tab("Architectural Alignment Score"):
         gr.Markdown(
-            "Real-time visualization of the N-Body Cognitive Dynamics. Watch the inference particle "
-            "orbit the three cognitive attractors (SSM, Valkey, Transformer). High Structural Tension "
-            "drives the particle toward the Transformer heuristic, indicating a fragile trajectory."
+            "Real-time visualization of codebase structural integrity. Watch the inference state "
+            "evaluate against established continuous geometries. High Structural Tension "
+            "indicates the code deviates from established motifs, requiring heuristic intervention."
         )
         orbit_plot = gr.Plot()
         orbit_warning = gr.Markdown()
@@ -561,15 +561,17 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
             ax.add_patch(polygon)
 
             # Draw Vertices
-            ax.scatter(*points["SSM"], color="blue", s=200, label="SSM (Long-Term)")
             ax.scatter(
-                *points["Valkey"], color="green", s=200, label="Valkey (Working)"
+                *points["SSM"], color="blue", s=200, label="Structural Baseline (SSM)"
+            )
+            ax.scatter(
+                *points["Valkey"], color="green", s=200, label="Fast Memory (Valkey)"
             )
             ax.scatter(
                 *points["Transformer"],
                 color="orange",
                 s=200,
-                label="Transformer (Heuristic)",
+                label="Heuristic Fallback (Transformer)",
             )
 
             # Draw Particle
@@ -584,16 +586,16 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
                 label="Current Inference State",
             )
 
-            ax.set_title(f"Orbital Stability (Lyapunov Exponent: {chaos_val:.2f})")
+            ax.set_title(f"Architectural Alignment (Tension Proxy: {chaos_val:.2f})")
             ax.set_xlim(-1.5, 1.5)
             ax.set_ylim(-1.5, 1.5)
             ax.axis("off")
             ax.legend(loc="upper right", fontsize="small")
             fig.tight_layout()
 
-            msg = "🟢 **Stable Orbit**: Inference resolving efficiently within continuous spatial manifolds."
+            msg = "🟢 **Structurally Aligned**: Code geometry matches the established repository baseline."
             if is_high_chaos:
-                msg = "🛑 **System is in a high-chaos perturbative regime—verify LLM output.**"
+                msg = "🛑 **High Structural Tension — Code deviates significantly from codebase motifs.**"
 
             plt.close(fig)
             return fig, msg
