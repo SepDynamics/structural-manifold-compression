@@ -21,6 +21,8 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from datasets import Dataset, load_from_disk
 from torch.utils.data import DataLoader
 from transformers.trainer_utils import get_last_checkpoint
@@ -127,6 +129,10 @@ class MambaLM(nn.Module):
 
         # Tie weights between embedding and output projection
         self.lm_head.weight = self.embedding.weight
+
+        # Initialize embeddings with strict standard deviation bounds to prevent Logit explosion
+        # and Softmax Saturation (which originally crashed loss at ~757.0 uniformly)
+        self.embedding.weight.data.normal_(mean=0.0, std=0.02)
 
     def forward(
         self,
@@ -456,7 +462,10 @@ def evaluate(model: MambaLM, dataloader: DataLoader, device: torch.device):
             num_batches += 1
 
     avg_loss = total_loss / num_batches
-    perplexity = math.exp(avg_loss)
+    try:
+        perplexity = math.exp(avg_loss)
+    except OverflowError:
+        perplexity = float("inf")
     return avg_loss, perplexity
 
 
