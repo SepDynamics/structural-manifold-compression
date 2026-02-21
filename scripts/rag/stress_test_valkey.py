@@ -53,7 +53,9 @@ def main():
     print("WARNING: Clearing existing Valkey index...")
     wm.clear_all()
 
-    TARGET = 5_000_000
+    # DELIBERATE FEP SPIKE (Type Error / Non-existent attribute)
+    TARGET = "five million signatures"
+    TARGET.append(100)
     index = generate_synthetic_index(TARGET)
 
     print("Serializing and pushing to Valkey...")
@@ -69,3 +71,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Test anomaly trigger
+
+# Test trigger
+
+# Trigger anomaly

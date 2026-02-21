@@ -118,6 +118,56 @@ class DualStreamInference:
 
         return [w.signature for w in result.windows]
 
+    def encode_audio_to_manifold(
+        self,
+        audio_path: Path,
+        window_bytes: int = 512,
+        stride_bytes: int = 384,
+        precision: int = 3,
+    ) -> List[str]:
+        """Convert raw audio byte stream to manifold signatures.
+
+        Args:
+            audio_path: Path to the .wav file
+        """
+        from sep_text_manifold import encode, native
+        from scripts.experiments.manifold_compression_eval import sliding_windows
+
+        with open(audio_path, "rb") as f:
+            audio_bytes = f.read()
+
+        native.set_use_native(True)
+        can_use_native = hasattr(native, "analyze_window_batch") and native.HAVE_NATIVE
+
+        signatures = []
+        pending = []
+
+        def flush():
+            if not pending:
+                return
+            if can_use_native:
+                metrics_batch = native.analyze_window_batch(pending)
+            else:
+                metrics_batch = (encode.encode_window(w) for w in pending)
+
+            for metrics in metrics_batch:
+                signatures.append(
+                    encode.signature_from_metrics(
+                        metrics["coherence"],
+                        metrics["stability"],
+                        metrics["entropy"],
+                        precision=precision,
+                    )
+                )
+            pending.clear()
+
+        for _, chunk in sliding_windows(audio_bytes, window_bytes, stride_bytes):
+            pending.append(bytes(chunk))
+            if len(pending) >= 1024:
+                flush()
+        flush()
+        return signatures
+
     def manifold_to_ids(self, signatures: List[str]) -> torch.Tensor:
         """Convert manifold signatures to vocabulary IDs.
 
@@ -261,7 +311,8 @@ class DualStreamInference:
 
     def generate_text(
         self,
-        prompt: str,
+        prompt: str = "",
+        audio_path: Optional[Path] = None,
         max_tokens: int = 100,
         temperature: float = 1.0,
     ) -> Tuple[str, Dict]:
@@ -269,6 +320,7 @@ class DualStreamInference:
 
         Args:
             prompt: Input prompt text
+            audio_path: Optional audio file input instead of text
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
 
@@ -277,10 +329,14 @@ class DualStreamInference:
         """
         start_time = time.time()
 
-        # Step 1: Convert prompt to manifold (C++ engine)
-        print("Step 1: Encoding text to manifold...")
+        # Step 1: Convert input to manifold (C++ engine)
+        print("Step 1: Encoding physical data to manifold...")
         manifold_start = time.time()
-        prompt_signatures = self.encode_text_to_manifold(prompt)
+        if audio_path:
+            prompt_signatures = self.encode_audio_to_manifold(audio_path)
+            prompt = str(audio_path)
+        else:
+            prompt_signatures = self.encode_text_to_manifold(prompt)
         manifold_time = time.time() - manifold_start
         print(
             f"  Generated {len(prompt_signatures)} signatures in {manifold_time:.3f}s"
@@ -391,7 +447,10 @@ def parse_args():
         "--codebook", type=Path, required=True, help="Dynamic codebook path"
     )
     parser.add_argument("--vocab", type=Path, required=True, help="Vocabulary path")
-    parser.add_argument("--prompt", type=str, required=True, help="Input prompt")
+    parser.add_argument("--prompt", type=str, default="", help="Input prompt text")
+    parser.add_argument(
+        "--audio", type=Path, help="Input audio file (overrides prompt)"
+    )
     parser.add_argument(
         "--max-tokens", type=int, default=100, help="Max tokens to generate"
     )
@@ -419,12 +478,16 @@ def main():
         device=args.device,
     )
 
+    if not args.prompt and not args.audio:
+        print("Error: Must provide either --prompt or --audio")
+        sys.exit(1)
+
     # Generate text
-    print(f"\n=== Generating Text ===")
-    print(f"Prompt: {args.prompt}\n")
+    print(f"\n=== Generating Structural Topology ===")
 
     generated_text, metrics = engine.generate_text(
-        args.prompt,
+        prompt=args.prompt,
+        audio_path=args.audio,
         max_tokens=args.max_tokens,
         temperature=args.temperature,
     )

@@ -427,6 +427,116 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
         naive_rag = gr.Markdown(label="Naive retrieval")
         verified_rag = gr.Markdown(label="Hazard-gated retrieval (secondary demo)")
 
+    with gr.Tab("Cortex Overview (Valkey)"):
+        gr.Markdown(
+            "Live Structural Heatmap visualizing the Active Working Memory. "
+            "Maps absolute topological positions (Coherence vs Stability) of 'Grid Cell' signatures across all ingested data."
+        )
+        refresh_map_btn = gr.Button("Refresh Grid Cell Heatmap")
+        heatmap_plot = gr.Plot()
+        heatmap_stats = gr.Markdown()
+
+        def generate_heatmap():
+            from matplotlib.colors import LogNorm
+            from manifold.valkey_client import ValkeyWorkingMemory
+
+            vwm = ValkeyWorkingMemory()
+            index = vwm.get_cached_index()
+
+            if not index or not index.signatures:
+                fig, ax = plt.subplots(figsize=(6, 4))
+                ax.text(
+                    0.5, 0.5, "Valkey Working Memory is Empty", ha="center", va="center"
+                )
+                ax.set_title("Manifold Topology")
+                plt.close(fig)
+                return fig, "No signatures found in Valkey."
+
+            coherence_vals = []
+            stability_vals = []
+            counts = []
+
+            total_hits = 0
+            for sig, docs in index.signatures.items():
+                try:
+                    parts = sig.split("_")
+                    c = float(parts[0][1:])
+                    s = float(parts[1][1:])
+                    # sum instances across all documents
+                    count = sum(len(windows) for windows in docs.values())
+
+                    coherence_vals.append(c)
+                    stability_vals.append(s)
+                    counts.append(count)
+                    total_hits += count
+                except Exception:
+                    continue
+
+            fig, ax = plt.subplots(figsize=(8, 6))
+            if coherence_vals:
+                # 2D Histogram heatmap
+                h = ax.hist2d(
+                    coherence_vals,
+                    stability_vals,
+                    bins=20,
+                    range=[[0, 1], [0, 1]],
+                    weights=counts,
+                    cmap="magma",
+                    norm=LogNorm(),
+                )
+                fig.colorbar(h[3], ax=ax, label="Hit Density (Log Scale)")
+
+            ax.set_title("Valkey Grid Cell Phase Space")
+            ax.set_xlabel("Coherence (QFH Phase Lock)")
+            ax.set_ylabel("Stability (Lyapunov Divergence)")
+            ax.grid(alpha=0.2)
+            fig.tight_layout()
+
+            stats_msg = f"**Total Unique Grid Cells:** {len(coherence_vals)} | **Total Window Hits:** {total_hits}"
+            plt.close(fig)
+            return fig, stats_msg
+
+        refresh_map_btn.click(
+            generate_heatmap, inputs=[], outputs=[heatmap_plot, heatmap_stats]
+        )
+
+    with gr.Tab("Prompt Binding (Bi-Directional Steering)"):
+        gr.Markdown(
+            "Freeze the Semantic Adapter's Recency List. This overrides the physical Codebook, "
+            "forcing the Proactive Agent to conditionally generate only within this exact topological vocabulary."
+        )
+
+        bind_input = gr.Textbox(
+            label="Frozen Vocabulary (comma-separated tokens)", lines=2
+        )
+        with gr.Row():
+            bind_btn = gr.Button("Bind to Cortex", variant="primary")
+            clear_bind_btn = gr.Button("Release Binding", variant="secondary")
+        bind_status = gr.Markdown()
+
+        def handle_bind(tokens):
+            if not tokens or not tokens.strip():
+                return "⚠️ Please provide tokens to bind."
+            from manifold.valkey_client import ValkeyWorkingMemory
+
+            vwm = ValkeyWorkingMemory()
+            if not vwm.ping():
+                return "❌ Valkey is offline."
+            vwm.r.set("manifold:prompt_binding", tokens.strip())
+            return f"✅ **Cortex Recency List Frozen** to: `{tokens.strip()}`"
+
+        def handle_clear():
+            from manifold.valkey_client import ValkeyWorkingMemory
+
+            vwm = ValkeyWorkingMemory()
+            if not vwm.ping():
+                return "❌ Valkey is offline."
+            vwm.r.delete("manifold:prompt_binding")
+            return "✅ **Cortex Binding Released**. Agent returning to dynamic structural tracking."
+
+        bind_btn.click(handle_bind, inputs=[bind_input], outputs=[bind_status])
+        clear_bind_btn.click(handle_clear, inputs=[], outputs=[bind_status])
+
     with gr.Tab("Proactive Agent (Hazards)"):
         gr.Markdown(
             "Live predictive hazards detected autonomously by the Pair Programmer daemon. "
@@ -447,7 +557,8 @@ with gr.Blocks(title="Structural Manifold Sidecar") as demo:
                     return "Waiting for agent..."
             return "File watcher_output.txt not found. Is pair_programmer_agent.py running?"
 
-        demo.load(read_hazards, inputs=[], outputs=[hazard_box], every=2)
+        timer = gr.Timer(2)
+        timer.tick(read_hazards, inputs=[], outputs=[hazard_box])
 
     run_btn.click(
         handle_compress,

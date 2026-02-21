@@ -133,11 +133,27 @@ class VotingProcessor(nn.Module):
                 h = layer(h, inference_params=inference_params)
             column_outputs.append(h)
 
-        # Heterarchical Voting (Consensus Mechanism)
-        # We take the mean across all cortical columns to minimize global structural tension
         if len(column_outputs) == 1:
             return column_outputs[0]
-        return torch.mean(torch.stack(column_outputs), dim=0)
+
+        # Heterarchical Voting (Precision-Weighted Consensus Mechanism)
+        # 1. Calculate Base Tension (Static Mean)
+        stacked_outputs = torch.stack(column_outputs)
+        base_tension = torch.mean(stacked_outputs, dim=0, keepdim=True)
+
+        # 2. Compute individual variance against base tension
+        column_variance = torch.mean(
+            (stacked_outputs - base_tension) ** 2, dim=-1, keepdim=True
+        )
+
+        # 3. Calculate Precision (Inverse Variance) with stability factor
+        precision = 1.0 / (column_variance + 1e-6)
+
+        # 4. Normalize precision to probabilistic weights
+        weights = precision / torch.sum(precision, dim=0, keepdim=True)
+
+        # 5. Apply adaptive voting
+        return torch.sum(stacked_outputs * weights, dim=0)
 
 
 class MambaLM(nn.Module):

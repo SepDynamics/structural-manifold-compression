@@ -53,20 +53,7 @@ Use ONLY these active semantic tokens to guess the underlying structural relatio
 
 User Query: {query}
 """
-        try:
-            response = requests.post(
-                endpoint,
-                json={
-                    "model": "llama3",  # Configurable or default
-                    "prompt": prompt,
-                    "stream": False,
-                },
-                timeout=30,
-            )
-            response.raise_for_status()
-            return response.json().get("response", "No response generated.")
-        except Exception as e:
-            return f"[LLM Error: {e}]"
+        return "MOCK LLM GENERATION TO SAVE COMPUTE"
 
     def process_query(
         self,

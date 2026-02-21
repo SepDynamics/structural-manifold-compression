@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+a
+
 import argparse
 import json
 import sys
@@ -19,21 +21,47 @@ from manifold.sidecar import load_index, verify_snippet  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Hazard-gated manifold verification for RAG snippets.")
-    parser.add_argument("--index", type=Path, required=True, help="Path to the manifold index JSON.")
+    parser = argparse.ArgumentParser(
+        description="Hazard-gated manifold verification for RAG snippets."
+    )
+    parser.add_argument(
+        "--index", type=Path, required=True, help="Path to the manifold index JSON."
+    )
     parser.add_argument("--text", type=str, help="Raw text to verify.")
-    parser.add_argument("--text-file", type=Path, help="Path to a UTF-8 text file to verify.")
+    parser.add_argument(
+        "--text-file", type=Path, help="Path to a UTF-8 text file to verify."
+    )
     parser.add_argument(
         "--coverage-threshold",
         type=float,
         default=0.5,
         help="Minimum low-hazard coverage required to mark a snippet as verified (default: 0.5).",
     )
-    parser.add_argument("--hazard-threshold", type=float, help="Override the hazard gate (default: index value).")
-    parser.add_argument("--window-bytes", type=int, help="Override window size in bytes (default: index value).")
-    parser.add_argument("--stride-bytes", type=int, help="Override stride in bytes (default: index value).")
-    parser.add_argument("--precision", type=int, help="Override signature precision (default: index value).")
-    parser.add_argument("--use-native", action="store_true", help="Prefer the native manifold kernel if available.")
+    parser.add_argument(
+        "--hazard-threshold",
+        type=float,
+        help="Override the hazard gate (default: index value).",
+    )
+    parser.add_argument(
+        "--window-bytes",
+        type=int,
+        help="Override window size in bytes (default: index value).",
+    )
+    parser.add_argument(
+        "--stride-bytes",
+        type=int,
+        help="Override stride in bytes (default: index value).",
+    )
+    parser.add_argument(
+        "--precision",
+        type=int,
+        help="Override signature precision (default: index value).",
+    )
+    parser.add_argument(
+        "--use-native",
+        action="store_true",
+        help="Prefer the native manifold kernel if available.",
+    )
     parser.add_argument(
         "--reconstruct",
         action="store_true",

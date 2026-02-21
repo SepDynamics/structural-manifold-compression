@@ -17,7 +17,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+import torch
+
+torch.set_num_threads(1)
+
 from src.manifold.router import TripartiteRouter
+
+OLLAMA_URL = "http://localhost:11434/api/generate"
 
 
 class PairProgrammerHandler(FileSystemEventHandler):
@@ -56,7 +62,7 @@ class PairProgrammerHandler(FileSystemEventHandler):
                 query=active_window,
                 hazard_threshold=0.8,
                 coverage_threshold=0.5,
-                llm_endpoint="http://localhost:11434/api/generate",
+                llm_endpoint=OLLAMA_URL,
                 use_native=True,
             )
 
@@ -76,7 +82,7 @@ class PairProgrammerHandler(FileSystemEventHandler):
                 )
 
         except Exception as e:
-            pass
+            print(f"ERROR: {e}")
 
     def on_modified(self, event):
         self._process_event(event)
@@ -95,18 +101,32 @@ def recursive_self_correction_loop(handler: PairProgrammerHandler):
         now = time.time()
         # If the user hasn't typed in 5 seconds and we have an active buffer
         if now - handler.last_trigger > 5.0 and handler.active_window_content:
-            recent_sigs = list(handler.router.codebook.activation_buffer.keys())[:50]
-            if len(recent_sigs) < 5:
+            # Sort entries by last_seen to get the true Recency Buffer
+            sorted_entries = sorted(
+                handler.router.codebook.entries.values(),
+                key=lambda e: e.last_seen,
+                reverse=True,
+            )
+            recent_sigs = [e.signature for e in sorted_entries][:50]
+            if len(recent_sigs) < 1:
                 continue
 
             print(
                 "\n[Self-Correction] User idle. Probing Semantic Recency Buffer for Predictive Hazards..."
             )
 
-            # Use the Recency Buffer to find semantic tokens
-            active_tokens = handler.router.codebook.get_activation_buffer(
-                recent_sigs, 20
-            )
+            # Check Valkey for Bi-Directional Prompt Binding
+            bound_tokens = handler.router.wm.r.get("manifold:prompt_binding")
+            if bound_tokens:
+                print(
+                    "\n[Bi-Directional Action] Cortex Binding detected! Freezing Semantic Adapter Recency List."
+                )
+                active_tokens = bound_tokens.split(",")
+            else:
+                # Use the Dynamic Codebook to find semantic tokens
+                active_tokens = handler.router.codebook.get_activation_buffer(
+                    recent_sigs, 20
+                )
 
             prompt = f"""You are the Recursive Self-Correction agent. 
 The user represents a biological cortical column currently paused on this local state:
@@ -125,8 +145,12 @@ If you find a hazard, reply with a 'Predictive Hazard Warning:' followed by a 1-
 
                 response = requests.post(
                     "http://localhost:11434/api/generate",
-                    json={"model": "llama3", "prompt": prompt, "stream": False},
-                    timeout=10,
+                    json={
+                        "model": "llama3:70b",
+                        "prompt": prompt,
+                        "stream": False,
+                    },
+                    timeout=120,
                 )
                 if response.status_code == 200:
                     ans = response.json().get("response", "").strip()
