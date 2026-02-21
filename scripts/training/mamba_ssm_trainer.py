@@ -371,11 +371,15 @@ def train_epoch(
     gradient_accumulation_steps: int = 1,
     local_hebbian: bool = False,
     learning_rate: float = 1e-4,
+    running_ecc_state: Optional[List[float]] = None,
 ):
     """Train for one epoch."""
     model.train()
     total_loss = 0.0
     num_batches = 0
+
+    if running_ecc_state is None:
+        running_ecc_state = [1.0]
 
     for batch_idx, batch in enumerate(dataloader):
         input_ids = batch["input_ids"].to(device)
@@ -640,6 +644,7 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     print("\n=== Starting Training ===")
+    running_ecc_state = [1.0]  # Initial baseline heat
     for epoch in range(args.num_epochs):
         print(f"\nEpoch {epoch + 1}/{args.num_epochs}")
         epoch_start = time.time()
@@ -652,6 +657,7 @@ def main():
             args.gradient_accumulation_steps,
             local_hebbian=args.local_hebbian,
             learning_rate=args.learning_rate,
+            running_ecc_state=running_ecc_state,
         )
 
         epoch_time = time.time() - epoch_start
