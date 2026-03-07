@@ -69,6 +69,7 @@ def _get_valkey():
     global _valkey_wm
     if _valkey_wm is None:
         from src.manifold.valkey_client import ValkeyWorkingMemory
+
         _valkey_wm = ValkeyWorkingMemory()
     return _valkey_wm
 
@@ -82,37 +83,122 @@ META_KEY = "manifold:meta:ingest"
 FILE_LIST_KEY = "manifold:file_list"
 
 EXCLUDE_DIRS = {
-    ".git", "__pycache__", ".venv", ".venv-py313-bak", ".venv_mamba",
-    "node_modules", "output", "build", ".mypy_cache", ".pytest_cache",
-    ".tox", "dist", "egg-info", ".eggs", "src/build",
+    ".git",
+    "__pycache__",
+    ".venv",
+    ".venv-py313-bak",
+    ".venv_mamba",
+    "node_modules",
+    "output",
+    "build",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".tox",
+    "dist",
+    "egg-info",
+    ".eggs",
+    "src/build",
 }
 
 EXCLUDE_PATTERNS = {
-    "*.pyc", "*.pyo", "*.so", "*.o", "*.a", "*.dylib",
-    "*.egg-info", ".DS_Store", "*.mp4", "*.webm",
-    "*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp", "*.ico",
-    "*.wav", "*.mp3", "*.arrow", "*.safetensors",
-    "*.pdf", "*.whl", "*.tar.gz", "*.zip",
+    "*.pyc",
+    "*.pyo",
+    "*.so",
+    "*.o",
+    "*.a",
+    "*.dylib",
+    "*.egg-info",
+    ".DS_Store",
+    "*.mp4",
+    "*.webm",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.bmp",
+    "*.ico",
+    "*.wav",
+    "*.mp3",
+    "*.arrow",
+    "*.safetensors",
+    "*.pdf",
+    "*.whl",
+    "*.tar.gz",
+    "*.zip",
 }
 
 # Extensions we treat as text (everything else is binary-sig only)
 TEXT_EXTENSIONS = {
-    ".py", ".md", ".txt", ".json", ".toml", ".yaml", ".yml",
-    ".ini", ".cfg", ".rst", ".c", ".cpp", ".h", ".hpp", ".cu",
-    ".sh", ".bash", ".zsh", ".fish", ".makefile", ".cmake",
-    ".tex", ".bib", ".bst", ".cls", ".sty",
-    ".html", ".css", ".js", ".ts", ".jsx", ".tsx",
-    ".xml", ".csv", ".tsv", ".sql", ".r", ".R",
-    ".go", ".rs", ".java", ".scala", ".kt", ".swift",
-    ".rb", ".pl", ".pm", ".lua", ".zig", ".nim",
-    ".gitignore", ".dockerignore", ".editorconfig",
-    ".jsonl", ".ndjson", ".env", ".cff",
+    ".py",
+    ".md",
+    ".txt",
+    ".json",
+    ".toml",
+    ".yaml",
+    ".yml",
+    ".ini",
+    ".cfg",
+    ".rst",
+    ".c",
+    ".cpp",
+    ".h",
+    ".hpp",
+    ".cu",
+    ".sh",
+    ".bash",
+    ".zsh",
+    ".fish",
+    ".makefile",
+    ".cmake",
+    ".tex",
+    ".bib",
+    ".bst",
+    ".cls",
+    ".sty",
+    ".html",
+    ".css",
+    ".js",
+    ".ts",
+    ".jsx",
+    ".tsx",
+    ".xml",
+    ".csv",
+    ".tsv",
+    ".sql",
+    ".r",
+    ".R",
+    ".go",
+    ".rs",
+    ".java",
+    ".scala",
+    ".kt",
+    ".swift",
+    ".rb",
+    ".pl",
+    ".pm",
+    ".lua",
+    ".zig",
+    ".nim",
+    ".gitignore",
+    ".dockerignore",
+    ".editorconfig",
+    ".jsonl",
+    ".ndjson",
+    ".env",
+    ".cff",
 }
 
 # Also treat files without extension that look like config
 TEXT_FILENAMES = {
-    "Makefile", "Dockerfile", "LICENSE", "Procfile", "Gemfile",
-    "Rakefile", "Vagrantfile", ".gitignore", ".dockerignore",
+    "Makefile",
+    "Dockerfile",
+    "LICENSE",
+    "Procfile",
+    "Gemfile",
+    "Rakefile",
+    "Vagrantfile",
+    ".gitignore",
+    ".dockerignore",
 }
 
 DEFAULT_MAX_BYTES = 512_000  # 512 KB per file cap
@@ -154,6 +240,7 @@ def _ensure_encoder():
         return _encoder_ready
     try:
         from sep_text_manifold import encode, native  # noqa: F401
+
         native.set_use_native(True)
         _encoder_ready = True
     except Exception:
@@ -168,9 +255,12 @@ def _compute_sig(data: bytes, precision: int = 3) -> Optional[str]:
     if len(data) < 512:
         return None
     from sep_text_manifold import encode
+
     metrics = encode.encode_window(data[:512])
     return encode.signature_from_metrics(
-        metrics["coherence"], metrics["stability"], metrics["entropy"],
+        metrics["coherence"],
+        metrics["stability"],
+        metrics["entropy"],
         precision=precision,
     )
 
@@ -361,7 +451,7 @@ def search_code(
     scanned = 0
 
     for key in v.r.scan_iter(f"{DOC_PREFIX}*", count=500):
-        rel = key[len(DOC_PREFIX):]
+        rel = key[len(DOC_PREFIX) :]
         if file_pattern != "*" and not fnmatch(rel, file_pattern):
             continue
 
@@ -380,7 +470,7 @@ def search_code(
         seen_lines = set()
         for m in matches[:5]:  # cap snippets per file
             # Find line number of match start
-            line_start = content[:m.start()].count("\n")
+            line_start = content[: m.start()].count("\n")
             ctx_start = max(0, line_start - 2)
             ctx_end = min(len(lines), line_start + 3)
             for i in range(ctx_start, ctx_end):
@@ -428,7 +518,7 @@ def get_file(path: str) -> str:
         # Try a fuzzy match
         candidates = []
         for key in v.r.scan_iter(f"{DOC_PREFIX}*{Path(path).name}*", count=200):
-            candidates.append(key[len(DOC_PREFIX):])
+            candidates.append(key[len(DOC_PREFIX) :])
         if candidates:
             suggestion = "\n".join(f"  • {c}" for c in candidates[:10])
             return f"❌ '{path}' not found. Did you mean:\n{suggestion}"
@@ -473,7 +563,7 @@ def list_indexed_files(
     else:
         # Fallback: scan doc keys
         for key in v.r.scan_iter(f"{DOC_PREFIX}*", count=500):
-            rel = key[len(DOC_PREFIX):]
+            rel = key[len(DOC_PREFIX) :]
             if pattern == "*" or fnmatch(rel, pattern):
                 paths.append(rel)
                 if len(paths) >= max_results:
@@ -552,6 +642,7 @@ def compute_signature(text: str) -> str:
         return "❌ Native encoder (sep_text_manifold) not available."
 
     from src.manifold.sidecar import encode_text
+
     encoded = encode_text(
         text,
         window_bytes=512,
@@ -606,6 +697,7 @@ def verify_snippet(
         return "❌ No manifold index available. Run ingest_repo first."
 
     from src.manifold.sidecar import verify_snippet as _verify
+
     result = _verify(
         text=snippet,
         index=index,
@@ -693,7 +785,7 @@ def search_by_structure(
 
     matches = []
     for key in v.r.scan_iter(f"{SIG_PREFIX}*", count=500):
-        rel = key[len(SIG_PREFIX):]
+        rel = key[len(SIG_PREFIX) :]
         sig_val = v.r.get(key)
         if not sig_val:
             continue
