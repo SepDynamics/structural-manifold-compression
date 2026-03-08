@@ -7,6 +7,8 @@ from demo.common import (
     QuestionRecord,
     answer_from_context,
     build_chunks,
+    build_retrieved_contexts,
+    canonicalize_model_answer,
     extract_candidate_phrases,
     generate_questions,
     normalize_paper_text,
@@ -19,7 +21,7 @@ from demo.retrieval import (
     rank_embedding_chunks,
     rank_manifold_chunks,
 )
-from demo.structure import build_structural_nodes, build_shuffle_node_indices
+from demo.structure import build_node_contexts, build_structural_nodes, build_shuffle_node_indices
 
 
 def _write_paper(tmp_path: Path, name: str, text: str) -> str:
@@ -190,3 +192,94 @@ def test_extract_candidate_phrases_prefers_salient_terms() -> None:
     text = 'Abstract\nWe introduce the "Aurora Lattice Optimizer" and compare it with the Spectral River Theorem.\n'
     phrases = extract_candidate_phrases(text)
     assert "Aurora Lattice Optimizer" in phrases
+
+
+def test_score_prediction_accepts_distinctive_title_alias() -> None:
+    title = "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation"
+    question = QuestionRecord(
+        question_id="q_0002",
+        question='Which paper discusses "POET-X"?',
+        answer=title,
+        answer_aliases=[title],
+        source_papers=["paper_003"],
+        question_type="paper_lookup",
+        evidence_terms=["POET-X"],
+    )
+    assert score_prediction("POET-X", question)
+    assert score_prediction("Answer: POET X", question)
+
+
+def test_canonicalize_model_answer_maps_context_reference_to_title() -> None:
+    question = QuestionRecord(
+        question_id="q_0003",
+        question='Which paper discusses "Aurora Lattice Optimizer"?',
+        answer="Aurora Paper",
+        answer_aliases=["Aurora Paper"],
+        source_papers=["paper_001"],
+        question_type="paper_lookup",
+        evidence_terms=["Aurora Lattice Optimizer"],
+    )
+    contexts = [
+        {"paper_id": "paper_002", "title": "Spectral Paper", "text": "Other evidence"},
+        {"paper_id": "paper_001", "title": "Aurora Paper", "text": "Target evidence"},
+    ]
+    answer = canonicalize_model_answer("[Context 2]", question, contexts)
+    assert answer == "Aurora Paper"
+
+
+def test_build_retrieved_contexts_groups_chunks_by_paper(tmp_path: Path) -> None:
+    doc1 = _write_paper(
+        tmp_path,
+        "aurora",
+        (
+            "Abstract\nAurora Lattice Optimizer for plasma oscillations.\n\n"
+            "Methods\nAurora Lattice Optimizer stabilizes magnetic drift in long horizons.\n"
+        ),
+    )
+    doc2 = _write_paper(
+        tmp_path,
+        "spectral",
+        "Abstract\nSpectral River Theorem for adaptive meshes and convergence bounds.\n",
+    )
+    papers = [
+        _paper_record("paper_001", "Aurora Paper", doc1),
+        _paper_record("paper_002", "Spectral Paper", doc2),
+    ]
+    chunks = build_chunks(papers, chunk_chars=70, overlap_chars=10)
+    aurora_chunks = [chunk for chunk in chunks if chunk.paper_id == "paper_001"][:2]
+    spectral_chunk = [chunk for chunk in chunks if chunk.paper_id == "paper_002"][:1]
+    contexts = build_retrieved_contexts(
+        [*aurora_chunks, *spectral_chunk],
+        max_context_tokens=400,
+    )
+    assert [context["paper_id"] for context in contexts] == ["paper_001", "paper_002"]
+    assert len(contexts) == 2
+    assert "Evidence 1" in contexts[0]["text"]
+
+
+def test_build_node_contexts_groups_nodes_by_paper(tmp_path: Path) -> None:
+    doc1 = _write_paper(
+        tmp_path,
+        "aurora_nodes",
+        (
+            "Abstract\nAurora Lattice Optimizer for plasma oscillations.\n\n"
+            "1 Introduction\nAurora dynamics are stable.\n\n"
+            "2 Methods\nWe evaluate magnetic drift suppression.\n"
+        ),
+    )
+    doc2 = _write_paper(
+        tmp_path,
+        "spectral_nodes",
+        "Abstract\nSpectral River Theorem for adaptive meshes.\n\n1 Results\nConvergence bounds hold.\n",
+    )
+    papers = [
+        _paper_record("paper_001", "Aurora Paper", doc1),
+        _paper_record("paper_002", "Spectral Paper", doc2),
+    ]
+    nodes = build_structural_nodes(papers, node_chars=90, node_overlap=20)
+    ranked_nodes = [node for node in nodes if node.paper_id == "paper_001"][:2]
+    ranked_nodes += [node for node in nodes if node.paper_id == "paper_002"][:1]
+    contexts = build_node_contexts(ranked_nodes, max_context_tokens=400)
+    assert [context["paper_id"] for context in contexts] == ["paper_001", "paper_002"]
+    assert len(contexts) == 2
+    assert "Aurora" in contexts[0]["text"]

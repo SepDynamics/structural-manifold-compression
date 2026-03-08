@@ -3,10 +3,10 @@
     "system": "manifold_system",
     "qa_backend": "ollama",
     "questions": 40,
-    "qa_accuracy": 0.0,
+    "qa_accuracy": 0.05,
     "retrieval_top1": 0.025,
     "retrieval_top5": 0.05,
-    "mean_latency_seconds": 0.33906221545057635,
+    "mean_latency_seconds": 0.2575324883997382,
     "max_context_tokens": 2000,
     "shuffle_index": true
   },
@@ -16,7 +16,7 @@
       "question": "Which paper discusses both \"Generation Image-to-3D\" and \"Multi-Prior Consensus Module\"?",
       "retrieval_query": "Generation Image-to-3D Multi-Prior Consensus Module",
       "expected_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
-      "predicted_answer": "**INSUFFICIENT_CONTEXT**",
+      "predicted_answer": "INSUFFICIENT_CONTEXT",
       "correct": false,
       "source_papers": [
         "paper_024"
@@ -34,7 +34,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.18912763700063806,
+      "latency_seconds": 0.17416054099885514,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -67,7 +67,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.41177720300038345,
+      "latency_seconds": 0.25893728700611973,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -100,7 +100,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.24987777500064112,
+      "latency_seconds": 0.17821676800667774,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -134,7 +134,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.23883798200404271,
+      "latency_seconds": 0.20692551800311776,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -168,7 +168,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4201632010008325,
+      "latency_seconds": 0.21276809299888555,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -202,7 +202,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4060539120036992,
+      "latency_seconds": 0.30466532800346613,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -235,7 +235,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.40198477899684804,
+      "latency_seconds": 0.2655940449985792,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -268,7 +268,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.2775206660007825,
+      "latency_seconds": 0.21212314799777232,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -303,7 +303,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.28230496600008337,
+      "latency_seconds": 0.2813314079976408,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -336,7 +336,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.323013508997974,
+      "latency_seconds": 0.16623047900066013,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -369,7 +369,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.23688749799475772,
+      "latency_seconds": 0.2042451169982087,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -402,7 +402,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.2135710460061091,
+      "latency_seconds": 0.17741078700055368,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -418,8 +418,8 @@
       "question": "Which paper discusses both \"Large Language Models\" and \"Leveraging LLM Parametric Knowledge\"?",
       "retrieval_query": "Large Language Models Leveraging LLM Parametric Knowledge",
       "expected_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
-      "predicted_answer": "INSUFFICIENT_CONTEXT",
-      "correct": false,
+      "predicted_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
+      "correct": true,
       "source_papers": [
         "paper_018"
       ],
@@ -438,7 +438,7 @@
       ],
       "retrieval_top1": true,
       "retrieval_top5": true,
-      "latency_seconds": 0.21782253600395052,
+      "latency_seconds": 0.32879104699532036,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -473,7 +473,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4446926500022528,
+      "latency_seconds": 0.32644215199979953,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -489,8 +489,8 @@
       "question": "Which paper discusses both \"Latent World Model World\" and \"Compact Discrete Tokenizer\"?",
       "retrieval_query": "Latent World Model World Compact Discrete Tokenizer",
       "expected_answer": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
-      "predicted_answer": "INSUFFICIENT_CONTEXT",
-      "correct": false,
+      "predicted_answer": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
+      "correct": true,
       "source_papers": [
         "paper_022"
       ],
@@ -507,7 +507,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": true,
-      "latency_seconds": 0.39485109300585464,
+      "latency_seconds": 0.4210848700022325,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -542,7 +542,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.40284506200259784,
+      "latency_seconds": 0.2826095560012618,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -575,7 +575,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4520416989980731,
+      "latency_seconds": 0.2543556800010265,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -609,7 +609,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.3071520379962749,
+      "latency_seconds": 0.26033266399463173,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -642,7 +642,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.25673152699891943,
+      "latency_seconds": 0.17647011300141457,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -675,7 +675,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.24059535000560572,
+      "latency_seconds": 0.1966418939991854,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -711,7 +711,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4214292469987413,
+      "latency_seconds": 0.297508422001556,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -746,7 +746,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.3065581920018303,
+      "latency_seconds": 0.295777879000525,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -780,7 +780,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.2105706709990045,
+      "latency_seconds": 0.18692471999383997,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -813,7 +813,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.47768834700400475,
+      "latency_seconds": 0.2677049120029551,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -848,7 +848,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.32862099499470787,
+      "latency_seconds": 0.2962808979937108,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -881,7 +881,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.23634617400239222,
+      "latency_seconds": 0.1912480129976757,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -914,7 +914,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.20365961900097318,
+      "latency_seconds": 0.1681834270057152,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -949,7 +949,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4687285920008435,
+      "latency_seconds": 0.3673388269962743,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -984,7 +984,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.3024447429997963,
+      "latency_seconds": 0.24949376299628057,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1017,7 +1017,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.2790454729984049,
+      "latency_seconds": 0.2090013330016518,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1050,7 +1050,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4309812710052938,
+      "latency_seconds": 0.2188072880016989,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1086,7 +1086,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.2687494009951479,
+      "latency_seconds": 0.24760624799819198,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1119,7 +1119,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4315213509980822,
+      "latency_seconds": 0.23039983399939956,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1153,7 +1153,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.2807912150019547,
+      "latency_seconds": 0.26650421299564186,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1187,7 +1187,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.534985575999599,
+      "latency_seconds": 0.44110858099884354,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1221,7 +1221,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4520712010053103,
+      "latency_seconds": 0.28854094599955715,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1256,7 +1256,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.34919138500117697,
+      "latency_seconds": 0.2885986640030751,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1292,7 +1292,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.410259682998003,
+      "latency_seconds": 0.3593502930016257,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1325,7 +1325,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.4943106290011201,
+      "latency_seconds": 0.2501439539992134,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1360,7 +1360,7 @@
       ],
       "retrieval_top1": false,
       "retrieval_top5": false,
-      "latency_seconds": 0.3066827239963459,
+      "latency_seconds": 0.29144082599668764,
       "shuffle_index": true,
       "sidecar_verified": true,
       "sidecar_scores": [
@@ -1372,5 +1372,5 @@
       ]
     }
   ],
-  "created_at": "2026-03-08T13:00:18+00:00"
+  "created_at": "2026-03-08T13:21:30+00:00"
 }

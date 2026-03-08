@@ -5,14 +5,14 @@
 ---
 
 ## Status
-Current status: the repo contains a working benchmark harness, reusable manifold primitives, and one meaningful arXiv pilot result. That pilot supports strong structural retrieval at small scale, but it does not yet support a strong corpus-compression claim.
+Current status: the repo contains a working benchmark harness, reusable manifold primitives, and a meaningful locked arXiv pilot. That pilot now supports a credible small-scale structural-retrieval claim under both extractive and Ollama answering, but it still does not support a strong corpus-compression claim.
 
 ### Established
 - Structural manifold encoding, indexing, and verification primitives exist in the codebase.
 - The repo now includes a leakage-aware corpus benchmark pipeline with frozen questions, neutral `paper_###` ids, stripped frontmatter, bounded reconstruction, and a shuffled-manifold control.
 - The new demo path is runnable end to end and covered by unit and smoke tests.
 - A 25-paper arXiv pilot using the new structural-node manifold and `extractive` answering reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
-- The same locked 25-paper pilot with `ollama` answering reached `0.70` manifold QA versus `0.625` for the baseline, while manifold retrieval stayed at `0.90` Top-1 and shuffled manifold QA collapsed to `0.0`.
+- The same locked 25-paper pilot with `ollama` answering now reaches `0.825` manifold QA versus `0.775` for the baseline after answer-path tightening, while manifold retrieval stays at `0.90` Top-1 and shuffled manifold QA collapses to `0.05`.
 
 ### Historical / prior reported
 - The benchmark snapshot later in this README summarizes prior results on earlier datasets.
@@ -22,8 +22,8 @@ Current status: the repo contains a working benchmark harness, reusable manifold
 - Strong compression under the new arXiv corpus benchmark
 - 200-paper retrieval retention
 - 200-paper QA retention relative to baseline RAG
-- Whether the structural manifold still wins with an LLM answerer under bounded reconstruction
-- Whether the current Ollama gap is mostly prompt/reconstruction friction or a deeper manifold limitation
+- Whether the structural manifold still wins at `50-100` papers on the same protocol
+- Whether sidecar signatures add measurable lift beyond structural nodes alone
 - Any claim that this system replaces transformer context handling in general
 
 ---
@@ -102,9 +102,9 @@ Results:
 | `extractive` | Baseline RAG | 0.650 | 0.650 | 0.875 |
 | `extractive` | Structural manifold | 0.900 | 0.900 | 0.950 |
 | `extractive` | Shuffled manifold | 0.025 | 0.025 | 0.050 |
-| `ollama` | Baseline RAG | 0.625 | 0.650 | 0.875 |
-| `ollama` | Structural manifold | 0.700 | 0.900 | 0.950 |
-| `ollama` | Shuffled manifold | 0.000 | 0.025 | 0.050 |
+| `ollama` | Baseline RAG | 0.775 | 0.650 | 0.875 |
+| `ollama` | Structural manifold | 0.825 | 0.900 | 0.950 |
+| `ollama` | Shuffled manifold | 0.050 | 0.025 | 0.050 |
 
 Compression on the same run:
 
@@ -117,8 +117,9 @@ Interpretation:
 
 - Strong result: the structural-node manifold is carrying real retrieval signal, and the shuffled control collapses as it should.
 - Strong result: the structural-node manifold still beats the current baseline when answers are generated with `ollama`, not just when answers are extracted mechanically.
+- Strong result: answer-path tightening materially improved the locked Ollama pilot, moving manifold QA from `0.700` to `0.825` and baseline QA from `0.625` to `0.775` on the same frozen corpus/questions.
 - Weak result: the current implementation is not yet a compelling compressor.
-- Important caveat: the gap between manifold retrieval (`0.90`) and manifold Ollama QA (`0.70`) indicates the current bottleneck is now answer generation / reconstruction / scoring, not retrieval.
+- Important caveat: the remaining gap between manifold retrieval (`0.90`) and manifold Ollama QA (`0.825`) is now much smaller, and the residual misses are mostly `INSUFFICIENT_CONTEXT` rather than formatting noise. The next bottleneck is reconstruction sufficiency / ablation, not basic answer normalization.
 - Additional caveat: with the `extractive` backend, QA accuracy is effectively document-retrieval accuracy, not full generative QA from reconstructed evidence.
 
 ### Run the full demo

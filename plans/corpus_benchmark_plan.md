@@ -17,18 +17,19 @@ Observed results:
 - extractive baseline RAG: `QA=0.650`, `Top-1=0.650`, `Top-5=0.875`
 - extractive structural manifold: `QA=0.900`, `Top-1=0.900`, `Top-5=0.950`
 - extractive shuffled manifold: `QA=0.025`, `Top-1=0.025`, `Top-5=0.050`
-- ollama baseline RAG: `QA=0.625`, `Top-1=0.650`, `Top-5=0.875`
-- ollama structural manifold: `QA=0.700`, `Top-1=0.900`, `Top-5=0.950`
-- ollama shuffled manifold: `QA=0.000`, `Top-1=0.025`, `Top-5=0.050`
+- ollama baseline RAG: `QA=0.775`, `Top-1=0.650`, `Top-5=0.875`
+- ollama structural manifold: `QA=0.825`, `Top-1=0.900`, `Top-5=0.950`
+- ollama shuffled manifold: `QA=0.050`, `Top-1=0.025`, `Top-5=0.050`
 - compression: only `1.81x` on structural tokens, with serialized manifold bytes larger than the corpus
 
 Interpretation:
 
 - structural retrieval now looks legitimate at pilot scale
 - the shuffled control is behaving correctly
-- the manifold still beats baseline under LLM answering, but the gap between retrieval and QA shows that reconstruction / prompting is the main bottleneck now
+- answer-path tightening worked materially on the same locked corpus/questions
+- the manifold still beats baseline under LLM answering, and the remaining manifold retrieval-to-QA gap is now only `0.075`
 - the compression claim is still weak
-- the next highest-value step is ablation and answer-path improvement on the locked 25-paper setup, not immediate scaling
+- the next highest-value step is ablation plus targeted reconstruction tuning on the locked 25-paper setup, then a 50-paper scale check
 
 ## Recommended path
 
@@ -104,24 +105,40 @@ Exit criteria:
 
 Status:
 - Completed.
-- Result: manifold remained above baseline (`0.700` vs `0.625`) and far above shuffled (`0.000`), but QA still lags retrieval materially.
+- Result: after answer-path tightening on the same locked corpus/questions, manifold reached `0.825` versus baseline `0.775` and shuffled `0.050`.
 
-### Stage 1c: locked 25-paper ablation / answer-path tightening
+### Stage 1c: locked 25-paper answer-path tightening
 Do this before scaling corpus size.
 
 Purpose:
 - separate retrieval quality from answer-path quality
-- measure whether sidecar reranking is actually buying useful accuracy
 - reduce answer losses caused by prompt format, `INSUFFICIENT_CONTEXT`, or abbreviated model outputs
 
 Concrete work items:
-- compare structural nodes with and without sidecar reranking
 - inspect failed Ollama answers where `retrieval_top1=True` but `correct=False`
 - tighten scoring aliases and answer prompt formatting
 - keep the corpus and frozen questions unchanged during this phase
 
+Status:
+- Completed.
+- Result: the locked pilot improved from `0.700` to `0.825` manifold QA and from `0.625` to `0.775` baseline QA. Remaining misses are now mostly true `INSUFFICIENT_CONTEXT` outputs rather than formatting noise.
+
+### Stage 1d: locked 25-paper ablation / reconstruction tuning
+Do this before scaling corpus size.
+
+Purpose:
+- measure whether sidecar reranking is actually buying useful accuracy
+- see whether the remaining `INSUFFICIENT_CONTEXT` misses are caused by too little or too noisy reconstruction
+- preserve the same frozen corpus/questions so the comparison stays interpretable
+
+Concrete work items:
+- compare structural nodes with and without sidecar reranking
+- vary `top-k`, per-paper snippet count, and `max_context_tokens`
+- inspect whether extra context closes the remaining manifold `0.90 -> 0.825` gap
+- keep the corpus and frozen questions unchanged during this phase
+
 ### Stage 2: arXiv mid-scale run (50-100 papers)
-Increase only after Stage 1c improves or at least explains the Ollama gap.
+Increase only after Stage 1d improves or at least explains the remaining Ollama gap.
 
 Suggested commands:
 ```bash

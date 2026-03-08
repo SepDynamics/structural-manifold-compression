@@ -10,9 +10,12 @@ from typing import Iterator, Sequence
 from demo.common import (
     PaperRecord,
     REPO_ROOT,
+    compact_context_excerpt,
     estimated_token_count,
     extract_candidate_phrases,
     load_corpus_text,
+    sanitize_answer_text,
+    truncate_text_to_tokens,
 )
 
 KNOWN_SECTION_TYPES = {
@@ -375,27 +378,57 @@ def build_node_contexts(
     *,
     max_context_tokens: int,
 ) -> list[dict[str, str]]:
-    contexts: list[dict[str, str]] = []
-    used = 0
-    seen: set[str] = set()
+    grouped: dict[str, dict[str, object]] = {}
+    ordered_papers: list[str] = []
     cache: dict[str, str] = {}
 
     for node in ranked_nodes:
-        if node.node_id in seen:
-            continue
-        seen.add(node.node_id)
-        if used >= max_context_tokens:
-            break
         text = reconstruct_node_text(node, cache=cache)
         if not text:
             continue
-        prefixed_text = f"{node.heading} [{node.section_type}]\n{text}".strip()
-        contexts.append(
-            {
+        bucket = grouped.get(node.paper_id)
+        if bucket is None:
+            bucket = {
                 "paper_id": node.paper_id,
                 "title": node.title,
-                "text": prefixed_text,
+                "snippets": [],
+                "keys": set(),
+            }
+            grouped[node.paper_id] = bucket
+            ordered_papers.append(node.paper_id)
+
+        snippets = bucket["snippets"]
+        if len(snippets) >= 3:
+            continue
+
+        snippet_body = compact_context_excerpt(text, max_chars=800)
+        prefixed_text = f"{node.heading} [{node.section_type}]\n{snippet_body}".strip()
+        dedupe_key = sanitize_answer_text(prefixed_text[:240])
+        if dedupe_key in bucket["keys"]:
+            continue
+        bucket["keys"].add(dedupe_key)
+        snippets.append(prefixed_text)
+
+    contexts: list[dict[str, str]] = []
+    used = 0
+    for paper_id in ordered_papers:
+        if used >= max_context_tokens:
+            break
+        bucket = grouped[paper_id]
+        snippets = bucket["snippets"]
+        if not snippets:
+            continue
+        merged_text = "\n\n".join(str(snippet) for snippet in snippets)
+        remaining = max_context_tokens - used
+        merged_text = truncate_text_to_tokens(merged_text, max_tokens=remaining)
+        if not merged_text:
+            break
+        contexts.append(
+            {
+                "paper_id": str(bucket["paper_id"]),
+                "title": str(bucket["title"]),
+                "text": merged_text,
             }
         )
-        used += estimated_token_count(prefixed_text)
+        used += estimated_token_count(merged_text)
     return contexts

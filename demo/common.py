@@ -5,6 +5,7 @@ import json
 import math
 import re
 import sys
+import unicodedata
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -171,6 +172,20 @@ TITLECASE_RE = re.compile(
 ACRONYM_RE = re.compile(r"\b[A-Z]{2,}(?:-[A-Z0-9]{2,})*\b")
 QUOTED_RE = re.compile(r"[\"“]([^\"”]{4,120})[\"”]")
 WORD_RE = re.compile(r"[A-Za-z][A-Za-z0-9\-_/]{2,}")
+ANSWER_PREFIX_RE = re.compile(
+    r"^(?:answer|paper|paper title|title|best match|best paper|final answer)\s*:\s*",
+    re.IGNORECASE,
+)
+CONTEXT_REF_RE = re.compile(r"\bcontext\s*\[?\s*(\d+)\s*\]?\b", re.IGNORECASE)
+INSUFFICIENT_CONTEXT_MARKERS = {
+    "insufficient context",
+    "insufficient_context",
+    "not enough context",
+    "cannot determine",
+    "cannot be determined",
+    "cannot determine from context",
+    "unknown",
+}
 
 
 @dataclass(slots=True)
@@ -241,18 +256,162 @@ def estimated_token_count(text: str) -> int:
     return max(1, math.ceil(len(text.encode("utf-8")) / 4))
 
 
+def _normalize_surface_text(text: str) -> str:
+    normalized = unicodedata.normalize("NFKC", text or "")
+    normalized = normalized.replace("\u00a0", " ")
+    normalized = normalized.replace("–", "-").replace("—", "-").replace("−", "-")
+    normalized = normalized.replace("“", '"').replace("”", '"')
+    normalized = normalized.replace("’", "'").replace("‘", "'")
+    normalized = re.sub(r"[*_`#>]+", " ", normalized)
+    normalized = re.sub(r"\s+", " ", normalized)
+    return normalized.strip()
+
+
+def _strip_answer_wrappers(text: str) -> str:
+    cleaned = _normalize_surface_text(text)
+    previous = None
+    while cleaned and cleaned != previous:
+        previous = cleaned
+        cleaned = ANSWER_PREFIX_RE.sub("", cleaned).strip()
+        cleaned = re.sub(r"^(?:[-*•]|\d+[.)])\s*", "", cleaned).strip()
+        cleaned = cleaned.strip(" [](){}\"'`")
+    return cleaned
+
+
 def sanitize_answer_text(text: str) -> str:
-    return re.sub(r"\s+", " ", text.lower()).strip()
+    cleaned = _strip_answer_wrappers(text)
+    cleaned = re.sub(r"[;,.!?]+$", "", cleaned)
+    cleaned = cleaned.replace("/", " / ").replace("&", " & ").replace(":", " : ")
+    cleaned = re.sub(r"[^A-Za-z0-9:+/&\-\s]", " ", cleaned)
+    cleaned = re.sub(r"\s+", " ", cleaned)
+    return cleaned.lower().strip()
+
+
+def _contains_alias(normalized_text: str, alias: str) -> bool:
+    return bool(alias) and f" {alias} " in f" {normalized_text} "
+
+
+def _title_alias_is_distinctive(text: str) -> bool:
+    words = [word.lower() for word in WORD_RE.findall(text)]
+    if not words:
+        return False
+    informative_words = [word for word in words if word not in STOPWORDS]
+    if not informative_words:
+        return False
+    if len(words) >= 2:
+        return True
+    return (
+        "-" in text
+        or any(ch.isdigit() for ch in text)
+        or text.isupper()
+        or bool(re.search(r"[A-Z].*[A-Z]", text))
+    )
+
+
+def title_aliases(title: str) -> set[str]:
+    clean = re.sub(r"\s+", " ", unicodedata.normalize("NFKC", title or "")).strip()
+    if not clean:
+        return set()
+
+    aliases: set[str] = set()
+
+    def add_alias(candidate: str) -> None:
+        normalized = sanitize_answer_text(candidate)
+        if normalized:
+            aliases.add(normalized)
+        spaced = sanitize_answer_text(candidate.replace("-", " "))
+        if spaced:
+            aliases.add(spaced)
+
+    add_alias(clean)
+
+    parenthetical = re.sub(r"\s*\([^)]*\)\s*", " ", clean).strip()
+    if parenthetical and parenthetical != clean and _title_alias_is_distinctive(parenthetical):
+        add_alias(parenthetical)
+
+    for separator in (":", " - ", " — ", " – "):
+        if separator in clean:
+            prefix = clean.split(separator, 1)[0].strip()
+            if _title_alias_is_distinctive(prefix):
+                add_alias(prefix)
+
+    first_token = clean.split()[0] if clean.split() else ""
+    if first_token and _title_alias_is_distinctive(first_token):
+        add_alias(first_token)
+
+    return aliases
+
+
+def _expected_titles(question: QuestionRecord) -> list[str]:
+    raw_answers: list[str] = []
+    if isinstance(question.answer, list):
+        raw_answers.extend(str(item) for item in question.answer if str(item).strip())
+    elif str(question.answer).strip():
+        raw_answers.append(str(question.answer).strip())
+
+    if not raw_answers:
+        raw_answers.extend(alias for alias in question.answer_aliases if alias.strip())
+
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for title in raw_answers:
+        if title not in seen:
+            deduped.append(title)
+            seen.add(title)
+    return deduped
+
+
+def _is_insufficient_context(text: str) -> bool:
+    normalized = sanitize_answer_text(text)
+    return bool(normalized) and (
+        normalized in INSUFFICIENT_CONTEXT_MARKERS
+        or normalized.startswith("insufficient context")
+        or normalized.startswith("cannot determine")
+    )
 
 
 def score_prediction(predicted: str, question: QuestionRecord) -> bool:
     normalized = sanitize_answer_text(predicted)
-    if not normalized:
+    if not normalized or _is_insufficient_context(predicted):
         return False
-    required = [sanitize_answer_text(alias) for alias in question.answer_aliases if alias]
+
+    expected_titles = _expected_titles(question)
     if question.question_type == "multi_paper_lookup":
-        return bool(required) and all(alias in normalized for alias in required)
-    return any(alias in normalized for alias in required)
+        required_groups = [title_aliases(title) for title in expected_titles]
+        required_groups = [group for group in required_groups if group]
+        return bool(required_groups) and all(
+            any(_contains_alias(normalized, alias) for alias in group) for group in required_groups
+        )
+
+    required_aliases: set[str] = set()
+    for title in expected_titles:
+        required_aliases.update(title_aliases(title))
+    for alias in question.answer_aliases:
+        required_aliases.update(title_aliases(alias))
+    return any(_contains_alias(normalized, alias) for alias in required_aliases)
+
+
+def compact_context_excerpt(text: str, *, max_chars: int = 900) -> str:
+    clean = re.sub(r"\n{3,}", "\n\n", text.strip())
+    if len(clean) <= max_chars:
+        return clean
+    breakpoint = clean.rfind("\n\n", 0, max_chars)
+    if breakpoint == -1:
+        breakpoint = clean.rfind(". ", 0, max_chars)
+    if breakpoint < max_chars // 2:
+        breakpoint = max_chars
+    excerpt = clean[:breakpoint].rstrip()
+    return excerpt + ("..." if breakpoint < len(clean) else "")
+
+
+def truncate_text_to_tokens(text: str, *, max_tokens: int) -> str:
+    if max_tokens <= 0:
+        return ""
+    max_chars = max_tokens * 4
+    if len(text.encode("utf-8")) <= max_chars:
+        return text.strip()
+    excerpt = compact_context_excerpt(text, max_chars=max_chars)
+    return excerpt.strip()
 
 
 def load_questions(path: Path = QUESTIONS_PATH) -> list[QuestionRecord]:
@@ -757,14 +916,93 @@ def resolve_ollama_model(
     return names[0]
 
 
+def _candidate_titles(contexts: Sequence[dict[str, str]]) -> list[str]:
+    titles: list[str] = []
+    seen: set[str] = set()
+    for context in contexts:
+        title = context.get("title", "").strip()
+        if title and title not in seen:
+            titles.append(title)
+            seen.add(title)
+    return titles
+
+
+def _titles_from_context_refs(
+    raw_answer: str,
+    contexts: Sequence[dict[str, str]],
+) -> list[str]:
+    titles: list[str] = []
+    seen: set[str] = set()
+    for match in CONTEXT_REF_RE.finditer(raw_answer):
+        index = int(match.group(1)) - 1
+        if 0 <= index < len(contexts):
+            title = contexts[index].get("title", "").strip()
+            if title and title not in seen:
+                titles.append(title)
+                seen.add(title)
+    return titles
+
+
+def _titles_from_answer_text(
+    raw_answer: str,
+    candidate_titles: Sequence[str],
+) -> list[str]:
+    normalized = sanitize_answer_text(raw_answer)
+    matches: list[str] = []
+    seen: set[str] = set()
+    for title in candidate_titles:
+        aliases = title_aliases(title)
+        if any(_contains_alias(normalized, alias) for alias in aliases):
+            if title not in seen:
+                matches.append(title)
+                seen.add(title)
+    return matches
+
+
+def canonicalize_model_answer(
+    raw_answer: str,
+    question: QuestionRecord,
+    contexts: Sequence[dict[str, str]],
+) -> str:
+    cleaned = _strip_answer_wrappers(raw_answer)
+    if not cleaned or _is_insufficient_context(cleaned):
+        return "INSUFFICIENT_CONTEXT"
+
+    candidate_titles = _candidate_titles(contexts)
+    matched_titles = _titles_from_context_refs(cleaned, contexts)
+    for title in _titles_from_answer_text(cleaned, candidate_titles):
+        if title not in matched_titles:
+            matched_titles.append(title)
+
+    if matched_titles:
+        if question.question_type == "multi_paper_lookup":
+            needed = max(1, len(question.source_papers))
+            return "; ".join(matched_titles[:needed])
+        return matched_titles[0]
+
+    cleaned = re.split(r"(?<=[.!?])\s+", cleaned, maxsplit=1)[0].strip()
+    cleaned = cleaned.strip(" [](){}\"'`")
+    return cleaned or "INSUFFICIENT_CONTEXT"
+
+
 def render_context_prompt(question: QuestionRecord, contexts: Sequence[dict[str, str]]) -> str:
     blocks = []
+    titles = _candidate_titles(contexts)
+    title_lines = "\n".join(f"- {title}" for title in titles)
+    if question.question_type == "multi_paper_lookup":
+        answer_contract = (
+            "Return only the exact paper titles from the candidate list that answer the question, "
+            'separated by "; ".'
+        )
+    else:
+        answer_contract = "Return exactly one paper title copied verbatim from the candidate list."
+
     for idx, context in enumerate(contexts, start=1):
         blocks.append(
             "\n".join(
                 [
                     f"[Context {idx}]",
-                    f"Paper: {context['title']}",
+                    f"Candidate title: {context['title']}",
                     context["text"],
                 ]
             )
@@ -772,10 +1010,13 @@ def render_context_prompt(question: QuestionRecord, contexts: Sequence[dict[str,
     joined = "\n\n".join(blocks)
     return (
         "Answer the question using only the provided context.\n"
-        "If the context is insufficient, answer exactly with INSUFFICIENT_CONTEXT.\n\n"
+        "If the context is insufficient, answer exactly with INSUFFICIENT_CONTEXT.\n"
+        "Do not return markdown, explanations, bullets, or context labels.\n"
+        f"{answer_contract}\n\n"
         f"Question: {question.question}\n\n"
+        f"Candidate paper titles:\n{title_lines}\n\n"
         f"{joined}\n\n"
-        "Return a concise answer."
+        "Return only the answer."
     )
 
 
@@ -797,7 +1038,8 @@ def answer_from_context(
             return "; ".join(unique_titles[:needed])
         return titles[0]
     prompt = render_context_prompt(question, contexts)
-    return call_ollama(prompt, endpoint=ollama_endpoint, model=ollama_model)
+    raw_answer = call_ollama(prompt, endpoint=ollama_endpoint, model=ollama_model)
+    return canonicalize_model_answer(raw_answer, question, contexts)
 
 
 def build_retrieved_contexts(
@@ -805,17 +1047,55 @@ def build_retrieved_contexts(
     *,
     max_context_tokens: int,
 ) -> list[dict[str, str]]:
+    grouped: dict[str, dict[str, object]] = {}
+    ordered_papers: list[str] = []
+    for chunk in ranked_chunks:
+        bucket = grouped.get(chunk.paper_id)
+        if bucket is None:
+            bucket = {
+                "paper_id": chunk.paper_id,
+                "title": chunk.title,
+                "snippets": [],
+                "keys": set(),
+            }
+            grouped[chunk.paper_id] = bucket
+            ordered_papers.append(chunk.paper_id)
+
+        snippets = bucket["snippets"]
+        if len(snippets) >= 2:
+            continue
+
+        snippet = compact_context_excerpt(chunk.text, max_chars=900)
+        key = sanitize_answer_text(snippet[:220])
+        if not snippet or key in bucket["keys"]:
+            continue
+        bucket["keys"].add(key)
+        snippets.append(snippet)
+
     contexts: list[dict[str, str]] = []
     used = 0
-    seen: set[str] = set()
-    for chunk in ranked_chunks:
-        if chunk.chunk_id in seen:
-            continue
-        seen.add(chunk.chunk_id)
+    for paper_id in ordered_papers:
         if used >= max_context_tokens:
             break
-        contexts.append({"paper_id": chunk.paper_id, "title": chunk.title, "text": chunk.text})
-        used += chunk.estimated_tokens
+        bucket = grouped[paper_id]
+        snippets = bucket["snippets"]
+        if not snippets:
+            continue
+        merged_text = "\n\n".join(
+            f"Evidence {idx + 1}\n{snippet}" for idx, snippet in enumerate(snippets)
+        )
+        remaining = max_context_tokens - used
+        merged_text = truncate_text_to_tokens(merged_text, max_tokens=remaining)
+        if not merged_text:
+            break
+        contexts.append(
+            {
+                "paper_id": str(bucket["paper_id"]),
+                "title": str(bucket["title"]),
+                "text": merged_text,
+            }
+        )
+        used += estimated_token_count(merged_text)
     return contexts
 
 

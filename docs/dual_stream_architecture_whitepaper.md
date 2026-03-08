@@ -14,7 +14,7 @@ This whitepaper now distinguishes between implemented components, prior reported
 - The repo contains structural manifold encoding, indexing, and verification code.
 - The repo now contains a leakage-aware corpus benchmark harness for testing compression-oriented retrieval with frozen questions and bounded reconstruction.
 - A 25-paper arXiv pilot with `extractive` answering produced `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, with shuffled control collapsing to `0.025`.
-- The same locked 25-paper pilot with `ollama` answering produced `0.70` manifold QA versus `0.625` for the baseline, while manifold retrieval stayed at `0.90` Top-1 and shuffled manifold QA collapsed to `0.0`.
+- The same locked 25-paper pilot with `ollama` answering now produces `0.825` manifold QA versus `0.775` for the baseline after answer-path tightening, while manifold retrieval stays at `0.90` Top-1 and shuffled manifold QA collapses to `0.05`.
 
 ### Prior reported
 - The benchmark figures below refer to earlier internal experiments and narrower datasets.
@@ -27,7 +27,7 @@ This whitepaper now distinguishes between implemented components, prior reported
 - General architectural replacement claims for transformers
 
 ### Latest pilot interpretation
-The current benchmark evidence is strongest for structural retrieval, not compression. The latest 25-paper pilot shows that section-level structural indexing can outperform the current baseline chunked RAG on frozen document-identification questions, and that this advantage survives an `ollama` answer backend under bounded reconstruction. However, the same run only achieved about `1.81x` token compression and stored a serialized manifold larger than the raw corpus bytes. This means the retrieval claim has improved materially, while the compression claim remains pending. The next bottleneck is now answer-path quality rather than retrieval quality.
+The current benchmark evidence is strongest for structural retrieval, not compression. The latest 25-paper pilot shows that section-level structural indexing can outperform the current baseline chunked RAG on frozen document-identification questions, and that this advantage survives an `ollama` answer backend under bounded reconstruction. After answer-path tightening on the same locked corpus/questions, manifold QA rose to `0.825` while retrieval remained at `0.90` Top-1, which materially narrows the previous answer-path gap. However, the same run still only achieved about `1.81x` token compression and stored a serialized manifold larger than the raw corpus bytes. This means the retrieval claim has improved materially, while the compression claim remains pending. The next bottleneck is now ablation and reconstruction sufficiency rather than basic answer normalization.
 
 ---
 
