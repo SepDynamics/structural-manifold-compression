@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "system": "manifold_system",
+    "qa_backend": "extractive",
+    "questions": 2,
+    "qa_accuracy": 1.0,
+    "retrieval_top1": 1.0,
+    "retrieval_top5": 1.0,
+    "mean_latency_seconds": 0.0004022089997306466,
+    "max_context_tokens": 2000,
+    "shuffle_index": false
+  },
+  "results": [
+    {
+      "question_id": "q_0000",
+      "question": "Which paper discusses \"data\"?",
+      "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+      "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+      "correct": true,
+      "source_papers": [
+        "paper_001"
+      ],
+      "retrieved_papers": [
+        "paper_001"
+      ],
+      "retrieved_chunks": [
+        "paper_001::chunk_0018",
+        "paper_001::chunk_0016",
+        "paper_001::chunk_0013",
+        "paper_001::chunk_0015",
+        "paper_001::chunk_0019"
+      ],
+      "retrieval_top1": true,
+      "retrieval_top5": true,
+      "latency_seconds": 0.00044188999891048297,
+      "shuffle_index": false
+    },
+    {
+      "question_id": "q_0001",
+      "question": "Which paper discusses \"recording\"?",
+      "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+      "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+      "correct": true,
+      "source_papers": [
+        "paper_001"
+      ],
+      "retrieved_papers": [
+        "paper_001"
+      ],
+      "retrieved_chunks": [
+        "paper_001::chunk_0004",
+        "paper_001::chunk_0010",
+        "paper_001::chunk_0000",
+        "paper_001::chunk_0015",
+        "paper_001::chunk_0020"
+      ],
+      "retrieval_top1": true,
+      "retrieval_top5": true,
+      "latency_seconds": 0.00036252800055081025,
+      "shuffle_index": false
+    }
+  ],
+  "created_at": "2026-03-08T11:48:43+00:00"
+}

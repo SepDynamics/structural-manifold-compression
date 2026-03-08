@@ -2,11 +2,17 @@
 from __future__ import annotations
 
 import argparse
+import logging
 import shutil
+import sys
 from pathlib import Path
 
 import pdfplumber  # type: ignore
 import requests
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from demo.common import (
     BUILD_METRICS_PATH,
@@ -33,6 +39,13 @@ from demo.common import (
 )
 
 RAW_PDF_DIR = CORPUS_DIR.parent / "raw_pdfs"
+LOG = logging.getLogger(__name__)
+
+
+def configure_pdf_logging() -> None:
+    # pdfminer emits noisy FontBBox warnings on some arXiv PDFs even when text
+    # extraction succeeds. They are not actionable for this pipeline.
+    logging.getLogger("pdfminer.pdffont").setLevel(logging.ERROR)
 
 
 def parse_args() -> argparse.Namespace:
@@ -55,8 +68,17 @@ def parse_args() -> argparse.Namespace:
 
 
 def extract_pdf_text(path: Path) -> str:
+    configure_pdf_logging()
     with pdfplumber.open(path) as pdf:
-        pages = [(page.extract_text() or "").strip() for page in pdf.pages]
+        pages: list[str] = []
+        for page_index, page in enumerate(pdf.pages, start=1):
+            try:
+                text = (page.extract_text() or "").strip()
+            except Exception as exc:
+                LOG.warning("Skipping %s page %s during PDF extraction: %s", path.name, page_index, exc)
+                continue
+            if text:
+                pages.append(text)
     return "\n\n".join(page for page in pages if page).strip()
 
 
