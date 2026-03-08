@@ -242,6 +242,9 @@ def rank_manifold_nodes_detailed(
     precision: int,
     top_k: int,
     shuffle_nodes: bool = False,
+    use_sidecar_rerank: bool = True,
+    sidecar_weight: float = 0.25,
+    phrase_weight: float = 0.15,
 ) -> list[dict[str, float | int | bool]]:
     embeddings = index_payload["embeddings"]
     if not len(nodes) or embeddings.size == 0:
@@ -263,7 +266,8 @@ def rank_manifold_nodes_detailed(
         embedding_score = float(embeddings[node_idx] @ query_embedding)
         sidecar_score = _signature_overlap_score(query_counts, signature_counters[node_idx])
         phrase_score = _phrase_overlap_score(question, nodes[node_idx])
-        final_score = embedding_score + (0.25 * sidecar_score) + (0.15 * phrase_score)
+        applied_sidecar_weight = sidecar_weight if use_sidecar_rerank else 0.0
+        final_score = embedding_score + (applied_sidecar_weight * sidecar_score) + (phrase_weight * phrase_score)
         ranking.append(
             {
                 "node_index": int(node_idx),
@@ -271,7 +275,8 @@ def rank_manifold_nodes_detailed(
                 "embedding_score": embedding_score,
                 "sidecar_score": sidecar_score,
                 "phrase_score": phrase_score,
-                "verified": bool(sidecar_score >= 0.15 or phrase_score >= 0.5),
+                "verified": bool((use_sidecar_rerank and sidecar_score >= 0.15) or phrase_score >= 0.5),
+                "used_sidecar_rerank": use_sidecar_rerank,
             }
         )
 
@@ -304,6 +309,9 @@ def rank_manifold_chunks(
     precision: int,
     top_k: int,
     shuffle_postings: bool = False,
+    use_sidecar_rerank: bool = True,
+    sidecar_weight: float = 0.25,
+    phrase_weight: float = 0.15,
 ) -> list[tuple[int, float]]:
     ranked = rank_manifold_nodes_detailed(
         question,
@@ -315,6 +323,9 @@ def rank_manifold_chunks(
         precision=precision,
         top_k=top_k,
         shuffle_nodes=shuffle_postings,
+        use_sidecar_rerank=use_sidecar_rerank,
+        sidecar_weight=sidecar_weight,
+        phrase_weight=phrase_weight,
     )
     return [(int(item["node_index"]), float(item["score"])) for item in ranked]
 

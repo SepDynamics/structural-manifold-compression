@@ -137,6 +137,12 @@ Concrete work items:
 - inspect whether extra context closes the remaining manifold `0.90 -> 0.825` gap
 - keep the corpus and frozen questions unchanged during this phase
 
+Status:
+- Completed.
+- Sidecar ablation result: with sidecar `QA=0.850`; without sidecar `QA=0.900`; Top-1 retrieval remained `0.900` in both arms.
+- Reconstruction sweep result: best tested configuration was already the current default `top_k=5`, `per_paper_snippets=3`, `max_context_tokens=2000`, with sidecar reranking disabled.
+- Best follow-on locked-pilot result: `QA=0.900`, `Top-1=0.900`, `Top-5=0.975`, `4` `INSUFFICIENT_CONTEXT` answers.
+
 ### Stage 2: arXiv mid-scale run (50-100 papers)
 Increase only after Stage 1d improves or at least explains the remaining Ollama gap.
 
@@ -151,6 +157,20 @@ Purpose:
 - see whether manifold retrieval stays above chance at larger scale
 - see whether QA stays within striking distance of baseline RAG
 - see whether compression improves or remains too weak to support the flagship claim
+
+Recommended next checkpoint:
+```bash
+python run_full_demo.py \
+  --paper-count 50 \
+  --question-count 60 \
+  --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
+  --node-chars 1500 \
+  --node-overlap 180 \
+  --window-bytes 16 \
+  --stride-bytes 4 \
+  --qa-backend ollama \
+  --force
+```
 
 Metrics that matter:
 - `results/compression_metrics.json`

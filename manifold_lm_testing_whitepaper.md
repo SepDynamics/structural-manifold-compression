@@ -40,6 +40,7 @@ Interpretation:
 - The manifold still beats the baseline under LLM answering, so the pilot is no longer only an extractive-title lookup result.
 - The answer-path cleanup materially improved bounded-reconstruction QA on the same locked corpus/questions.
 - The remaining gap between `0.90` retrieval and `0.825` Ollama QA is now much smaller, and the residual misses are mostly `INSUFFICIENT_CONTEXT` rather than formatting noise.
+- A follow-on ablation on the same locked pilot showed that disabling sidecar reranking improved Ollama QA from `0.850` to `0.900`, so the current sidecar layer is not yet adding retrieval value in this benchmark shape.
 - The current implementation is not yet a compelling compressor, so the flagship corpus-compression claim remains open.
 
 ## 1. Introduction: Beyond the Transformer Plateau

@@ -1,0 +1,2865 @@
+{
+  "study": "sidecar_ablation",
+  "config": {
+    "qa_backend": "ollama",
+    "top_k": 5,
+    "max_context_tokens": 2000,
+    "per_paper_snippets": 3,
+    "sidecar_weight": 0.25,
+    "phrase_weight": 0.15
+  },
+  "with_sidecar": {
+    "summary": {
+      "system": "manifold_system",
+      "qa_backend": "ollama",
+      "questions": 40,
+      "qa_accuracy": 0.85,
+      "retrieval_top1": 0.9,
+      "retrieval_top5": 0.95,
+      "mean_latency_seconds": 0.4086304123253285,
+      "max_context_tokens": 2000,
+      "per_paper_snippets": 3,
+      "top_k": 5,
+      "shuffle_index": false,
+      "sidecar_rerank": true,
+      "sidecar_weight": 0.25,
+      "phrase_weight": 0.15
+    },
+    "error_stats": {
+      "retrieval_top1_but_wrong": 4,
+      "insufficient_context": 6
+    },
+    "results": [
+      {
+        "question_id": "q_0000",
+        "question": "Which paper discusses both \"Generation Image-to-3D\" and \"Multi-Prior Consensus Module\"?",
+        "retrieval_query": "Generation Image-to-3D Multi-Prior Consensus Module",
+        "expected_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "predicted_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "correct": true,
+        "source_papers": [
+          "paper_024"
+        ],
+        "retrieved_papers": [
+          "paper_024",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_024::node_0000",
+          "paper_020::node_0027",
+          "paper_024::node_0002",
+          "paper_024::node_0015",
+          "paper_020::node_0000"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 4.080952488002367,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.25,
+          0.4,
+          0.15,
+          0.4,
+          0.05
+        ]
+      },
+      {
+        "question_id": "q_0001",
+        "question": "Which paper discusses both \"Inter-Caption Augmentation-based Learning\" and \"Similarity-Aware Guidance\"?",
+        "retrieval_query": "Inter-Caption Augmentation-based Learning Similarity-Aware Guidance",
+        "expected_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "predicted_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "correct": true,
+        "source_papers": [
+          "paper_023"
+        ],
+        "retrieved_papers": [
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_023::node_0069",
+          "paper_023::node_0009",
+          "paper_023::node_0010",
+          "paper_023::node_0038",
+          "paper_023::node_0029"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3555488050042186,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.1388888888888889,
+          0.4166666666666667,
+          0.3611111111111111,
+          0.3055555555555556,
+          0.25
+        ]
+      },
+      {
+        "question_id": "q_0002",
+        "question": "Which paper discusses both \"Robot-Free Instant Policy Iteration\" and \"Improve Robot Policies Instantly\"?",
+        "retrieval_query": "Robot-Free Instant Policy Iteration Improve Robot Policies Instantly",
+        "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "correct": true,
+        "source_papers": [
+          "paper_001"
+        ],
+        "retrieved_papers": [
+          "paper_001"
+        ],
+        "retrieved_nodes": [
+          "paper_001::node_0058",
+          "paper_001::node_0028",
+          "paper_001::node_0030",
+          "paper_001::node_0007",
+          "paper_001::node_0039"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.21400522899784846,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.4594594594594595,
+          0.5405405405405406,
+          0.2702702702702703,
+          0.35135135135135137,
+          0.6756756756756757
+        ]
+      },
+      {
+        "question_id": "q_0003",
+        "question": "Which paper discusses both \"Memory-efficient LLM Training\" and \"Scaling Orthogonal Transformation Efficient\"?",
+        "retrieval_query": "Memory-efficient LLM Training Scaling Orthogonal Transformation Efficient",
+        "expected_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "predicted_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "correct": true,
+        "source_papers": [
+          "paper_002"
+        ],
+        "retrieved_papers": [
+          "paper_002",
+          "paper_008"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0000",
+          "paper_002::node_0002",
+          "paper_008::node_0049",
+          "paper_002::node_0031",
+          "paper_002::node_0082"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3454619569965871,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.11904761904761904,
+          0.19047619047619047,
+          0.16666666666666666,
+          0.09523809523809523,
+          0.2619047619047619
+        ]
+      },
+      {
+        "question_id": "q_0004",
+        "question": "Which paper discusses both \"On-Policy Self-Distillation\" and \"MATH-500\"?",
+        "retrieval_query": "On-Policy Self-Distillation MATH-500",
+        "expected_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_010"
+        ],
+        "retrieved_papers": [
+          "paper_010",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_010::node_0000",
+          "paper_010::node_0012",
+          "paper_010::node_0072",
+          "paper_020::node_0025",
+          "paper_010::node_0104"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.21602182900096523,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.46153846153846156,
+          0.3076923076923077,
+          0.07692307692307693,
+          0.07692307692307693,
+          0.07692307692307693
+        ]
+      },
+      {
+        "question_id": "q_0005",
+        "question": "Which paper discusses both \"Residual RL--MPC\" and \"Flow Contact-rich\"?",
+        "retrieval_query": "Residual RL--MPC Flow Contact-rich",
+        "expected_answer": "Residual RL--MPC for Robust Microrobotic Cell Pushing Under Time-Varying Flow",
+        "predicted_answer": "Residual RL--MPC for Robust Microrobotic Cell Pushing Under Time-Varying Flow",
+        "correct": true,
+        "source_papers": [
+          "paper_021"
+        ],
+        "retrieved_papers": [
+          "paper_021",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_021::node_0007",
+          "paper_021::node_0035",
+          "paper_021::node_0024",
+          "paper_020::node_0052",
+          "paper_020::node_0027"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.40725047500018263,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.0,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.3333333333333333
+        ]
+      },
+      {
+        "question_id": "q_0006",
+        "question": "Which paper discusses both \"Causal Survival Forests\" and \"Survival Analysis Estimating\"?",
+        "retrieval_query": "Causal Survival Forests Survival Analysis Estimating",
+        "expected_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "predicted_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "correct": true,
+        "source_papers": [
+          "paper_006"
+        ],
+        "retrieved_papers": [
+          "paper_006"
+        ],
+        "retrieved_nodes": [
+          "paper_006::node_0099",
+          "paper_006::node_0000",
+          "paper_006::node_0036",
+          "paper_006::node_0092",
+          "paper_006::node_0019"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3126934870015248,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.47619047619047616,
+          0.47619047619047616,
+          0.09523809523809523,
+          0.23809523809523808,
+          0.14285714285714285
+        ]
+      },
+      {
+        "question_id": "q_0007",
+        "question": "Which paper discusses both \"Thermodynamic Response Functions\" and \"Singular Bayesian Models Singular\"?",
+        "retrieval_query": "Thermodynamic Response Functions Singular Bayesian Models Singular",
+        "expected_answer": "Thermodynamic Response Functions in Singular Bayesian Models",
+        "predicted_answer": "Thermodynamic Response Functions in Singular Bayesian Models",
+        "correct": true,
+        "source_papers": [
+          "paper_007"
+        ],
+        "retrieved_papers": [
+          "paper_007"
+        ],
+        "retrieved_nodes": [
+          "paper_007::node_0009",
+          "paper_007::node_0030",
+          "paper_007::node_0068",
+          "paper_007::node_0001",
+          "paper_007::node_0087"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2241842319999705,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.2857142857142857,
+          0.42857142857142855,
+          0.2857142857142857,
+          0.37142857142857144,
+          0.11428571428571428
+        ]
+      },
+      {
+        "question_id": "q_0008",
+        "question": "Which paper discusses both \"Continuous Measurement Real-time\" and \"Neural ODE\"?",
+        "retrieval_query": "Continuous Measurement Real-time Neural ODE",
+        "expected_answer": "Kraus Constrained Sequence Learning For Quantum Trajectories from Continuous Measurement",
+        "predicted_answer": "Kraus Constrained Sequence Learning For Quantum Trajectories from Continuous Measurement",
+        "correct": true,
+        "source_papers": [
+          "paper_008"
+        ],
+        "retrieved_papers": [
+          "paper_008",
+          "paper_021",
+          "paper_014"
+        ],
+        "retrieved_nodes": [
+          "paper_008::node_0000",
+          "paper_008::node_0025",
+          "paper_021::node_0004",
+          "paper_008::node_0053",
+          "paper_014::node_0060"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.35416331799933687,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.0,
+          0.05555555555555555,
+          0.1111111111111111,
+          0.05555555555555555,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0009",
+        "question": "Which paper discusses both \"Ensembling Language Models\" and \"Sequential Monte Carlo Practitioners\"?",
+        "retrieval_query": "Ensembling Language Models Sequential Monte Carlo Practitioners",
+        "expected_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "predicted_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "correct": true,
+        "source_papers": [
+          "paper_011"
+        ],
+        "retrieved_papers": [
+          "paper_011"
+        ],
+        "retrieved_nodes": [
+          "paper_011::node_0000",
+          "paper_011::node_0022",
+          "paper_011::node_0004",
+          "paper_011::node_0075",
+          "paper_011::node_0018"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2036448200015002,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.375,
+          0.15625,
+          0.0625,
+          0.1875,
+          0.21875
+        ]
+      },
+      {
+        "question_id": "q_0010",
+        "question": "Which paper discusses both \"Identity Sheaf Network\" and \"Identity Sheaf Networks\"?",
+        "retrieval_query": "Identity Sheaf Network Identity Sheaf Networks",
+        "expected_answer": "On the Necessity of Learnable Sheaf Laplacians",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_015"
+        ],
+        "retrieved_papers": [
+          "paper_015"
+        ],
+        "retrieved_nodes": [
+          "paper_015::node_0002",
+          "paper_015::node_0000",
+          "paper_015::node_0012",
+          "paper_015::node_0013",
+          "paper_015::node_0009"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.22089649499685038,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3333333333333333,
+          0.6,
+          0.3333333333333333,
+          0.2,
+          0.26666666666666666
+        ]
+      },
+      {
+        "question_id": "q_0011",
+        "question": "Which paper discusses both \"Attention Sinks\" and \"Massive Activations\"?",
+        "retrieval_query": "Attention Sinks Massive Activations",
+        "expected_answer": "The Spike, the Sparse and the Sink: Anatomy of Massive Activations and Attention Sinks",
+        "predicted_answer": "The Spike, the Sparse and the Sink: Anatomy of Massive Activations and Attention Sinks",
+        "correct": true,
+        "source_papers": [
+          "paper_016"
+        ],
+        "retrieved_papers": [
+          "paper_016"
+        ],
+        "retrieved_nodes": [
+          "paper_016::node_0000",
+          "paper_016::node_0083",
+          "paper_016::node_0070",
+          "paper_016::node_0004",
+          "paper_016::node_0084"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.36914815600175643,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.2,
+          0.2,
+          0.2,
+          0.4,
+          0.4
+        ]
+      },
+      {
+        "question_id": "q_0012",
+        "question": "Which paper discusses both \"Large Language Models\" and \"Leveraging LLM Parametric Knowledge\"?",
+        "retrieval_query": "Large Language Models Leveraging LLM Parametric Knowledge",
+        "expected_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
+        "predicted_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
+        "correct": true,
+        "source_papers": [
+          "paper_018"
+        ],
+        "retrieved_papers": [
+          "paper_002",
+          "paper_011",
+          "paper_018",
+          "paper_009"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0009",
+          "paper_011::node_0004",
+          "paper_018::node_0031",
+          "paper_018::node_0000",
+          "paper_009::node_0004"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": true,
+        "latency_seconds": 0.34677781500067795,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.11538461538461539,
+          0.11538461538461539,
+          0.23076923076923078,
+          0.11538461538461539,
+          0.23076923076923078
+        ]
+      },
+      {
+        "question_id": "q_0013",
+        "question": "Which paper discusses both \"Distributed Partial Information Puzzle\" and \"Dynamic Epistemic Logic\"?",
+        "retrieval_query": "Distributed Partial Information Puzzle Dynamic Epistemic Logic",
+        "expected_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "predicted_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "correct": true,
+        "source_papers": [
+          "paper_019"
+        ],
+        "retrieved_papers": [
+          "paper_019",
+          "paper_018",
+          "paper_005"
+        ],
+        "retrieved_nodes": [
+          "paper_019::node_0000",
+          "paper_019::node_0007",
+          "paper_018::node_0029",
+          "paper_019::node_0049",
+          "paper_005::node_0070"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.42449655100062955,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.41935483870967744,
+          0.25806451612903225,
+          0.2903225806451613,
+          0.25806451612903225,
+          0.03225806451612903
+        ]
+      },
+      {
+        "question_id": "q_0014",
+        "question": "Which paper discusses both \"Latent World Model World\" and \"Compact Discrete Tokenizer\"?",
+        "retrieval_query": "Latent World Model World Compact Discrete Tokenizer",
+        "expected_answer": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
+        "predicted_answer": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
+        "correct": true,
+        "source_papers": [
+          "paper_022"
+        ],
+        "retrieved_papers": [
+          "paper_022",
+          "paper_008"
+        ],
+        "retrieved_nodes": [
+          "paper_022::node_0036",
+          "paper_022::node_0016",
+          "paper_022::node_0026",
+          "paper_008::node_0034",
+          "paper_022::node_0034"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.32793038599629654,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.35,
+          0.0,
+          0.25,
+          0.15,
+          0.05
+        ]
+      },
+      {
+        "question_id": "q_0015",
+        "question": "Which paper discusses both \"Secret Knowledge Elicitation Large\" and \"Natural Testbed\"?",
+        "retrieval_query": "Secret Knowledge Elicitation Large Natural Testbed",
+        "expected_answer": "Censored LLMs as a Natural Testbed for Secret Knowledge Elicitation",
+        "predicted_answer": "Censored LLMs as a Natural Testbed for Secret Knowledge Elicitation",
+        "correct": true,
+        "source_papers": [
+          "paper_004"
+        ],
+        "retrieved_papers": [
+          "paper_004",
+          "paper_005",
+          "paper_019"
+        ],
+        "retrieved_nodes": [
+          "paper_004::node_0117",
+          "paper_005::node_0008",
+          "paper_005::node_0042",
+          "paper_019::node_0046",
+          "paper_004::node_0008"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.39775612100493163,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "question_id": "q_0016",
+        "question": "Which paper discusses both \"Disentangling Model Beliefs\" and \"GPT-OSS\"?",
+        "retrieval_query": "Disentangling Model Beliefs GPT-OSS",
+        "expected_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "predicted_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "correct": true,
+        "source_papers": [
+          "paper_005"
+        ],
+        "retrieved_papers": [
+          "paper_005"
+        ],
+        "retrieved_nodes": [
+          "paper_005::node_0054",
+          "paper_005::node_0000",
+          "paper_005::node_0047",
+          "paper_005::node_0080",
+          "paper_005::node_0084"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2656188210021355,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.15384615384615385,
+          0.15384615384615385,
+          0.23076923076923078,
+          0.0,
+          0.3076923076923077
+        ]
+      },
+      {
+        "question_id": "q_0017",
+        "question": "Which paper discusses both \"Bias-Bounded Evaluation\" and \"Although LLM\"?",
+        "retrieval_query": "Bias-Bounded Evaluation Although LLM",
+        "expected_answer": "Towards Provably Unbiased LLM Judges via Bias-Bounded Evaluation",
+        "predicted_answer": "Towards Provably Unbiased LLM Judges via Bias-Bounded Evaluation",
+        "correct": true,
+        "source_papers": [
+          "paper_017"
+        ],
+        "retrieved_papers": [
+          "paper_017",
+          "paper_008"
+        ],
+        "retrieved_nodes": [
+          "paper_017::node_0009",
+          "paper_017::node_0029",
+          "paper_017::node_0007",
+          "paper_017::node_0025",
+          "paper_008::node_0051"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.30140473000210477,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.5555555555555556,
+          0.3333333333333333,
+          0.2222222222222222,
+          0.1111111111111111,
+          0.3333333333333333
+        ]
+      },
+      {
+        "question_id": "q_0018",
+        "question": "Which paper discusses both \"Finding Short Paths\" and \"Simple Polytopes\"?",
+        "retrieval_query": "Finding Short Paths Simple Polytopes",
+        "expected_answer": "Finding Short Paths on Simple Polytopes",
+        "predicted_answer": "Finding Short Paths on Simple Polytopes",
+        "correct": true,
+        "source_papers": [
+          "paper_025"
+        ],
+        "retrieved_papers": [
+          "paper_025"
+        ],
+        "retrieved_nodes": [
+          "paper_025::node_0051",
+          "paper_025::node_0052",
+          "paper_025::node_0010",
+          "paper_025::node_0000",
+          "paper_025::node_0005"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.21275317300023744,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.4,
+          0.8,
+          0.6,
+          0.4,
+          0.6
+        ]
+      },
+      {
+        "question_id": "q_0019",
+        "question": "Which paper discusses both \"Harnessing Synthetic Data\" and \"Statistical Inference The\"?",
+        "retrieval_query": "Harnessing Synthetic Data Statistical Inference The",
+        "expected_answer": "Harnessing Synthetic Data from Generative AI for Statistical Inference",
+        "predicted_answer": "Harnessing Synthetic Data from Generative AI for Statistical Inference",
+        "correct": true,
+        "source_papers": [
+          "paper_014"
+        ],
+        "retrieved_papers": [
+          "paper_014"
+        ],
+        "retrieved_nodes": [
+          "paper_014::node_0092",
+          "paper_014::node_0073",
+          "paper_014::node_0000",
+          "paper_014::node_0008",
+          "paper_014::node_0131"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.22589915899879998,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.1,
+          0.2,
+          0.3,
+          0.25,
+          0.3
+        ]
+      },
+      {
+        "question_id": "q_0020",
+        "question": "Which paper discusses \"Text-Driven Amodal\"?",
+        "retrieval_query": "Text-Driven Amodal",
+        "expected_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "predicted_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "correct": true,
+        "source_papers": [
+          "paper_024"
+        ],
+        "retrieved_papers": [
+          "paper_024",
+          "paper_019",
+          "paper_005",
+          "paper_021"
+        ],
+        "retrieved_nodes": [
+          "paper_024::node_0000",
+          "paper_019::node_0104",
+          "paper_005::node_0105",
+          "paper_021::node_0056",
+          "paper_024::node_0010"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3879573599988362,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.6666666666666666,
+          1.0,
+          0.6666666666666666,
+          0.6666666666666666,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0021",
+        "question": "Which paper discusses \"Selective Repulsive Knowledge Distillation\"?",
+        "retrieval_query": "Selective Repulsive Knowledge Distillation",
+        "expected_answer": "MobileFetalCLIP: Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis",
+        "predicted_answer": "MobileFetalCLIP: Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis",
+        "correct": true,
+        "source_papers": [
+          "paper_013"
+        ],
+        "retrieved_papers": [
+          "paper_013",
+          "paper_010",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_013::node_0059",
+          "paper_013::node_0000",
+          "paper_010::node_0012",
+          "paper_010::node_0015",
+          "paper_020::node_0031"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.40470712200476555,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.5555555555555556,
+          0.3333333333333333,
+          0.1111111111111111,
+          0.25925925925925924,
+          0.18518518518518517
+        ]
+      },
+      {
+        "question_id": "q_0022",
+        "question": "Which paper discusses \"Reparameterized Orthogonal Equivalence Training\"?",
+        "retrieval_query": "Reparameterized Orthogonal Equivalence Training",
+        "expected_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "predicted_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "correct": true,
+        "source_papers": [
+          "paper_002"
+        ],
+        "retrieved_papers": [
+          "paper_002",
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0000",
+          "paper_002::node_0002",
+          "paper_002::node_0010",
+          "paper_023::node_0021",
+          "paper_002::node_0003"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3545665569981793,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.5625,
+          0.3125,
+          0.21875,
+          0.28125,
+          0.25
+        ]
+      },
+      {
+        "question_id": "q_0023",
+        "question": "Which paper discusses \"Heterogeneous Treatment Effect Estimation\"?",
+        "retrieval_query": "Heterogeneous Treatment Effect Estimation",
+        "expected_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "predicted_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "correct": true,
+        "source_papers": [
+          "paper_006"
+        ],
+        "retrieved_papers": [
+          "paper_006"
+        ],
+        "retrieved_nodes": [
+          "paper_006::node_0005",
+          "paper_006::node_0007",
+          "paper_006::node_0000",
+          "paper_006::node_0025",
+          "paper_006::node_0003"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3019726519996766,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.19230769230769232,
+          0.19230769230769232,
+          0.19230769230769232,
+          0.2692307692307692,
+          0.19230769230769232
+        ]
+      },
+      {
+        "question_id": "q_0024",
+        "question": "Which paper discusses \"Intention Conditioned Value Function\"?",
+        "retrieval_query": "Intention Conditioned Value Function",
+        "expected_answer": "Latent Wasserstein Adversarial Imitation Learning",
+        "predicted_answer": "Latent Wasserstein Adversarial Imitation Learning",
+        "correct": true,
+        "source_papers": [
+          "paper_009"
+        ],
+        "retrieved_papers": [
+          "paper_009",
+          "paper_016",
+          "paper_024"
+        ],
+        "retrieved_nodes": [
+          "paper_009::node_0072",
+          "paper_009::node_0000",
+          "paper_016::node_0010",
+          "paper_009::node_0014",
+          "paper_024::node_0014"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.31851422199542867,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3333333333333333,
+          0.47619047619047616,
+          0.19047619047619047,
+          0.14285714285714285,
+          0.09523809523809523
+        ]
+      },
+      {
+        "question_id": "q_0025",
+        "question": "Which paper discusses \"Reasoning Compression\"?",
+        "retrieval_query": "Reasoning Compression",
+        "expected_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "predicted_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "correct": true,
+        "source_papers": [
+          "paper_010"
+        ],
+        "retrieved_papers": [
+          "paper_010"
+        ],
+        "retrieved_nodes": [
+          "paper_010::node_0000",
+          "paper_010::node_0008",
+          "paper_010::node_0012",
+          "paper_010::node_0009",
+          "paper_010::node_0047"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.23622453799907817,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3333333333333333,
+          0.0,
+          0.3333333333333333,
+          0.16666666666666666,
+          0.16666666666666666
+        ]
+      },
+      {
+        "question_id": "q_0026",
+        "question": "Which paper discusses \"Reasoning Compression Reasoning\"?",
+        "retrieval_query": "Reasoning Compression Reasoning",
+        "expected_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "predicted_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "correct": true,
+        "source_papers": [
+          "paper_010"
+        ],
+        "retrieved_papers": [
+          "paper_010"
+        ],
+        "retrieved_nodes": [
+          "paper_010::node_0008",
+          "paper_010::node_0000",
+          "paper_010::node_0009",
+          "paper_010::node_0047",
+          "paper_010::node_0016"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.22486189699702663,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.125,
+          0.125,
+          0.3125,
+          0.25,
+          0.1875
+        ]
+      },
+      {
+        "question_id": "q_0027",
+        "question": "Which paper discusses \"Monte Carlo\"?",
+        "retrieval_query": "Monte Carlo",
+        "expected_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "predicted_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "correct": true,
+        "source_papers": [
+          "paper_011"
+        ],
+        "retrieved_papers": [
+          "paper_011",
+          "paper_020",
+          "paper_001"
+        ],
+        "retrieved_nodes": [
+          "paper_011::node_0000",
+          "paper_011::node_0075",
+          "paper_020::node_0016",
+          "paper_020::node_0048",
+          "paper_001::node_0024"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2943523010035278,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "question_id": "q_0028",
+        "question": "Which paper discusses \"Graph Convolutional Networks\"?",
+        "retrieval_query": "Graph Convolutional Networks",
+        "expected_answer": "On the Necessity of Learnable Sheaf Laplacians",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_015"
+        ],
+        "retrieved_papers": [
+          "paper_015",
+          "paper_012",
+          "paper_014"
+        ],
+        "retrieved_nodes": [
+          "paper_015::node_0000",
+          "paper_015::node_0003",
+          "paper_012::node_0024",
+          "paper_012::node_0011",
+          "paper_014::node_0071"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.27727716600202257,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3076923076923077,
+          0.23076923076923078,
+          0.07692307692307693,
+          0.23076923076923078,
+          0.07692307692307693
+        ]
+      },
+      {
+        "question_id": "q_0029",
+        "question": "Which paper discusses \"Distributed Partial Information Puzzles\"?",
+        "retrieval_query": "Distributed Partial Information Puzzles",
+        "expected_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "predicted_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "correct": true,
+        "source_papers": [
+          "paper_019"
+        ],
+        "retrieved_papers": [
+          "paper_019"
+        ],
+        "retrieved_nodes": [
+          "paper_019::node_0000",
+          "paper_019::node_0010",
+          "paper_019::node_0049",
+          "paper_019::node_0117",
+          "paper_019::node_0094"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3583974869980011,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.4166666666666667,
+          0.3333333333333333,
+          0.2916666666666667,
+          0.125,
+          0.25
+        ]
+      },
+      {
+        "question_id": "q_0030",
+        "question": "Which paper discusses \"Video Captioning\"?",
+        "retrieval_query": "Video Captioning",
+        "expected_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "predicted_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "correct": true,
+        "source_papers": [
+          "paper_023"
+        ],
+        "retrieved_papers": [
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_023::node_0005",
+          "paper_023::node_0028",
+          "paper_023::node_0014",
+          "paper_023::node_0001",
+          "paper_023::node_0053"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.4400469559986959,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "question_id": "q_0031",
+        "question": "Which paper discusses \"Remote Inference\"?",
+        "retrieval_query": "Remote Inference",
+        "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "correct": true,
+        "source_papers": [
+          "paper_001"
+        ],
+        "retrieved_papers": [
+          "paper_001",
+          "paper_014",
+          "paper_011",
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_001::node_0031",
+          "paper_001::node_0030",
+          "paper_014::node_0082",
+          "paper_011::node_0075",
+          "paper_023::node_0072"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.31074392500158865,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0032",
+        "question": "Which paper discusses \"Visual Foresight\"?",
+        "retrieval_query": "Visual Foresight",
+        "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "correct": true,
+        "source_papers": [
+          "paper_001"
+        ],
+        "retrieved_papers": [
+          "paper_001"
+        ],
+        "retrieved_nodes": [
+          "paper_001::node_0059",
+          "paper_001::node_0005",
+          "paper_001::node_0008",
+          "paper_001::node_0014",
+          "paper_001::node_0033"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.24916750300326385,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "question_id": "q_0033",
+        "question": "Which paper discusses \"Nvidia H100 GPU\"?",
+        "retrieval_query": "Nvidia H100 GPU",
+        "expected_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "predicted_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "correct": true,
+        "source_papers": [
+          "paper_002"
+        ],
+        "retrieved_papers": [
+          "paper_002",
+          "paper_003"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0006",
+          "paper_002::node_0055",
+          "paper_003::node_0051",
+          "paper_002::node_0000",
+          "paper_002::node_0080"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3382299980003154,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0034",
+        "question": "Which paper discusses \"Cheap Thrills\"?",
+        "retrieval_query": "Cheap Thrills",
+        "expected_answer": "Cheap Thrills: Effective Amortized Optimization Using Inexpensive Labels",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_003"
+        ],
+        "retrieved_papers": [
+          "paper_009",
+          "paper_021"
+        ],
+        "retrieved_nodes": [
+          "paper_009::node_0005",
+          "paper_021::node_0034",
+          "paper_021::node_0030",
+          "paper_009::node_0038",
+          "paper_021::node_0032"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": false,
+        "latency_seconds": 0.2977830610034289,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0035",
+        "question": "Which paper discusses \"reasoning theater\"?",
+        "retrieval_query": "reasoning theater",
+        "expected_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "predicted_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "correct": true,
+        "source_papers": [
+          "paper_005"
+        ],
+        "retrieved_papers": [
+          "paper_005",
+          "paper_019"
+        ],
+        "retrieved_nodes": [
+          "paper_005::node_0000",
+          "paper_005::node_0028",
+          "paper_019::node_0011",
+          "paper_019::node_0094",
+          "paper_005::node_0065"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3757798489968991,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "question_id": "q_0036",
+        "question": "Which paper discusses \"Retrieval Trustworthiness\"?",
+        "retrieval_query": "Retrieval Trustworthiness",
+        "expected_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_018"
+        ],
+        "retrieved_papers": [
+          "paper_018",
+          "paper_004",
+          "paper_005"
+        ],
+        "retrieved_nodes": [
+          "paper_018::node_0008",
+          "paper_004::node_0025",
+          "paper_005::node_0089",
+          "paper_018::node_0001",
+          "paper_004::node_0076"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.26757056600035867,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.4,
+          0.6,
+          0.7,
+          0.2,
+          0.6
+        ]
+      },
+      {
+        "question_id": "q_0037",
+        "question": "Which paper discusses \"Asymmetry Establishing\"?",
+        "retrieval_query": "Asymmetry Establishing",
+        "expected_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_019"
+        ],
+        "retrieved_papers": [
+          "paper_007",
+          "paper_017",
+          "paper_005",
+          "paper_003"
+        ],
+        "retrieved_nodes": [
+          "paper_007::node_0041",
+          "paper_017::node_0011",
+          "paper_005::node_0076",
+          "paper_003::node_0076",
+          "paper_017::node_0004"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": false,
+        "latency_seconds": 0.29908056300337194,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.2857142857142857,
+          0.2857142857142857,
+          0.2857142857142857,
+          0.2857142857142857,
+          0.14285714285714285
+        ]
+      },
+      {
+        "question_id": "q_0038",
+        "question": "Which paper discusses \"ActivityNet Captions\"?",
+        "retrieval_query": "ActivityNet Captions",
+        "expected_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "predicted_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "correct": true,
+        "source_papers": [
+          "paper_023"
+        ],
+        "retrieved_papers": [
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_023::node_0033",
+          "paper_023::node_0038",
+          "paper_023::node_0000",
+          "paper_023::node_0029",
+          "paper_023::node_0053"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.4236779779967037,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.8,
+          0.4,
+          0.6,
+          0.8,
+          0.8
+        ]
+      },
+      {
+        "question_id": "q_0039",
+        "question": "Which paper discusses \"Relaxation Mechanism\"?",
+        "retrieval_query": "Relaxation Mechanism",
+        "expected_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "predicted_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "correct": true,
+        "source_papers": [
+          "paper_024"
+        ],
+        "retrieved_papers": [
+          "paper_015",
+          "paper_007",
+          "paper_024"
+        ],
+        "retrieved_nodes": [
+          "paper_015::node_0020",
+          "paper_007::node_0083",
+          "paper_024::node_0045",
+          "paper_007::node_0036",
+          "paper_007::node_0040"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3776967450030497,
+        "shuffle_index": false,
+        "sidecar_rerank": true,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.6,
+          0.6,
+          0.4,
+          0.6,
+          0.0
+        ]
+      }
+    ]
+  },
+  "without_sidecar": {
+    "summary": {
+      "system": "manifold_system",
+      "qa_backend": "ollama",
+      "questions": 40,
+      "qa_accuracy": 0.9,
+      "retrieval_top1": 0.9,
+      "retrieval_top5": 0.975,
+      "mean_latency_seconds": 0.3130903140499868,
+      "max_context_tokens": 2000,
+      "per_paper_snippets": 3,
+      "top_k": 5,
+      "shuffle_index": false,
+      "sidecar_rerank": false,
+      "sidecar_weight": 0.0,
+      "phrase_weight": 0.15
+    },
+    "error_stats": {
+      "retrieval_top1_but_wrong": 3,
+      "insufficient_context": 4
+    },
+    "results": [
+      {
+        "question_id": "q_0000",
+        "question": "Which paper discusses both \"Generation Image-to-3D\" and \"Multi-Prior Consensus Module\"?",
+        "retrieval_query": "Generation Image-to-3D Multi-Prior Consensus Module",
+        "expected_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "predicted_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "correct": true,
+        "source_papers": [
+          "paper_024"
+        ],
+        "retrieved_papers": [
+          "paper_024",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_024::node_0000",
+          "paper_024::node_0002",
+          "paper_020::node_0027",
+          "paper_020::node_0000",
+          "paper_020::node_0007"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3846949439976015,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.25,
+          0.15,
+          0.4,
+          0.05,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0001",
+        "question": "Which paper discusses both \"Inter-Caption Augmentation-based Learning\" and \"Similarity-Aware Guidance\"?",
+        "retrieval_query": "Inter-Caption Augmentation-based Learning Similarity-Aware Guidance",
+        "expected_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "predicted_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "correct": true,
+        "source_papers": [
+          "paper_023"
+        ],
+        "retrieved_papers": [
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_023::node_0069",
+          "paper_023::node_0009",
+          "paper_023::node_0010",
+          "paper_023::node_0053",
+          "paper_023::node_0000"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.35888788400188787,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.1388888888888889,
+          0.4166666666666667,
+          0.3611111111111111,
+          0.1388888888888889,
+          0.16666666666666666
+        ]
+      },
+      {
+        "question_id": "q_0002",
+        "question": "Which paper discusses both \"Robot-Free Instant Policy Iteration\" and \"Improve Robot Policies Instantly\"?",
+        "retrieval_query": "Robot-Free Instant Policy Iteration Improve Robot Policies Instantly",
+        "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "correct": true,
+        "source_papers": [
+          "paper_001"
+        ],
+        "retrieved_papers": [
+          "paper_001"
+        ],
+        "retrieved_nodes": [
+          "paper_001::node_0058",
+          "paper_001::node_0004",
+          "paper_001::node_0028",
+          "paper_001::node_0030",
+          "paper_001::node_0009"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2382099019960151,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.4594594594594595,
+          0.21621621621621623,
+          0.5405405405405406,
+          0.2702702702702703,
+          0.2972972972972973
+        ]
+      },
+      {
+        "question_id": "q_0003",
+        "question": "Which paper discusses both \"Memory-efficient LLM Training\" and \"Scaling Orthogonal Transformation Efficient\"?",
+        "retrieval_query": "Memory-efficient LLM Training Scaling Orthogonal Transformation Efficient",
+        "expected_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "predicted_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "correct": true,
+        "source_papers": [
+          "paper_002"
+        ],
+        "retrieved_papers": [
+          "paper_002",
+          "paper_008"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0000",
+          "paper_002::node_0002",
+          "paper_002::node_0031",
+          "paper_008::node_0049",
+          "paper_002::node_0041"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.34018189599737525,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.11904761904761904,
+          0.19047619047619047,
+          0.09523809523809523,
+          0.16666666666666666,
+          0.11904761904761904
+        ]
+      },
+      {
+        "question_id": "q_0004",
+        "question": "Which paper discusses both \"On-Policy Self-Distillation\" and \"MATH-500\"?",
+        "retrieval_query": "On-Policy Self-Distillation MATH-500",
+        "expected_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_010"
+        ],
+        "retrieved_papers": [
+          "paper_010",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_010::node_0000",
+          "paper_010::node_0012",
+          "paper_010::node_0072",
+          "paper_020::node_0025",
+          "paper_010::node_0100"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2139933580037905,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.46153846153846156,
+          0.3076923076923077,
+          0.07692307692307693,
+          0.07692307692307693,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0005",
+        "question": "Which paper discusses both \"Residual RL--MPC\" and \"Flow Contact-rich\"?",
+        "retrieval_query": "Residual RL--MPC Flow Contact-rich",
+        "expected_answer": "Residual RL--MPC for Robust Microrobotic Cell Pushing Under Time-Varying Flow",
+        "predicted_answer": "Residual RL--MPC for Robust Microrobotic Cell Pushing Under Time-Varying Flow",
+        "correct": true,
+        "source_papers": [
+          "paper_021"
+        ],
+        "retrieved_papers": [
+          "paper_021"
+        ],
+        "retrieved_nodes": [
+          "paper_021::node_0007",
+          "paper_021::node_0035",
+          "paper_021::node_0022",
+          "paper_021::node_0038",
+          "paper_021::node_0048"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3410597559995949,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0006",
+        "question": "Which paper discusses both \"Causal Survival Forests\" and \"Survival Analysis Estimating\"?",
+        "retrieval_query": "Causal Survival Forests Survival Analysis Estimating",
+        "expected_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "predicted_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "correct": true,
+        "source_papers": [
+          "paper_006"
+        ],
+        "retrieved_papers": [
+          "paper_006"
+        ],
+        "retrieved_nodes": [
+          "paper_006::node_0099",
+          "paper_006::node_0036",
+          "paper_006::node_0000",
+          "paper_006::node_0019",
+          "paper_006::node_0092"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.30941620099474676,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.47619047619047616,
+          0.09523809523809523,
+          0.47619047619047616,
+          0.14285714285714285,
+          0.23809523809523808
+        ]
+      },
+      {
+        "question_id": "q_0007",
+        "question": "Which paper discusses both \"Thermodynamic Response Functions\" and \"Singular Bayesian Models Singular\"?",
+        "retrieval_query": "Thermodynamic Response Functions Singular Bayesian Models Singular",
+        "expected_answer": "Thermodynamic Response Functions in Singular Bayesian Models",
+        "predicted_answer": "Thermodynamic Response Functions in Singular Bayesian Models",
+        "correct": true,
+        "source_papers": [
+          "paper_007"
+        ],
+        "retrieved_papers": [
+          "paper_007"
+        ],
+        "retrieved_nodes": [
+          "paper_007::node_0009",
+          "paper_007::node_0068",
+          "paper_007::node_0030",
+          "paper_007::node_0087",
+          "paper_007::node_0001"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.220791867999651,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.2857142857142857,
+          0.2857142857142857,
+          0.42857142857142855,
+          0.11428571428571428,
+          0.37142857142857144
+        ]
+      },
+      {
+        "question_id": "q_0008",
+        "question": "Which paper discusses both \"Continuous Measurement Real-time\" and \"Neural ODE\"?",
+        "retrieval_query": "Continuous Measurement Real-time Neural ODE",
+        "expected_answer": "Kraus Constrained Sequence Learning For Quantum Trajectories from Continuous Measurement",
+        "predicted_answer": "Kraus Constrained Sequence Learning For Quantum Trajectories from Continuous Measurement",
+        "correct": true,
+        "source_papers": [
+          "paper_008"
+        ],
+        "retrieved_papers": [
+          "paper_008",
+          "paper_014",
+          "paper_021"
+        ],
+        "retrieved_nodes": [
+          "paper_008::node_0000",
+          "paper_008::node_0025",
+          "paper_014::node_0060",
+          "paper_021::node_0011",
+          "paper_008::node_0024"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.40422854499774985,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.0,
+          0.05555555555555555,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0009",
+        "question": "Which paper discusses both \"Ensembling Language Models\" and \"Sequential Monte Carlo Practitioners\"?",
+        "retrieval_query": "Ensembling Language Models Sequential Monte Carlo Practitioners",
+        "expected_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "predicted_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "correct": true,
+        "source_papers": [
+          "paper_011"
+        ],
+        "retrieved_papers": [
+          "paper_011"
+        ],
+        "retrieved_nodes": [
+          "paper_011::node_0000",
+          "paper_011::node_0022",
+          "paper_011::node_0004",
+          "paper_011::node_0075",
+          "paper_011::node_0018"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.20273421900492394,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.375,
+          0.15625,
+          0.0625,
+          0.1875,
+          0.21875
+        ]
+      },
+      {
+        "question_id": "q_0010",
+        "question": "Which paper discusses both \"Identity Sheaf Network\" and \"Identity Sheaf Networks\"?",
+        "retrieval_query": "Identity Sheaf Network Identity Sheaf Networks",
+        "expected_answer": "On the Necessity of Learnable Sheaf Laplacians",
+        "predicted_answer": "On the Necessity of Learnable Sheaf Laplacians",
+        "correct": true,
+        "source_papers": [
+          "paper_015"
+        ],
+        "retrieved_papers": [
+          "paper_015"
+        ],
+        "retrieved_nodes": [
+          "paper_015::node_0002",
+          "paper_015::node_0000",
+          "paper_015::node_0012",
+          "paper_015::node_0013",
+          "paper_015::node_0009"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2991188419982791,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3333333333333333,
+          0.6,
+          0.3333333333333333,
+          0.2,
+          0.26666666666666666
+        ]
+      },
+      {
+        "question_id": "q_0011",
+        "question": "Which paper discusses both \"Attention Sinks\" and \"Massive Activations\"?",
+        "retrieval_query": "Attention Sinks Massive Activations",
+        "expected_answer": "The Spike, the Sparse and the Sink: Anatomy of Massive Activations and Attention Sinks",
+        "predicted_answer": "The Spike, the Sparse and the Sink: Anatomy of Massive Activations and Attention Sinks",
+        "correct": true,
+        "source_papers": [
+          "paper_016"
+        ],
+        "retrieved_papers": [
+          "paper_016"
+        ],
+        "retrieved_nodes": [
+          "paper_016::node_0000",
+          "paper_016::node_0083",
+          "paper_016::node_0070",
+          "paper_016::node_0004",
+          "paper_016::node_0001"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3643980839988217,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.2,
+          0.2,
+          0.2,
+          0.4,
+          0.2
+        ]
+      },
+      {
+        "question_id": "q_0012",
+        "question": "Which paper discusses both \"Large Language Models\" and \"Leveraging LLM Parametric Knowledge\"?",
+        "retrieval_query": "Large Language Models Leveraging LLM Parametric Knowledge",
+        "expected_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
+        "predicted_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
+        "correct": true,
+        "source_papers": [
+          "paper_018"
+        ],
+        "retrieved_papers": [
+          "paper_002",
+          "paper_011",
+          "paper_018"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0009",
+          "paper_011::node_0004",
+          "paper_018::node_0000",
+          "paper_011::node_0000",
+          "paper_018::node_0031"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3213767029956216,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.11538461538461539,
+          0.11538461538461539,
+          0.11538461538461539,
+          0.038461538461538464,
+          0.23076923076923078
+        ]
+      },
+      {
+        "question_id": "q_0013",
+        "question": "Which paper discusses both \"Distributed Partial Information Puzzle\" and \"Dynamic Epistemic Logic\"?",
+        "retrieval_query": "Distributed Partial Information Puzzle Dynamic Epistemic Logic",
+        "expected_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "predicted_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "correct": true,
+        "source_papers": [
+          "paper_019"
+        ],
+        "retrieved_papers": [
+          "paper_019",
+          "paper_005",
+          "paper_018"
+        ],
+        "retrieved_nodes": [
+          "paper_019::node_0000",
+          "paper_019::node_0007",
+          "paper_005::node_0080",
+          "paper_005::node_0070",
+          "paper_018::node_0029"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.4077908520048368,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.41935483870967744,
+          0.25806451612903225,
+          0.0,
+          0.03225806451612903,
+          0.2903225806451613
+        ]
+      },
+      {
+        "question_id": "q_0014",
+        "question": "Which paper discusses both \"Latent World Model World\" and \"Compact Discrete Tokenizer\"?",
+        "retrieval_query": "Latent World Model World Compact Discrete Tokenizer",
+        "expected_answer": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
+        "predicted_answer": "Planning in 8 Tokens: A Compact Discrete Tokenizer for Latent World Model",
+        "correct": true,
+        "source_papers": [
+          "paper_022"
+        ],
+        "retrieved_papers": [
+          "paper_022",
+          "paper_008"
+        ],
+        "retrieved_nodes": [
+          "paper_022::node_0016",
+          "paper_022::node_0034",
+          "paper_022::node_0028",
+          "paper_022::node_0027",
+          "paper_008::node_0034"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3160623830044642,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.0,
+          0.05,
+          0.0,
+          0.1,
+          0.15
+        ]
+      },
+      {
+        "question_id": "q_0015",
+        "question": "Which paper discusses both \"Secret Knowledge Elicitation Large\" and \"Natural Testbed\"?",
+        "retrieval_query": "Secret Knowledge Elicitation Large Natural Testbed",
+        "expected_answer": "Censored LLMs as a Natural Testbed for Secret Knowledge Elicitation",
+        "predicted_answer": "Censored LLMs as a Natural Testbed for Secret Knowledge Elicitation",
+        "correct": true,
+        "source_papers": [
+          "paper_004"
+        ],
+        "retrieved_papers": [
+          "paper_004",
+          "paper_005",
+          "paper_014"
+        ],
+        "retrieved_nodes": [
+          "paper_004::node_0117",
+          "paper_005::node_0008",
+          "paper_005::node_0042",
+          "paper_004::node_0104",
+          "paper_014::node_0128"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3258437850017799,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.2,
+          0.2,
+          0.2,
+          0.05,
+          0.1
+        ]
+      },
+      {
+        "question_id": "q_0016",
+        "question": "Which paper discusses both \"Disentangling Model Beliefs\" and \"GPT-OSS\"?",
+        "retrieval_query": "Disentangling Model Beliefs GPT-OSS",
+        "expected_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "predicted_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "correct": true,
+        "source_papers": [
+          "paper_005"
+        ],
+        "retrieved_papers": [
+          "paper_005"
+        ],
+        "retrieved_nodes": [
+          "paper_005::node_0054",
+          "paper_005::node_0000",
+          "paper_005::node_0080",
+          "paper_005::node_0047",
+          "paper_005::node_0046"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2756211290034116,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.15384615384615385,
+          0.15384615384615385,
+          0.0,
+          0.23076923076923078,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0017",
+        "question": "Which paper discusses both \"Bias-Bounded Evaluation\" and \"Although LLM\"?",
+        "retrieval_query": "Bias-Bounded Evaluation Although LLM",
+        "expected_answer": "Towards Provably Unbiased LLM Judges via Bias-Bounded Evaluation",
+        "predicted_answer": "Towards Provably Unbiased LLM Judges via Bias-Bounded Evaluation",
+        "correct": true,
+        "source_papers": [
+          "paper_017"
+        ],
+        "retrieved_papers": [
+          "paper_017"
+        ],
+        "retrieved_nodes": [
+          "paper_017::node_0009",
+          "paper_017::node_0029",
+          "paper_017::node_0007",
+          "paper_017::node_0025",
+          "paper_017::node_0004"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2575717550062109,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.5555555555555556,
+          0.3333333333333333,
+          0.2222222222222222,
+          0.1111111111111111,
+          0.1111111111111111
+        ]
+      },
+      {
+        "question_id": "q_0018",
+        "question": "Which paper discusses both \"Finding Short Paths\" and \"Simple Polytopes\"?",
+        "retrieval_query": "Finding Short Paths Simple Polytopes",
+        "expected_answer": "Finding Short Paths on Simple Polytopes",
+        "predicted_answer": "Finding Short Paths on Simple Polytopes",
+        "correct": true,
+        "source_papers": [
+          "paper_025"
+        ],
+        "retrieved_papers": [
+          "paper_025"
+        ],
+        "retrieved_nodes": [
+          "paper_025::node_0051",
+          "paper_025::node_0052",
+          "paper_025::node_0008",
+          "paper_025::node_0010",
+          "paper_025::node_0000"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.21373269099422032,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.4,
+          0.8,
+          0.0,
+          0.6,
+          0.4
+        ]
+      },
+      {
+        "question_id": "q_0019",
+        "question": "Which paper discusses both \"Harnessing Synthetic Data\" and \"Statistical Inference The\"?",
+        "retrieval_query": "Harnessing Synthetic Data Statistical Inference The",
+        "expected_answer": "Harnessing Synthetic Data from Generative AI for Statistical Inference",
+        "predicted_answer": "Harnessing Synthetic Data from Generative AI for Statistical Inference",
+        "correct": true,
+        "source_papers": [
+          "paper_014"
+        ],
+        "retrieved_papers": [
+          "paper_014",
+          "paper_006"
+        ],
+        "retrieved_nodes": [
+          "paper_014::node_0092",
+          "paper_014::node_0073",
+          "paper_006::node_0026",
+          "paper_014::node_0008",
+          "paper_014::node_0000"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2866612379948492,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.1,
+          0.2,
+          0.15,
+          0.25,
+          0.3
+        ]
+      },
+      {
+        "question_id": "q_0020",
+        "question": "Which paper discusses \"Text-Driven Amodal\"?",
+        "retrieval_query": "Text-Driven Amodal",
+        "expected_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "predicted_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "correct": true,
+        "source_papers": [
+          "paper_024"
+        ],
+        "retrieved_papers": [
+          "paper_024",
+          "paper_017",
+          "paper_007",
+          "paper_011"
+        ],
+        "retrieved_nodes": [
+          "paper_024::node_0000",
+          "paper_024::node_0010",
+          "paper_017::node_0003",
+          "paper_007::node_0088",
+          "paper_011::node_0013"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.34706499699677806,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.6666666666666666,
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0021",
+        "question": "Which paper discusses \"Selective Repulsive Knowledge Distillation\"?",
+        "retrieval_query": "Selective Repulsive Knowledge Distillation",
+        "expected_answer": "MobileFetalCLIP: Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis",
+        "predicted_answer": "MobileFetalCLIP: Selective Repulsive Knowledge Distillation for Mobile Fetal Ultrasound Analysis",
+        "correct": true,
+        "source_papers": [
+          "paper_013"
+        ],
+        "retrieved_papers": [
+          "paper_013",
+          "paper_010",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_013::node_0000",
+          "paper_013::node_0059",
+          "paper_010::node_0012",
+          "paper_020::node_0031",
+          "paper_010::node_0015"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.41166182499728166,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3333333333333333,
+          0.5555555555555556,
+          0.1111111111111111,
+          0.18518518518518517,
+          0.25925925925925924
+        ]
+      },
+      {
+        "question_id": "q_0022",
+        "question": "Which paper discusses \"Reparameterized Orthogonal Equivalence Training\"?",
+        "retrieval_query": "Reparameterized Orthogonal Equivalence Training",
+        "expected_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "predicted_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "correct": true,
+        "source_papers": [
+          "paper_002"
+        ],
+        "retrieved_papers": [
+          "paper_002",
+          "paper_003",
+          "paper_013"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0000",
+          "paper_002::node_0002",
+          "paper_002::node_0010",
+          "paper_003::node_0017",
+          "paper_013::node_0016"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3734276649993262,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.5625,
+          0.3125,
+          0.21875,
+          0.15625,
+          0.1875
+        ]
+      },
+      {
+        "question_id": "q_0023",
+        "question": "Which paper discusses \"Heterogeneous Treatment Effect Estimation\"?",
+        "retrieval_query": "Heterogeneous Treatment Effect Estimation",
+        "expected_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "predicted_answer": "SurvHTE-Bench: A Benchmark for Heterogeneous Treatment Effect Estimation in Survival Analysis",
+        "correct": true,
+        "source_papers": [
+          "paper_006"
+        ],
+        "retrieved_papers": [
+          "paper_006",
+          "paper_014"
+        ],
+        "retrieved_nodes": [
+          "paper_006::node_0005",
+          "paper_006::node_0007",
+          "paper_006::node_0000",
+          "paper_006::node_0102",
+          "paper_014::node_0035"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.31818789100361755,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.19230769230769232,
+          0.19230769230769232,
+          0.19230769230769232,
+          0.038461538461538464,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0024",
+        "question": "Which paper discusses \"Intention Conditioned Value Function\"?",
+        "retrieval_query": "Intention Conditioned Value Function",
+        "expected_answer": "Latent Wasserstein Adversarial Imitation Learning",
+        "predicted_answer": "Latent Wasserstein Adversarial Imitation Learning",
+        "correct": true,
+        "source_papers": [
+          "paper_009"
+        ],
+        "retrieved_papers": [
+          "paper_009",
+          "paper_014",
+          "paper_016",
+          "paper_024"
+        ],
+        "retrieved_nodes": [
+          "paper_009::node_0072",
+          "paper_009::node_0000",
+          "paper_014::node_0030",
+          "paper_016::node_0010",
+          "paper_024::node_0014"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.31217581900273217,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3333333333333333,
+          0.47619047619047616,
+          0.0,
+          0.19047619047619047,
+          0.09523809523809523
+        ]
+      },
+      {
+        "question_id": "q_0025",
+        "question": "Which paper discusses \"Reasoning Compression\"?",
+        "retrieval_query": "Reasoning Compression",
+        "expected_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "predicted_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "correct": true,
+        "source_papers": [
+          "paper_010"
+        ],
+        "retrieved_papers": [
+          "paper_010"
+        ],
+        "retrieved_nodes": [
+          "paper_010::node_0008",
+          "paper_010::node_0000",
+          "paper_010::node_0012",
+          "paper_010::node_0009",
+          "paper_010::node_0047"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.24104317000455922,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.0,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.16666666666666666,
+          0.16666666666666666
+        ]
+      },
+      {
+        "question_id": "q_0026",
+        "question": "Which paper discusses \"Reasoning Compression Reasoning\"?",
+        "retrieval_query": "Reasoning Compression Reasoning",
+        "expected_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "predicted_answer": "On-Policy Self-Distillation for Reasoning Compression",
+        "correct": true,
+        "source_papers": [
+          "paper_010"
+        ],
+        "retrieved_papers": [
+          "paper_010"
+        ],
+        "retrieved_nodes": [
+          "paper_010::node_0008",
+          "paper_010::node_0000",
+          "paper_010::node_0047",
+          "paper_010::node_0009",
+          "paper_010::node_0016"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.211224332000711,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.125,
+          0.125,
+          0.25,
+          0.3125,
+          0.1875
+        ]
+      },
+      {
+        "question_id": "q_0027",
+        "question": "Which paper discusses \"Monte Carlo\"?",
+        "retrieval_query": "Monte Carlo",
+        "expected_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "predicted_answer": "Ensembling Language Models with Sequential Monte Carlo",
+        "correct": true,
+        "source_papers": [
+          "paper_011"
+        ],
+        "retrieved_papers": [
+          "paper_011",
+          "paper_020"
+        ],
+        "retrieved_nodes": [
+          "paper_011::node_0000",
+          "paper_011::node_0075",
+          "paper_020::node_0016",
+          "paper_020::node_0013",
+          "paper_020::node_0048"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.27021152900124434,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "question_id": "q_0028",
+        "question": "Which paper discusses \"Graph Convolutional Networks\"?",
+        "retrieval_query": "Graph Convolutional Networks",
+        "expected_answer": "On the Necessity of Learnable Sheaf Laplacians",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_015"
+        ],
+        "retrieved_papers": [
+          "paper_015",
+          "paper_012",
+          "paper_014"
+        ],
+        "retrieved_nodes": [
+          "paper_015::node_0000",
+          "paper_015::node_0003",
+          "paper_012::node_0024",
+          "paper_014::node_0132",
+          "paper_012::node_0011"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2998717230002512,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.3076923076923077,
+          0.23076923076923078,
+          0.07692307692307693,
+          0.0,
+          0.23076923076923078
+        ]
+      },
+      {
+        "question_id": "q_0029",
+        "question": "Which paper discusses \"Distributed Partial Information Puzzles\"?",
+        "retrieval_query": "Distributed Partial Information Puzzles",
+        "expected_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "predicted_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "correct": true,
+        "source_papers": [
+          "paper_019"
+        ],
+        "retrieved_papers": [
+          "paper_019"
+        ],
+        "retrieved_nodes": [
+          "paper_019::node_0000",
+          "paper_019::node_0010",
+          "paper_019::node_0117",
+          "paper_019::node_0049",
+          "paper_019::node_0094"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3335106430022279,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.4166666666666667,
+          0.3333333333333333,
+          0.125,
+          0.2916666666666667,
+          0.25
+        ]
+      },
+      {
+        "question_id": "q_0030",
+        "question": "Which paper discusses \"Video Captioning\"?",
+        "retrieval_query": "Video Captioning",
+        "expected_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "predicted_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "correct": true,
+        "source_papers": [
+          "paper_023"
+        ],
+        "retrieved_papers": [
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_023::node_0001",
+          "paper_023::node_0000",
+          "paper_023::node_0005",
+          "paper_023::node_0028",
+          "paper_023::node_0014"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.4151656219983124,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "question_id": "q_0031",
+        "question": "Which paper discusses \"Remote Inference\"?",
+        "retrieval_query": "Remote Inference",
+        "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "correct": true,
+        "source_papers": [
+          "paper_001"
+        ],
+        "retrieved_papers": [
+          "paper_001",
+          "paper_014",
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_001::node_0031",
+          "paper_001::node_0030",
+          "paper_014::node_0082",
+          "paper_023::node_0072",
+          "paper_014::node_0134"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.30528659599804087,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0032",
+        "question": "Which paper discusses \"Visual Foresight\"?",
+        "retrieval_query": "Visual Foresight",
+        "expected_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "predicted_answer": "RoboPocket: Improve Robot Policies Instantly with Your Phone",
+        "correct": true,
+        "source_papers": [
+          "paper_001"
+        ],
+        "retrieved_papers": [
+          "paper_001"
+        ],
+        "retrieved_nodes": [
+          "paper_001::node_0059",
+          "paper_001::node_0005",
+          "paper_001::node_0008",
+          "paper_001::node_0014",
+          "paper_001::node_0004"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.25335206399904564,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0033",
+        "question": "Which paper discusses \"Nvidia H100 GPU\"?",
+        "retrieval_query": "Nvidia H100 GPU",
+        "expected_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "predicted_answer": "POET-X: Memory-efficient LLM Training by Scaling Orthogonal Transformation",
+        "correct": true,
+        "source_papers": [
+          "paper_002"
+        ],
+        "retrieved_papers": [
+          "paper_002"
+        ],
+        "retrieved_nodes": [
+          "paper_002::node_0006",
+          "paper_002::node_0055",
+          "paper_002::node_0000",
+          "paper_002::node_0080",
+          "paper_002::node_0062"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.25836808900203323,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0034",
+        "question": "Which paper discusses \"Cheap Thrills\"?",
+        "retrieval_query": "Cheap Thrills",
+        "expected_answer": "Cheap Thrills: Effective Amortized Optimization Using Inexpensive Labels",
+        "predicted_answer": "Cheap Thrills: Effective Amortized Optimization Using Inexpensive Labels",
+        "correct": true,
+        "source_papers": [
+          "paper_003"
+        ],
+        "retrieved_papers": [
+          "paper_021",
+          "paper_009",
+          "paper_003"
+        ],
+        "retrieved_nodes": [
+          "paper_021::node_0030",
+          "paper_009::node_0038",
+          "paper_021::node_0032",
+          "paper_009::node_0037",
+          "paper_003::node_0004"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": true,
+        "latency_seconds": 0.37285016600071685,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "question_id": "q_0035",
+        "question": "Which paper discusses \"reasoning theater\"?",
+        "retrieval_query": "reasoning theater",
+        "expected_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "predicted_answer": "Reasoning Theater: Disentangling Model Beliefs from Chain-of-Thought",
+        "correct": true,
+        "source_papers": [
+          "paper_005"
+        ],
+        "retrieved_papers": [
+          "paper_005",
+          "paper_019"
+        ],
+        "retrieved_nodes": [
+          "paper_005::node_0000",
+          "paper_019::node_0007",
+          "paper_005::node_0070",
+          "paper_019::node_0088",
+          "paper_005::node_0105"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.4065055359969847,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.0,
+          0.0,
+          0.0,
+          0.5,
+          0.5
+        ]
+      },
+      {
+        "question_id": "q_0036",
+        "question": "Which paper discusses \"Retrieval Trustworthiness\"?",
+        "retrieval_query": "Retrieval Trustworthiness",
+        "expected_answer": "Leveraging LLM Parametric Knowledge for Fact Checking without Retrieval",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_018"
+        ],
+        "retrieved_papers": [
+          "paper_018",
+          "paper_004",
+          "paper_017"
+        ],
+        "retrieved_nodes": [
+          "paper_018::node_0008",
+          "paper_018::node_0001",
+          "paper_004::node_0025",
+          "paper_017::node_0023",
+          "paper_018::node_0004"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.2713547829989693,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.4,
+          0.2,
+          0.6,
+          0.3,
+          0.4
+        ]
+      },
+      {
+        "question_id": "q_0037",
+        "question": "Which paper discusses \"Asymmetry Establishing\"?",
+        "retrieval_query": "Asymmetry Establishing",
+        "expected_answer": "Distributed Partial Information Puzzles: Examining Common Ground Construction Under Epistemic Asymmetry",
+        "predicted_answer": "INSUFFICIENT_CONTEXT",
+        "correct": false,
+        "source_papers": [
+          "paper_019"
+        ],
+        "retrieved_papers": [
+          "paper_007",
+          "paper_017",
+          "paper_010"
+        ],
+        "retrieved_nodes": [
+          "paper_007::node_0041",
+          "paper_017::node_0011",
+          "paper_017::node_0004",
+          "paper_010::node_0036",
+          "paper_010::node_0045"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": false,
+        "latency_seconds": 0.26989612800389295,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.2857142857142857,
+          0.2857142857142857,
+          0.14285714285714285,
+          0.0,
+          0.14285714285714285
+        ]
+      },
+      {
+        "question_id": "q_0038",
+        "question": "Which paper discusses \"ActivityNet Captions\"?",
+        "retrieval_query": "ActivityNet Captions",
+        "expected_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "predicted_answer": "SAIL: Similarity-Aware Guidance and Inter-Caption Augmentation-based Learning for Weakly-Supervised Dense Video Captioning",
+        "correct": true,
+        "source_papers": [
+          "paper_023"
+        ],
+        "retrieved_papers": [
+          "paper_023"
+        ],
+        "retrieved_nodes": [
+          "paper_023::node_0033",
+          "paper_023::node_0038",
+          "paper_023::node_0000",
+          "paper_023::node_0059",
+          "paper_023::node_0028"
+        ],
+        "retrieval_top1": true,
+        "retrieval_top5": true,
+        "latency_seconds": 0.420479868997063,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": true,
+        "sidecar_scores": [
+          0.8,
+          0.4,
+          0.6,
+          0.0,
+          0.4
+        ]
+      },
+      {
+        "question_id": "q_0039",
+        "question": "Which paper discusses \"Relaxation Mechanism\"?",
+        "retrieval_query": "Relaxation Mechanism",
+        "expected_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "predicted_answer": "RelaxFlow: Text-Driven Amodal 3D Generation",
+        "correct": true,
+        "source_papers": [
+          "paper_024"
+        ],
+        "retrieved_papers": [
+          "paper_007",
+          "paper_024",
+          "paper_010",
+          "paper_015"
+        ],
+        "retrieved_nodes": [
+          "paper_007::node_0040",
+          "paper_007::node_0003",
+          "paper_024::node_0045",
+          "paper_010::node_0095",
+          "paper_015::node_0020"
+        ],
+        "retrieval_top1": false,
+        "retrieval_top5": true,
+        "latency_seconds": 0.3495980799998506,
+        "shuffle_index": false,
+        "sidecar_rerank": false,
+        "sidecar_verified": false,
+        "sidecar_scores": [
+          0.0,
+          0.2,
+          0.4,
+          0.2,
+          0.6
+        ]
+      }
+    ]
+  },
+  "comparison": {
+    "qa_accuracy_delta": -0.050000000000000044,
+    "retrieval_top1_delta": 0.0,
+    "retrieval_top5_delta": -0.025000000000000022,
+    "latency_delta_seconds": 0.09554009827534171
+  },
+  "created_at": "2026-03-08T13:31:07+00:00"
+}

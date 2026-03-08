@@ -15,6 +15,7 @@ from demo.common import (
     DEFAULT_OLLAMA_GENERATE_ENDPOINT,
     MANIFOLD_INDEX_PATH,
     MANIFOLD_JSON_PATH,
+    MANIFOLD_NO_SIDECAR_RESULTS_PATH,
     MANIFOLD_RESULTS_PATH,
     SHUFFLED_MANIFOLD_RESULTS_PATH,
     answer_from_context,
@@ -36,6 +37,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ollama-model", default=None)
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--max-context-tokens", type=int, default=2000)
+    parser.add_argument("--per-paper-snippets", type=int, default=3)
+    parser.add_argument("--disable-sidecar-rerank", action="store_true")
+    parser.add_argument("--sidecar-weight", type=float, default=0.25)
+    parser.add_argument("--phrase-weight", type=float, default=0.15)
+    parser.add_argument("--output-path", default=None)
     parser.add_argument("--shuffle-index", action="store_true", help="Permute retrieved structural nodes across papers as an integrity check.")
     return parser.parse_args()
 
@@ -78,13 +84,20 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
             precision=int(metadata["precision"]),
             top_k=args.top_k,
             shuffle_nodes=args.shuffle_index,
+            use_sidecar_rerank=not args.disable_sidecar_rerank,
+            sidecar_weight=args.sidecar_weight,
+            phrase_weight=args.phrase_weight,
         )
         ranked_node_scores = [
             (int(item["node_index"]), float(item["score"])) for item in ranked_node_details
         ]
         ranked_nodes = [nodes[idx] for idx, _ in ranked_node_scores]
         ranked_docs = rank_documents(ranked_node_scores, nodes)
-        contexts = build_node_contexts(ranked_nodes, max_context_tokens=args.max_context_tokens)
+        contexts = build_node_contexts(
+            ranked_nodes,
+            max_context_tokens=args.max_context_tokens,
+            snippets_per_paper=args.per_paper_snippets,
+        )
         answer = answer_from_context(
             question,
             contexts,
@@ -110,6 +123,7 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
                 "retrieval_top5": top5,
                 "latency_seconds": elapsed,
                 "shuffle_index": args.shuffle_index,
+                "sidecar_rerank": not args.disable_sidecar_rerank,
                 "sidecar_verified": any(bool(item["verified"]) for item in ranked_node_details),
                 "sidecar_scores": [float(item["sidecar_score"]) for item in ranked_node_details],
             }
@@ -125,11 +139,26 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
         "retrieval_top5": sum(1 for row in results if row["retrieval_top5"]) / question_count,
         "mean_latency_seconds": total_latency / question_count,
         "max_context_tokens": args.max_context_tokens,
+        "per_paper_snippets": args.per_paper_snippets,
+        "top_k": args.top_k,
         "shuffle_index": args.shuffle_index,
+        "sidecar_rerank": not args.disable_sidecar_rerank,
+        "sidecar_weight": args.sidecar_weight if not args.disable_sidecar_rerank else 0.0,
+        "phrase_weight": args.phrase_weight,
     }
     payload = {"summary": summary, "results": results}
-    output_path = SHUFFLED_MANIFOLD_RESULTS_PATH if args.shuffle_index else MANIFOLD_RESULTS_PATH
-    write_metrics(output_path, payload)
+    output_arg = getattr(args, "output_path", None)
+    if output_arg:
+        output_path = Path(output_arg)
+    elif args.shuffle_index:
+        output_path = SHUFFLED_MANIFOLD_RESULTS_PATH
+    elif args.disable_sidecar_rerank:
+        output_path = MANIFOLD_NO_SIDECAR_RESULTS_PATH
+    else:
+        output_path = MANIFOLD_RESULTS_PATH
+
+    if getattr(args, "write_output", True):
+        write_metrics(output_path, payload)
     return payload
 
 
@@ -141,7 +170,8 @@ def main() -> None:
     print(
         f"Manifold{suffix}: QA {summary['qa_accuracy']:.3f} | "
         f"Top-1 {summary['retrieval_top1']:.3f} | "
-        f"Top-5 {summary['retrieval_top5']:.3f}"
+        f"Top-5 {summary['retrieval_top5']:.3f} | "
+        f"Sidecar={'on' if summary['sidecar_rerank'] else 'off'}"
     )
 
 

@@ -13,6 +13,7 @@ Current status: the repo contains a working benchmark harness, reusable manifold
 - The new demo path is runnable end to end and covered by unit and smoke tests.
 - A 25-paper arXiv pilot using the new structural-node manifold and `extractive` answering reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
 - The same locked 25-paper pilot with `ollama` answering now reaches `0.825` manifold QA versus `0.775` for the baseline after answer-path tightening, while manifold retrieval stays at `0.90` Top-1 and shuffled manifold QA collapses to `0.05`.
+- On a follow-on ablation on that same locked pilot, disabling sidecar reranking improved manifold Ollama QA from `0.850` to `0.900` with unchanged `0.900` Top-1 retrieval, so the current sidecar layer is not helping retrieval on this benchmark.
 
 ### Historical / prior reported
 - The benchmark snapshot later in this README summarizes prior results on earlier datasets.
@@ -23,7 +24,7 @@ Current status: the repo contains a working benchmark harness, reusable manifold
 - 200-paper retrieval retention
 - 200-paper QA retention relative to baseline RAG
 - Whether the structural manifold still wins at `50-100` papers on the same protocol
-- Whether sidecar signatures add measurable lift beyond structural nodes alone
+- Whether sidecar signatures can be reintroduced as a useful verifier or reranker after redesign
 - Any claim that this system replaces transformer context handling in general
 
 ---
@@ -122,6 +123,19 @@ Interpretation:
 - Important caveat: the remaining gap between manifold retrieval (`0.90`) and manifold Ollama QA (`0.825`) is now much smaller, and the residual misses are mostly `INSUFFICIENT_CONTEXT` rather than formatting noise. The next bottleneck is reconstruction sufficiency / ablation, not basic answer normalization.
 - Additional caveat: with the `extractive` backend, QA accuracy is effectively document-retrieval accuracy, not full generative QA from reconstructed evidence.
 
+### Follow-on ablation and sweep
+Using the same locked 25-paper corpus and frozen questions:
+
+- Sidecar ablation (`results/manifold_ablation.json`): with sidecar `QA=0.850`; without sidecar `QA=0.900`; Top-1 retrieval stayed `0.900` in both arms.
+- Reconstruction sweep (`results/manifold_reconstruction_sweep.json`): the best tested configuration was `top_k=5`, `per_paper_snippets=3`, `max_context_tokens=2000`, with sidecar reranking disabled.
+- Best follow-on result: `QA=0.900`, `Top-1=0.900`, `Top-5=0.975`, and only `4` `INSUFFICIENT_CONTEXT` answers.
+
+Interpretation:
+
+- The structural-node retriever is now strong enough on this pilot that bounded-reconstruction QA can match Top-1 retrieval when the sidecar reranker is removed.
+- The current sidecar signatures look more promising as a verification signal than as a retrieval reranker.
+- The reconstruction sweep did not reveal a better context package than the current default `5 / 3 / 2000`; the main remaining work is now scaling and sidecar redesign, not more local prompt tuning.
+
 ### Run the full demo
 ```bash
 python run_full_demo.py
@@ -173,6 +187,8 @@ results/
    baseline_rag_results.json
    manifold_results.json
    manifold_results_shuffled.json
+   manifold_ablation.json
+   manifold_reconstruction_sweep.json
    qa_results.json
    graphs/
 ```

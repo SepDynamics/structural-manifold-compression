@@ -377,10 +377,12 @@ def build_node_contexts(
     ranked_nodes: Sequence[StructuralNodeRecord],
     *,
     max_context_tokens: int,
+    snippets_per_paper: int = 3,
 ) -> list[dict[str, str]]:
     grouped: dict[str, dict[str, object]] = {}
     ordered_papers: list[str] = []
     cache: dict[str, str] = {}
+    snippet_limit = max(1, snippets_per_paper)
 
     for node in ranked_nodes:
         text = reconstruct_node_text(node, cache=cache)
@@ -398,7 +400,7 @@ def build_node_contexts(
             ordered_papers.append(node.paper_id)
 
         snippets = bucket["snippets"]
-        if len(snippets) >= 3:
+        if len(snippets) >= snippet_limit:
             continue
 
         snippet_body = compact_context_excerpt(text, max_chars=800)
