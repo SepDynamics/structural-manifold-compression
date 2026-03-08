@@ -16,13 +16,13 @@
 \maketitle
 
 \begin{abstract}
-Modern Large Language Models (LLMs) and Transformers have plateaued against fundamental architectural limitations: tokenization bias, hallucination, and catastrophic forgetting. We introduce a non-von Neumann architecture, bridging Theoretical Physics (the Free Energy Principle) and Neuroscience (the Thousand Brains Theory). By decoupling syntax (the structural manifold) from semantics (token mappings), we eliminate $O(N^2)$ attention bottlenecks and enable instantaneous, zero-shot learning. This paper details the Tripartite Architecture and demonstrates its superior compute economics and true Hebbian plasticity mechanism.
+Modern Large Language Models (LLMs) and Transformers face real architectural limitations: tokenization bias, hallucination, and expensive long-context attention. We introduce a non-von Neumann architecture, bridging Theoretical Physics (the Free Energy Principle) and Neuroscience (the Thousand Brains Theory). The working hypothesis is that decoupling syntax (the structural manifold) from semantics (token mappings) can reduce some attention bottlenecks in the tested settings. This paper details the Tripartite Architecture and summarizes prior reported compute and Hebbian-plasticity experiments.
 \end{abstract}
 
 \section{Introduction: The Epistemological Wall}
 Current dominant models hit rigid boundaries. Tokenization bias destroys continuous spatial relationships through rigid semantic chunking. The architectures exhibit hallucination, outputting high-variance probability distributions that lack physical grounding. Finally, they suffer from catastrophic forgetting: the inability to perform biological continuous learning without degrading existing parameters. 
 
-To overcome this, we designed the \textbf{AGI-Lite} architecture. The system decouples syntax from semantics, creating an invariant structural manifold to operate at $O(1)$ scaling. 
+To explore this, we designed the \textbf{AGI-Lite} architecture. The system decouples syntax from semantics, creating a structural manifold that may support lower-overhead retrieval and sequence processing in the tested settings. 
 
 \begin{figure}[h]
     \centering
@@ -34,7 +34,7 @@ To overcome this, we designed the \textbf{AGI-Lite} architecture. The system dec
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{output/benchmark/figures/needle_cost.png}
-    \caption{Needle-in-a-Haystack VRAM Ceiling. At 10,000+ tokens, GPT-2 VRAM usage scales quadratically toward failure, while the SSM manifold remains absolutely flat (O(1) memory bound), functionally guaranteeing zero recurrent bloat.}
+    \caption{Needle-in-a-Haystack VRAM Ceiling. In the reported benchmark, GPT-2 VRAM usage scales quadratically with context, while the SSM manifold footprint remains comparatively flat in the tested setup.}
     \label{fig:needle}
 \end{figure}
 
@@ -55,7 +55,7 @@ At the C++ layer, the system computes Structural Tension ($\lambda$). When the d
 The sensory layer encodes raw arrays into $c_{0.9}\_s_{0.1}\_e_{0.5}$ structural signatures using pure mathematical stability metrics (Coherence, Stability, Entropy, Rupture), producing $O(N)$ deterministic coordinate paths.
 
 \subsection{Layer 2: Predictable State Space Memory}
-The Long-Term memory engine replaces Transformer attention with a State Space Model (Mamba SSM) to maintain a fixed-size hidden state, granting infinite context scaling without window collapse or memory bloat.
+The Long-Term memory engine replaces Transformer attention with a State Space Model (Mamba SSM) to maintain a fixed-size hidden state. This keeps recurrent state size fixed with respect to sequence length in the model design, though end-to-end scaling still requires empirical validation.
 
 \subsection{Layer 3: Associative Grid Memory}
 Valkey serves as the spatial Grid Cells, maintaining the continuous environmental map. When physical queries collide in high structural tension, the system acts as an "ADHD" Transformer---triggering an energetic LLM heuristic burst localized purely on the failing spatial coordinates.
@@ -63,7 +63,7 @@ Valkey serves as the spatial Grid Cells, maintaining the continuous environmenta
 \subsection{Latent Semantic Adapter (The "Thalamus")}
 Standard RAG is bottlenecked by the $O(N^2)$ compute cost. Functioning analogously to the biological thalamus, AGI-Lite maintains a ``Recency Buffer'' within the Dynamic Codebook. When the continuous SSM encounters an FEP spike, it queries the specific physical geometry of the collision and extracts strictly a Semantic Context Vector (top 50 active vocabulary tokens) mapped to that exact topological neighborhood.
 
-Empirical Verification during the LLM Saturation Benchmark proved that when obfuscated with philosophical gibberish, standard RAG hallucinates. The AGI-Lite adapter intercepted the structural phase states mapped to math geometry, extracting only the valid constrained sub-vocabulary. This eliminates semantic hallucination dramatically reducing compute.
+Empirical Verification during the LLM Saturation Benchmark suggested that when the query was obfuscated with philosophical gibberish, the AGI-Lite adapter still extracted a narrower constrained sub-vocabulary than raw-passage fallback. This is promising, but not a general guarantee about hallucination or compute reduction.
 
 \subsection{Cortical Voting Loop (Consensus Mechanism)}
 In the AGI-Lite framework, learning is a heterarchical consensus process. As Layer 1 generates prediction states, an FEP spike invokes lateral ``voting''. The input sequence branches into three parallel Cortical Columns (SSM blocks). A cross-layer consensus evaluates these structural predictors. The local Hebbian loop then applies a normalized refractory cap and Oja's weight decay to physically burn the consensus state into Memory, eliminating global backpropagation.
@@ -71,18 +71,18 @@ In the AGI-Lite framework, learning is a heterarchical consensus process. As Lay
 \section{Empirical Findings}
 
 \subsection{Spatial Representation vs Tokenization}
-In continuous motif testing, traditional FAISS token retrieval achieved $\sim$20\% precision, whereas our Structural Tension ANN hit $\sim$60\% precision, proving continuous manifolds retrieve complex structures better than semantic embeddings.
+In one continuous motif benchmark, traditional FAISS token retrieval achieved $\sim$20\% precision, whereas our Structural Tension ANN hit $\sim$60\% precision, suggesting continuous manifolds may retrieve some complex structures better than semantic embeddings in that setup.
 
 \subsection{The Catastrophic Forgetting Bypass}
 Baseline fine-tuning demands massive VRAM and degrades prior weights. FEP Zero-Shot Injection achieves a 0.0063s factual overwrite without parameter degradation, instantly updating the dynamic codebook with 100\% downstream usage rate.
 
 \subsection{Compute Economics at the Horizon}
-As depicted in Figure \ref{fig:needle}, the architecture proves absolute dominance at scale: GPT-2 sequence processing degrades quadratically toward OOM failure at larger scales, while the SSM sequence footprint maintains $\sim$16.8ms latency with 0.00MB memory growth.
+As depicted in Figure \ref{fig:needle}, the architecture shows a compute advantage in the reported setup: GPT-2 sequence processing degrades quadratically toward OOM failure at larger scales, while the SSM sequence footprint maintains $\sim$16.8ms latency with negligible recurrent memory growth.
 
 \section{Escaping Backpropagation}
 We demonstrate Local Hebbian updates (Figure \ref{fig:hebbian}) derived from Free Energy minimization applied to the Mamba sequence (`--local-hebbian`), abandoning global PyTorch gradients. Localized weight updates autonomously alter the trajectory, utilizing Oja's rule bounding and Heterarchical Voting alignment.
 
 \section{Conclusion}
-The FEP-driven Tripartite architecture conclusively demonstrates superior scalability, compute economics, and continuous learning capability over static attention grids. Future work explores scaling to larger multi-modal datasets while strictly maintaining sub-15ms deterministic limits.
+The FEP-driven Tripartite architecture remains an experimental system with promising prior reported scalability, compute-economics, and continuous-learning behavior. Future work should validate these claims on the new leakage-aware large-corpus benchmark.
 
 \end{document}

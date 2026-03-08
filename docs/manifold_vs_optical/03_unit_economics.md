@@ -1,5 +1,7 @@
 # Unit Economics: Structural Manifold Compression
 
+This file is an illustrative business scenario, not a validated benchmark result.
+
 ## Scenario
 - Enterprise corpus: **10M pages** (contracts, emails, logs).
 - Baseline vector pipeline: embeddings + vector DB.
@@ -10,15 +12,15 @@
 - Monthly storage/query: ~$5,000/month (managed vector DB).
 
 ## With Structural Manifold Compression
-- Footprint: **~250 GB** (≈40× smaller).
-- Encode pass: **~$50** (CPU/GPU-friendly).
-- Monthly storage: **~$50/month** (S3/Glacier class).
+- Footprint: **~250 GB** (illustrative, assuming ≈40× smaller).
+- Encode pass: **~$50** (illustrative CPU/GPU-friendly estimate).
+- Monthly storage: **~$50/month** (illustrative S3/Glacier-class estimate).
 - Provenance: hazard-gated verification at window level; reconstruct-on-demand; on-device feasible.
 
 ## Business Impact
-- **99%+ infra savings** on storage/query for context memory.
+- **Potentially large infra savings** on storage/query for context memory if the measured compression and retrieval results hold.
 - **Auditable AI**: every retrieved chunk carries a structural “fingerprint” + hazard gate for trust.
 - **Privacy**: indexes small enough for local/edge verification (no raw text upload required).
 
 ## Pitch Line
-“We sell pure margin to AI companies: 40× smaller context memory with built-in provenance, reducing retrieval infra from ~$5k/month to ~$50/month for a 10M-page corpus.”
+“If the benchmarked compression and retrieval results hold, this could support materially smaller context memory footprints with built-in provenance.”

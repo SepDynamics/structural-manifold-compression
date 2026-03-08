@@ -6,6 +6,25 @@
 
 ---
 
+## Evidence Status
+
+This whitepaper now distinguishes between implemented components, prior reported measurements, and still-pending claims.
+
+### Established
+- The repo contains structural manifold encoding, indexing, and verification code.
+- The repo now contains a leakage-aware corpus benchmark harness for testing compression-oriented retrieval with frozen questions and bounded reconstruction.
+
+### Prior reported
+- The benchmark figures below refer to earlier internal experiments and narrower datasets.
+- They should not be read as proof of the new 200-paper corpus-compression claim.
+
+### Not yet established
+- 200-paper arXiv QA retention
+- 200-paper compression ratio under the new benchmark
+- General architectural replacement claims for transformers
+
+---
+
 ## Section 1: Abstract & Introduction
 
 ### 1.1 The Epistemological Wall
@@ -15,7 +34,7 @@ Modern Large Language Models (LLMs) and Transformers have plateaued against fund
 - **Catastrophic Forgetting**: The inability to perform biological continuous learning without degrading existing parameters.
 
 ### 1.2 The Thesis (AGI-Lite)
-We introduce a non-von Neumann architecture that bridges Theoretical Physics (the Free Energy Principle) and Neuroscience (the Thousand Brains Theory). By decoupling **syntax** (the structural manifold) from **semantics** (token mappings), we eliminate O(N²) attention bottlenecks and enable instantaneous, zero-shot learning.
+We introduce a non-von Neumann architecture that bridges Theoretical Physics (the Free Energy Principle) and Neuroscience (the Thousand Brains Theory). The working hypothesis is that decoupling **syntax** (the structural manifold) from **semantics** (token mappings) may reduce some attention bottlenecks and improve targeted retrieval efficiency in the tested settings.
 
 ---
 
@@ -38,7 +57,7 @@ At the C++ layer, the system computes Structural Tension ($\lambda$). When the d
 The elimination of SFT tokens. The sensory layer encodes raw arrays into $c_{0.9}\_s_{0.1}\_e_{0.5}$ structural signatures using pure mathematical stability metrics (Coherence, Stability, Entropy, Rupture), producing O(N) deterministic coordinate paths.
 
 ### 3.2 Layer 2: The Predictable State Space Memory (Mamba SSM)
-The Long-Term memory engine. Replaces Transformer attention with an SSM to maintain a fixed-size hidden state, granting infinite context scaling without window collapse or memory bloat.
+The Long-Term memory engine. Replaces Transformer attention with an SSM to maintain a fixed-size hidden state. This keeps recurrent state size fixed with respect to sequence length in the model design; end-to-end scaling still requires empirical validation.
 
 ### 3.3 Layer 3: Associative Grid Memory (Valkey) & The "ADHD" Transformer
 The Collision Resolver. Valkey serves as the spatial Grid Cells, maintaining the continuous environmental map. When physical queries collide in high structural tension, the system acts as an "ADHD" Transformer—triggering an energetic LLM heuristic burst localized purely on the failing spatial coordinates to disambiguate the physical collision context.
@@ -50,7 +69,7 @@ Functioning analogously to the biological thalamus, the system maintains a "Rece
 
 **Empirical Verification:** During the LLM Saturation Benchmark, a mathematical structural query was intentionally obfuscated with heavy semantic noise (philosophical gibberish) to force a high-tension heuristic fallback. Standard RAG architectures would pass the entire noisy prompt to the LLM, inducing context dilution and hallucination. The AGI-Lite Latent Semantic Adapter successfully ignored the un-mapped noise, intercepting the structural phase states mapped to the original math geometry, and passed exclusively the highly constrained sub-vocabulary: `[jee, main, online, july, morning, let, continuous, function, matrix, cos]`. 
 
-This mechanism mathematically guarantees that the high-variance LLM fallback operates inside a tightly constrained, biologically plausible soft-prompt, dramatically reducing inference compute while eliminating semantic hallucination.
+This mechanism is intended to constrain the high-variance LLM fallback to a narrower soft-prompt than standard raw-passage RAG. The degree to which this reduces compute or hallucination remains an empirical question.
 
 ### 3.5 The Cortical Voting Loop (Consensus Mechanism)
 In the AGI-Lite framework, learning is a heterarchical consensus process. As the sensory manifold (C++ Encoder) moves through the byte-stream, Level 1 (SSM) generates a continuous prediction state. When a motif collision occurs—detected as a spike in Variational Free Energy ($F$)—the system invokes lateral "voting" via the Valkey Grid Cell Memory.
@@ -59,34 +78,34 @@ The Latent Semantic Adapter projects a constrained activation buffer (Recency Li
 
 ---
 
-## Section 4: Empirical Findings (The Benchmarks)
+## Section 4: Prior Reported Benchmarks
 
 ### 4.1 Spatial Representation vs Tokenization
-- **FAISS (Token Retrieval)**: ~20% precision on complex structural code motifs.
-- **Structural Tension ANN**: ~60% precision, proving continuous manifolds retrieve complex structures better than semantic embeddings.
+- **FAISS (Token Retrieval)**: ~20% precision on one complex structural code benchmark.
+- **Structural Tension ANN**: ~60% precision on that same benchmark, suggesting continuous manifolds may retrieve some structural motifs better than semantic embeddings in the tested setup.
 
 ### 4.2 The Catastrophic Forgetting Bypass
-- **Baseline Fine-Tuning**: Hours/Days, massive VRAM, degradation of prior weights.
-- **FEP Zero-Shot Injection**: 0.0063s factual overwrite without parameter degradation, instantly updating the dynamic codebook with 100% downstream usage rate.
+- **Baseline Fine-Tuning**: Hours/Days, large VRAM cost, and potential degradation of prior weights.
+- **FEP Zero-Shot Injection**: one reported 0.0063s factual overwrite experiment with immediate downstream codebook usage in that setup.
 
 ### 4.3 Compute Economics at the Horizon
-The Needle-in-a-Haystack TTFT and VRAM curve proves absolute architectural dominance at scale:
+The Needle-in-a-Haystack TTFT and VRAM curve suggests a compute advantage in the tested setup:
 - At 10,000+ tokens, GPT-2 sequence processing degrades quadratically toward OOM failure.
 - The SSM manifold sequence remains perfectly flat at ~16.8ms latency with functionally 0.00MB of recurrent memory growth.
 
 ![Needle-in-a-Haystack VRAM Ceiling](images/vram_ceiling_benchmark.png)
 
-Furthermore, our Phase 3 synthetic scale-out mapped **5,000,000 continuous spatial signatures** into the Valkey associative memory. Benchmarks mathematically verified that the deterministic reflex in the TripartiteRouter remained between 5ms and 10ms. This conclusively establishes the absolute $O(1)$ scaling ceiling, demonstrating a massive compute economics advantage over traditional attention.
+Furthermore, one Phase 3 synthetic scale-out mapped **5,000,000 continuous spatial signatures** into the Valkey associative memory. In that setup, the deterministic reflex in the TripartiteRouter reportedly remained between 5ms and 10ms. This is promising, but it does not by itself establish a general scaling ceiling.
 
 ---
 
-## Section 5: Escaping Backpropagation (Local Hebbian Plasticity)
+## Section 5: Local Hebbian Plasticity Experiments
 
 ### 5.1 The Local Hebbian Implementation
 We demonstrate the implementation of Local Hebbian updates derived from Free Energy minimization applied to the Mamba structural state sequence (`--local-hebbian`), abandoning global PyTorch gradients.
 
-### 5.2 Verified Convergence & Overcoming the Epistemological Wall
-The success of the Local Hebbian loop offers a definitive solution to the "Epistemological Wall" of backpropagation-based learning. Global gradient descent inherently prevents continuous biological learning because it must override existing localized weights to satisfy a global truth scalar, leading to catastrophic forgetting. 
+### 5.2 Reported Convergence
+The success of the Local Hebbian loop suggests a possible alternative to some backpropagation-heavy update schemes. Broader claims about solving catastrophic forgetting or replacing standard training are still pending.
 
 In contrast, our Continuous Learning updates minimize Free Energy *locally*. We have now empirically validated this mechanism at scale on the Wikitext-103 dataset using an explicit `VotingProcessor` consisting of 3 Cortical Columns for parallel heterarchical consensus.
 
@@ -94,25 +113,25 @@ In contrast, our Continuous Learning updates minimize Free Energy *locally*. We 
 
 As demonstrated in the chart above, the Thousand-Brains Consensus approach dramatically accelerated convergence compared to a traditional single-stream architecture. The independent SSM streams successfully achieved aggressive monotonic reduction across 10 Epochs, plunging the prediction error (Perplexity) from an initial saturated ceiling of 3376 down to 892. 
 
-This establishes that predictive coding mechanisms can fundamentally optimize a deep sequence model **without global `loss.backward()`**.
+This indicates that predictive-coding-style local updates can optimize a deep sequence model in the reported experiment **without global `loss.backward()`**.
 
 ### 5.3 Dynamic State Stabilization in High-Entropy Streams
-As the AGI-Lite architecture evolved from static mean-voting to precision-weighted consensus, the systemic representation of "context" shifted fundamentally. Under this architecture, context is no longer a static, semantic point-embedding array; rather, it is strictly defined as a **Stable Orbital Trajectory** maintained dynamically across three interacting sub-systems (the continuous SSM proxy, the high-speed Valkey memory, and the heuristic LLM layer).
+As the AGI-Lite architecture evolved from static mean-voting to precision-weighted consensus, the working representation of "context" also changed. In this interpretation, context is treated less as a static semantic embedding array and more as a **Stable Orbital Trajectory** maintained across three interacting sub-systems (the continuous SSM proxy, the high-speed Valkey memory, and the heuristic LLM layer).
 
 Within the strict paradigm of Systems Engineering, we mathematically redefine anomaly detection and architecture consensus through the lens of dynamic state stabilization:
-- **Zero-Error Consensus (Cognitive Lagrange Points):** These localized coordinates in the topological manifold appear where the SSM's structural prediction, the $O(1)$ Valkey grid-cell retrieval, and the top-down Transformer heuristic perfectly overlap in spatial validation. This consensus locks the learning gradient and indicates physical system stability.
+- **Zero-Error Consensus (Cognitive Lagrange Points):** These localized coordinates in the topological manifold are intended to describe regions where the SSM's structural prediction, the Valkey retrieval, and the top-down heuristic align closely.
 - **Centrifugal Disruption (Topological Rupture):** When structural tension ($I_t$) spikes across an input sequence—such as parsing a kernel panic or a runaway thread in live `/proc` telemetry—an unexpected boundary has been pierced. Visually acting as a non-linear phase transition, the operating system's "particle" attempts to escape the predictable stability basin, executing a Type-I Intermittency.
-- **The Lyapunov Proxy for Systems Pathology:** The system maps predictive volatility directly to the chaotic Lyapunov Exponent ($\lambda$) proxy. If a live instrumentation stream (e.g., continuous kernel logs) yields a high average Lyapunov value, the OS trajectory is mathematically "fragile." By anchoring context as spatial Grid Cells within the Valkey layer, the engine continuously tracks millions of log signatures with strictly $O(1)$ scaling. In direct contrast, a standard Transformer attempting to diagnose live system telemetry quickly succumbs to the $O(N^2)$ context curve, entirely losing the "state" of the system after a few thousand lines. This physical stability allows the autonomous AGI-Lite Pathologist daemon to maintain geometric coherence indefinitely, only querying the heavy LLM heuristic when a genuine structural topology ruptures.
+- **The Lyapunov Proxy for Systems Pathology:** The system maps predictive volatility to a Lyapunov-style proxy. If a live instrumentation stream (e.g., continuous kernel logs) yields a high average proxy value, the trajectory is treated as fragile. This is a systems-engineering interpretation of the measurements, not a settled theorem about live operating-system diagnosis.
 
 ---
 
 ## Section 6: Conclusion & Future Work
 
-### 6.1 Summary of Architectural Superiority
-The FEP-driven Tripartite architecture conclusively demonstrates superior scalability, compute economics, and continuous learning capability over static attention grids.
+### 6.1 Current Interpretation
+The FEP-driven Tripartite architecture remains an experimental system with promising prior reported results, improved benchmark rigor, and a still-pending large-corpus validation step.
 
 ### 6.2 Next Steps: The Scale-Out Protocol
-Scaling the Local Hebbian loop and Tripartite ingestion to larger multi-modal datasets (Wikitext-103, extensive codebases) to stress-test the FEP Router against >1,000,000 spatial signatures with sub-15ms latency constraints.
+The next high-value step is the locked 200-paper corpus benchmark: measure compression ratio, baseline RAG QA accuracy, structural manifold QA accuracy, and shuffled-manifold degradation under bounded reconstruction.
 
 ---
 

@@ -1,6 +1,6 @@
 # Dual-Stream Architecture Implementation
 
-Complete implementation of the dual-stream architecture for scalable language modeling with zero-shot vocabulary injection.
+Implementation notes for the dual-stream architecture experiments. This document describes runnable components and prior reported behavior; it should not be read as proof of large-scale scientific claims.
 
 ## Quick Links
 
@@ -377,9 +377,9 @@ If you use this implementation, please cite:
 4. **Test zero-shot injection** with your novel terms
 5. **Iterate on quality** by tuning model size and training duration
 
-**Goal**: Demonstrate to investors that this architecture enables:
-✓ 10-100× cost savings on long-context inference  
-✓ Zero-shot vocabulary updates (bypass catastrophic forgetting)  
-✓ Linear scaling to 100K+ tokens on consumer hardware  
+**Evaluation targets to test:**
+✓ Whether long-context inference costs fall materially in the measured setup  
+✓ Whether zero-shot vocabulary updates are usable in practice  
+✓ Whether scaling remains favorable at larger token counts on consumer hardware  
 
-**The structural manifold is universal. Train once, update the codebook as domains evolve.**
+**Working hypothesis:** the structural manifold approach may be domain-flexible, but that remains something to validate empirically rather than assume.
