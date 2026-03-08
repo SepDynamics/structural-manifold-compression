@@ -19,9 +19,12 @@ from demo.common import (
     score_prediction,
 )
 from demo.retrieval import (
+    build_lexical_index,
     build_manifold_payload,
     encode_embeddings,
+    rank_bm25_chunks,
     save_manifold_index,
+    rank_hybrid_chunks,
     rank_documents,
     rank_embedding_chunks,
     rank_manifold_chunks,
@@ -159,6 +162,55 @@ def test_embedding_and_manifold_retrieval_match_expected_chunk(tmp_path: Path) -
     )
     manifold_docs = rank_documents(ranked_manifold, nodes)
     assert manifold_docs[0][0] == "paper_001"
+
+
+def test_bm25_and_hybrid_retrieval_match_expected_chunk(tmp_path: Path) -> None:
+    doc1 = _write_paper(
+        tmp_path,
+        "aurora_bm25",
+        "Abstract\nWe introduce the Aurora Lattice Optimizer for plasma oscillations and magnetic drift.\n",
+    )
+    doc2 = _write_paper(
+        tmp_path,
+        "spectral_bm25",
+        "Abstract\nWe study the Spectral River Theorem for adaptive meshes and convergence bounds.\n",
+    )
+    papers = [
+        _paper_record("paper_001", "Aurora Paper", doc1),
+        _paper_record("paper_002", "Spectral Paper", doc2),
+    ]
+    chunks = build_chunks(papers, chunk_chars=200, overlap_chars=40)
+    question = QuestionRecord(
+        question_id="q_bm25",
+        question='Which paper discusses "Aurora Lattice Optimizer"?',
+        answer="Aurora Paper",
+        answer_aliases=["Aurora Paper"],
+        source_papers=["paper_001"],
+        question_type="paper_lookup",
+        evidence_terms=["Aurora Lattice Optimizer"],
+    )
+
+    lexical_index = build_lexical_index(chunks)
+    ranked_bm25 = rank_bm25_chunks(
+        question,
+        chunks=chunks,
+        lexical_index=lexical_index,
+        top_k=3,
+    )
+    bm25_docs = rank_documents(ranked_bm25, chunks)
+    assert bm25_docs[0][0] == "paper_001"
+
+    embeddings = encode_embeddings([chunk.text for chunk in chunks], model_name="hash")
+    ranked_hybrid = rank_hybrid_chunks(
+        question,
+        chunks=chunks,
+        embeddings=embeddings,
+        lexical_index=lexical_index,
+        model_name="hash",
+        top_k=3,
+    )
+    hybrid_docs = rank_documents(ranked_hybrid, chunks)
+    assert hybrid_docs[0][0] == "paper_001"
 
 
 def test_shuffle_node_indices_break_document_assignment(tmp_path: Path) -> None:

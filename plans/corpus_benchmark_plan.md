@@ -29,6 +29,11 @@ Observed results:
 - 200-paper ollama structural manifold (no sidecar rerank): `QA=0.716`, `Top-1=0.728`, `Top-5=0.828`
 - 200-paper ollama shuffled manifold: `QA=0.016`, `Top-1=0.008`, `Top-5=0.020`
 - compression at 200 papers: `2.66x` on structural tokens, with serialized manifold bytes still larger than the corpus
+- 200-paper retrieval-only baseline suite:
+  - dense `all-MiniLM-L6-v2`: `Top-1=0.412`, `Top-5=0.536`
+  - BM25: `Top-1=0.480`, `Top-5=0.632`
+  - hybrid `MiniLM + BM25`: `Top-1=0.460`, `Top-5=0.624`
+  - reranked hybrid `MiniLM + BM25 + cross-encoder`: `Top-1=0.496`, `Top-5=0.648`
 
 Interpretation:
 
@@ -37,8 +42,9 @@ Interpretation:
 - answer-path tightening worked materially on the same locked corpus/questions
 - the manifold still beats baseline under LLM answering at `200` papers
 - the retrieval-to-QA gap is now small at `200` papers (`Top-1=0.728`, `QA=0.716`)
+- BM25 is currently the strongest committed non-manifold baseline, and it still trails manifold retrieval materially
 - the compression claim is still weak
-- the next highest-value steps are stronger baseline comparisons, harder question sets, and compression redesign, not more prompt cleanup
+- the next highest-value steps are harder question sets, broader dense baseline comparisons, and compression redesign, not more prompt cleanup
 
 ## Recommended path
 
@@ -190,11 +196,11 @@ Status:
 
 Metrics that matter:
 - `results/compression_metrics.json`
-- `results/baseline_rag_results.json`
+- `results/qa_results.json`
+- `results/baseline_suite.json`
 - `results/manifold_results.json`
 - `results/manifold_results_no_sidecar.json`
 - `results/manifold_results_shuffled.json`
-- `results/qa_results.json`
 
 ### Stage 3: flagship arXiv run (200 papers)
 Only run this after the 50-100 paper stage looks legitimate.
@@ -219,7 +225,7 @@ Status:
 - `200`-paper result: baseline `QA=0.504`, manifold `QA=0.716`, shuffled `QA=0.016`.
 - Retrieval remained materially stronger for the manifold at `200` papers: baseline `Top-1=0.392`, manifold `Top-1=0.728`, shuffled `Top-1=0.008`.
 - Compression improved only modestly to `2.66x`, and serialized manifold storage remains larger than the raw corpus bytes.
-- Mean latency was slightly better for the manifold path in this run (`0.397s` vs `0.452s`).
+- The flagship checkpoint summary is committed in `results/qa_results.json`; the retrieval-only stronger-baseline suite is committed separately in `results/baseline_suite.json`.
 
 This is the first large-scale run worth presenting externally, but it supports a retrieval claim rather than a strong compression claim.
 
@@ -232,10 +238,15 @@ Purpose:
 - separate retrieval quality from compression quality in follow-on work
 
 Recommended next work:
-1. compare against stronger embedding and hybrid retrieval baselines
-2. add harder cross-document and structural questions to reduce title-lookup bias
-3. redesign the compression format so serialized artifacts are smaller than the source corpus
-4. only then test transfer to a second public corpus
+1. Completed initial stronger-baseline comparison on the locked `200`-paper corpus:
+   - `all-MiniLM-L6-v2`: `Top-1=0.412`
+   - BM25: `Top-1=0.480`
+   - hybrid `MiniLM + BM25`: `Top-1=0.460`
+   - reranked hybrid `MiniLM + BM25 + cross-encoder`: `Top-1=0.496`
+2. Add harder cross-document and structural questions to reduce title-lookup bias.
+3. Compare against stronger dense retrieval models beyond the current BM25/MiniLM suite.
+4. Redesign the compression format so serialized artifacts are smaller than the source corpus.
+5. Only then test transfer to a second public corpus.
 
 ## What corpus to obtain
 

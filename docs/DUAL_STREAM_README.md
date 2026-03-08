@@ -9,10 +9,12 @@ Level 1: measured result
 - The repository contains a locked corpus benchmark for structural retrieval.
 - The best committed large-scale benchmark result on that benchmark path comes from structural nodes without sidecar reranking on the `200`-paper / `250`-question arXiv checkpoint.
 - The current benchmark does not support a strong compression claim.
+- The flagship repo claim is retrieval-oriented: structural-node manifold indexing improves document retrieval on leakage-aware corpus benchmarks.
 
 Level 3: hypothesis
 
 - The dual-stream path may still be useful as an experimental framework for studying structural retrieval and bounded-context language-model answers.
+- Compression should be treated as a separate unresolved research track rather than as the main repo claim.
 
 ## Architecture Overview
 

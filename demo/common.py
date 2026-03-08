@@ -25,12 +25,20 @@ CORPUS_DIR = DATA_DIR / "corpus"
 MANIFOLD_DIR = REPO_ROOT / "manifold"
 RESULTS_DIR = REPO_ROOT / "results"
 GRAPHS_DIR = RESULTS_DIR / "graphs"
+BASELINE_SUITE_DIR = RESULTS_DIR / "baseline_suite"
 CORPUS_MANIFEST_PATH = DATA_DIR / "corpus_manifest.json"
 QUESTIONS_PATH = DATA_DIR / "questions.json"
 CORPUS_FULL_PATH = DATA_DIR / "corpus_full.txt"
 BUILD_METRICS_PATH = DATA_DIR / "corpus_metrics.json"
 COMPRESSION_METRICS_PATH = RESULTS_DIR / "compression_metrics.json"
 BASELINE_RESULTS_PATH = RESULTS_DIR / "baseline_rag_results.json"
+BASELINE_SUITE_PATH = RESULTS_DIR / "baseline_suite.json"
+BASELINE_BM25_RESULTS_PATH = BASELINE_SUITE_DIR / "baseline_bm25_results.json"
+BASELINE_STRONG_DENSE_RESULTS_PATH = BASELINE_SUITE_DIR / "baseline_dense_strong_results.json"
+BASELINE_HYBRID_RESULTS_PATH = BASELINE_SUITE_DIR / "baseline_hybrid_minilm_bm25_results.json"
+BASELINE_HYBRID_RERANKED_RESULTS_PATH = (
+    BASELINE_SUITE_DIR / "baseline_hybrid_minilm_bm25_crossencoder_results.json"
+)
 MANIFOLD_RESULTS_PATH = RESULTS_DIR / "manifold_results.json"
 SHUFFLED_MANIFOLD_RESULTS_PATH = RESULTS_DIR / "manifold_results_shuffled.json"
 MANIFOLD_NO_SIDECAR_RESULTS_PATH = RESULTS_DIR / "manifold_results_no_sidecar.json"
@@ -236,6 +244,7 @@ def ensure_directories() -> None:
     MANIFOLD_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     GRAPHS_DIR.mkdir(parents=True, exist_ok=True)
+    BASELINE_SUITE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def utc_now() -> str:

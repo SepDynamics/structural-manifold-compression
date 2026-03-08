@@ -7,6 +7,7 @@ This document summarizes what the repository currently measures, what it only su
 Artifacts:
 
 - `results/qa_results.json`
+- `results/baseline_suite.json`
 - `results/manifold_ablation.json`
 - `results/manifold_reconstruction_sweep.json`
 - `results/manifold_results_no_sidecar.json`
@@ -23,10 +24,21 @@ Measured outputs:
 - structural manifold, no sidecar rerank: `QA=0.716`, `Top-1=0.728`, `Top-5=0.828`
 - shuffled manifold control: `QA=0.016`, `Top-1=0.008`, `Top-5=0.020`
 - compression: about `2.66x` on structural tokens, with serialized manifold bytes larger than the corpus
+- retrieval baseline suite on the same locked corpus/questions:
+  - dense `all-MiniLM-L6-v2`: `Top-1=0.412`, `Top-5=0.536`
+  - BM25: `Top-1=0.480`, `Top-5=0.632`
+  - hybrid `MiniLM + BM25`: `Top-1=0.460`, `Top-5=0.624`
+  - reranked hybrid `MiniLM + BM25 + cross-encoder`: `Top-1=0.496`, `Top-5=0.648`
+
+Artifact note:
+
+- `results/qa_results.json` is the claim-bearing summary for the flagship `200`-paper `ollama` checkpoint.
+- `results/baseline_suite.json` is the retrieval-only stronger-baseline comparison.
 
 ### Measured interpretation
 
 - Structural node retrieval remains stronger than the current chunked RAG baseline at `200` papers.
+- Structural node retrieval remains stronger than the current stronger-baseline suite at `200` papers.
 - The shuffled control collapses, which supports the integrity of the retrieval result.
 - The current best committed manifold result is achieved with sidecar reranking disabled.
 - Compression remains weak by the standard required for a strong corpus-compression claim.
@@ -36,6 +48,7 @@ Measured outputs:
 - Most remaining manifold misses in the `200`-paper checkpoint are `INSUFFICIENT_CONTEXT`.
 - The sidecar-disabled manifold configuration remains better than the current baseline at `200` papers.
 - The reconstruction sweep did not find a better setting than `top_k=5`, `per_paper_snippets=3`, and `max_context_tokens=2000`.
+- In the retrieval-only suite, BM25 outperformed the plain MiniLM chunk baseline and the unrereanked hybrid, while cross-encoder reranking helped but still remained well below manifold retrieval.
 
 These are meaningful observations, but they are still early large-scale observations rather than robust scaling laws.
 
@@ -63,7 +76,7 @@ This is a hypothesis about retrieval architecture, not a proved model of languag
 - strong corpus compression under the arXiv benchmark
 - storage reduction relative to the source corpus
 - performance beyond the current `200`-paper checkpoint
-- parity with stronger RAG baselines
+- parity with a broader external baseline field beyond the current BM25/MiniLM/cross-encoder suite
 - a useful role for the sidecar layer in its current form
 - any claim of general context-handling superiority over current transformer systems
 
@@ -81,7 +94,7 @@ These results are useful for hypothesis generation, but the current benchmark cl
 
 ## 6. Research Directions
 
-- compare structural nodes against stronger embedding and hybrid retrieval baselines at the `200`-paper scale
+- compare structural nodes against stronger dense retrieval baselines beyond the current BM25/MiniLM/cross-encoder suite
 - redesign the sidecar layer as verifier-only or verifier-first
 - improve compression without losing the current retrieval signal
 - test whether the current `200`-paper behavior transfers to other public corpora

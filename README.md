@@ -13,6 +13,15 @@ This repository explores a structural retrieval pipeline built from:
 
 The current evidence supports a retrieval claim on a leakage-aware `200`-paper arXiv benchmark. It does not yet support a strong corpus-compression claim.
 
+Flagship claim:
+
+Structural-node manifold indexing improves document retrieval on leakage-aware corpus benchmarks.
+
+Current research tracks:
+
+- retrieval track: promising and artifact-backed
+- compression track: unresolved
+
 ## Evidence Levels
 
 The repo uses the evidence ladder defined in [docs/evidence_ladder.md](docs/evidence_ladder.md):
@@ -37,7 +46,7 @@ Dataset and protocol:
 Primary artifacts:
 
 - `results/qa_results.json`
-- `results/baseline_rag_results.json`
+- `results/baseline_suite.json`
 - `results/manifold_results.json`
 - `results/manifold_results_no_sidecar.json`
 - `results/manifold_results_shuffled.json`
@@ -48,7 +57,7 @@ Primary artifacts:
 
 | System | QA | Top-1 | Top-5 | Artifact |
 |--------|---:|------:|------:|----------|
-| Baseline RAG (`ollama`) | 0.504 | 0.392 | 0.536 | `results/baseline_rag_results.json` |
+| Baseline RAG (`ollama`) | 0.504 | 0.392 | 0.536 | `results/qa_results.json` |
 | Structural manifold, no sidecar rerank | 0.716 | 0.728 | 0.828 | `results/manifold_results_no_sidecar.json` |
 | Shuffled manifold control | 0.016 | 0.008 | 0.020 | `results/manifold_results_shuffled.json` |
 
@@ -59,6 +68,26 @@ Compression on the same pilot:
 - token compression: `2.66x`
 - serialized manifold size: larger than the raw corpus bytes
 
+Checkpoint note:
+
+- `results/qa_results.json` is the flagship `ollama` checkpoint summary for the locked `200`-paper run.
+- `results/baseline_suite.json` is a separate retrieval-only comparison suite.
+- `results/baseline_rag_results.json` currently stores the dense extractive baseline used inside that suite, not the flagship `ollama` checkpoint.
+
+### Retrieval baseline comparison
+
+Level 1: measured result
+
+Same locked `200`-paper / `250`-question corpus, retrieval-focused baseline suite:
+
+| System | QA / Top-1 | Top-5 | Artifact |
+|--------|-----------:|------:|----------|
+| Dense chunks, `all-MiniLM-L6-v2` | 0.412 | 0.536 | `results/baseline_suite.json` |
+| BM25 chunks | 0.480 | 0.632 | `results/baseline_suite.json` |
+| Hybrid `MiniLM + BM25` | 0.460 | 0.624 | `results/baseline_suite.json` |
+| Hybrid `MiniLM + BM25 + cross-encoder` | 0.496 | 0.648 | `results/baseline_suite.json` |
+| Structural manifold, no sidecar | 0.728 | 0.828 | `results/manifold_results_no_sidecar.json` |
+
 ## Interpretation
 
 Level 1: measured result
@@ -67,12 +96,14 @@ Level 1: measured result
 - The shuffled control collapses, so the pilot is not surviving randomization.
 - Disabling the current sidecar reranker improves QA from `0.850` to `0.900` in the committed ablation artifact.
 - The best tested reconstruction settings are `top_k=5`, `per_paper_snippets=3`, and `max_context_tokens=2000`.
+- In the new retrieval-focused suite, BM25 is the strongest non-manifold public baseline (`Top-1=0.480`), and the reranked hybrid reaches `0.496`, but both remain well below the manifold `Top-1=0.728`.
 
 Level 2: observed behavior
 
 - Most remaining manifold misses in the `200`-paper run are `INSUFFICIENT_CONTEXT`.
 - The current sidecar layer behaves more like a noisy reranker than a helpful one on this benchmark.
 - The manifold retrieval-to-QA gap is now small (`0.728` Top-1 vs `0.716` QA), so retrieval rather than answer formatting is carrying most of the remaining error.
+- Simple dense+lexical fusion is not automatically better than lexical retrieval alone on this question set; BM25 outperformed the unrereanked `MiniLM + BM25` hybrid.
 
 Level 3: hypothesis
 
@@ -81,7 +112,7 @@ Level 3: hypothesis
 
 Level 4: research direction
 
-- Stronger embedding and hybrid retrieval baselines may show how much of the current win is specific to the simple baseline used here.
+- Stronger dense retrieval models beyond the current BM25/MiniLM/cross-encoder suite may show how much of the current win is specific to the present baseline field.
 - Harder question sets may show whether the retrieval advantage survives beyond document-identification-heavy evaluation.
 - A redesigned sidecar layer may still become useful if it is decoupled from ranking.
 
@@ -100,7 +131,7 @@ Level 4: research direction
 
 - strong compression under the arXiv benchmark
 - serialized storage reduction relative to the source corpus
-- stronger baseline comparisons at the `200`-paper scale
+- parity against a broader external leaderboard of stronger baselines at the `200`-paper scale
 - performance on broader question types than the current generated set
 - value added by the sidecar layer after redesign
 - any claim of general context-handling superiority over current transformer systems
@@ -112,7 +143,7 @@ Level 1: measured result
 - Compression is currently weak at about `2.66x` token reduction in the latest `200`-paper checkpoint.
 - Serialized manifold artifacts are larger than the source corpus bytes.
 - The question set is generated automatically and is still weighted toward document identification rather than rich cross-document reasoning.
-- The baseline comparison is a simple chunked RAG pipeline, not a broad leaderboard of embedding systems.
+- The current stronger-baseline comparison covers BM25, MiniLM chunk retrieval, and one cross-encoder reranked hybrid, not a broad leaderboard of modern retrieval systems.
 
 Level 2: observed behavior
 
@@ -178,6 +209,27 @@ python demo/run_manifold_sweep.py \
   --disable-sidecar-rerank
 ```
 
+Run the retrieval baseline suite on the locked corpus/questions:
+
+```bash
+python demo/run_baseline_suite.py \
+  --qa-backend extractive \
+  --device cpu
+```
+
+Run the reranked hybrid baseline explicitly:
+
+```bash
+python demo/run_baseline_rag.py \
+  --retrieval-method hybrid \
+  --embedding-model all-MiniLM-L6-v2 \
+  --reranker-model cross-encoder/ms-marco-MiniLM-L-6-v2 \
+  --device cpu \
+  --reranker-device cpu \
+  --qa-backend extractive \
+  --output-path results/baseline_suite/baseline_hybrid_minilm_bm25_crossencoder_results.json
+```
+
 ## Repo Layout
 
 ```text
@@ -203,12 +255,14 @@ manifold/
 results/
    compression_metrics.json
    baseline_rag_results.json
+   baseline_suite.json
    manifold_results.json
    manifold_results_no_sidecar.json
    manifold_results_shuffled.json
    manifold_ablation.json
    manifold_reconstruction_sweep.json
    qa_results.json
+   baseline_suite/
    graphs/
 ```
 
@@ -241,9 +295,9 @@ The repository also contains earlier internal measurements from narrower setting
 
 Level 4: research direction
 
-- validate the locked benchmark at `50`, `100`, and `200` papers
+- broaden the locked benchmark with harder cross-document and structural questions
 - redesign the sidecar layer as verifier-first rather than reranker-first
-- compare against stronger embedding and hybrid retrieval baselines
+- compare against stronger dense retrieval baselines beyond the current BM25/MiniLM suite
 - test whether compression can improve without losing the current retrieval signal
 
 ## License and Citation
