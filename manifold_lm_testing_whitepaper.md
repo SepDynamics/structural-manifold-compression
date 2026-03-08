@@ -7,15 +7,33 @@ This document should be read as a hypothesis and prior-results note, not as a se
 ### Established in the repo
 - Structural manifold encoding, indexing, and verification primitives exist.
 - The repository now contains a leakage-aware corpus benchmark harness with frozen questions, neutral document ids, bounded reconstruction, and a shuffled-manifold control.
+- A 25-paper arXiv pilot with the `extractive` backend reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
 
 ### Prior reported results
 - The benchmarks described below were reported on earlier internal experiments and narrower datasets.
 - They are useful as background measurements, but they do not establish the new large-corpus compression claim.
 
 ### Not yet established
-- 200-paper arXiv compression-retention performance
+- Strong compression under the new arXiv benchmark
 - QA parity with a baseline RAG system at corpus scale
+- Whether the same pilot win survives with an LLM answerer under bounded reconstruction
 - Any claim of general replacement for transformer context handling
+
+## Latest corpus benchmark checkpoint
+
+The latest locked arXiv pilot should be read as a retrieval result more than a compression result.
+
+- Corpus: `25` papers, `40` frozen questions
+- Baseline RAG (`extractive`): `QA=0.650`, `Top-1=0.650`, `Top-5=0.875`
+- Structural-node manifold (`extractive`): `QA=0.900`, `Top-1=0.900`, `Top-5=0.950`
+- Shuffled manifold: `QA=0.025`, `Top-1=0.025`, `Top-5=0.050`
+- Compression: about `1.81x` on structural tokens, with serialized manifold bytes larger than the corpus
+
+Interpretation:
+
+- The new structural-node manifold is carrying real retrieval signal.
+- The shuffled control now behaves correctly and destroys that signal.
+- The current implementation is not yet a compelling compressor, so the flagship corpus-compression claim remains open.
 
 ## 1. Introduction: Beyond the Transformer Plateau
 

@@ -3,6 +3,29 @@
 ## Objective
 Run the new leakage-aware benchmark in stages until the 200-paper result is credible enough to cite.
 
+## Current checkpoint
+
+The latest completed pilot is:
+
+- `25` arXiv papers
+- `40` frozen questions
+- `extractive` answer backend
+- structural-node manifold with sidecar reranking / verification
+
+Observed results:
+
+- baseline RAG: `QA=0.650`, `Top-1=0.650`, `Top-5=0.875`
+- structural manifold: `QA=0.900`, `Top-1=0.900`, `Top-5=0.950`
+- shuffled manifold: `QA=0.025`, `Top-1=0.025`, `Top-5=0.050`
+- compression: only `1.81x` on structural tokens, with serialized manifold bytes larger than the corpus
+
+Interpretation:
+
+- structural retrieval now looks legitimate at pilot scale
+- the shuffled control is behaving correctly
+- the compression claim is still weak
+- the next highest-value step is the same locked 25-paper run with `ollama`, not immediate scaling
+
 ## Recommended path
 
 ### Stage 0: Local smoke corpus
@@ -31,14 +54,18 @@ python run_full_demo.py \
   --paper-count 25 \
   --question-count 40 \
   --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
-  --qa-backend ollama \
+  --node-chars 1500 \
+  --node-overlap 180 \
+  --window-bytes 16 \
+  --stride-bytes 4 \
+  --qa-backend extractive \
   --force
 ```
 
 Purpose:
 - check PDF extraction quality
 - inspect `data/questions.json`
-- inspect whether retrieved chunks are sensible
+- inspect whether retrieved structural nodes are sensible
 - verify shuffled-manifold accuracy collapses
 
 Exit criteria:
@@ -46,19 +73,45 @@ Exit criteria:
 - frozen questions are document-specific rather than generic
 - shuffled-manifold retrieval materially degrades
 
+### Stage 1b: locked 25-paper Ollama run
+Do this on the same corpus and frozen questions after Stage 1 looks clean.
+
+Command:
+```bash
+python run_full_demo.py \
+  --paper-count 25 \
+  --question-count 40 \
+  --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
+  --node-chars 1500 \
+  --node-overlap 180 \
+  --window-bytes 16 \
+  --stride-bytes 4 \
+  --qa-backend ollama
+```
+
+Purpose:
+- test whether the manifold still wins when answers must be generated from reconstructed context
+- measure how much of the pilot win survives beyond title-level extractive retrieval
+
+Exit criteria:
+- manifold remains materially above shuffled
+- manifold stays competitive with or better than baseline on the locked question set
+- answer quality still tracks retrieved evidence rather than generic prior knowledge
+
 ### Stage 2: arXiv mid-scale run (50-100 papers)
-Increase only after Stage 1 artifacts look clean.
+Increase only after Stage 1b looks legitimate.
 
 Suggested commands:
 ```bash
-python run_full_demo.py --paper-count 50 --question-count 60 --qa-backend ollama --force
-python run_full_demo.py --paper-count 100 --question-count 80 --qa-backend ollama --force
+python run_full_demo.py --paper-count 50 --question-count 60 --qa-backend ollama
+python run_full_demo.py --paper-count 100 --question-count 80 --qa-backend ollama
 ```
 
 Purpose:
 - estimate runtime and storage growth
-- see whether manifold retrieval stays above chance
+- see whether manifold retrieval stays above chance at larger scale
 - see whether QA stays within striking distance of baseline RAG
+- see whether compression improves or remains too weak to support the flagship claim
 
 Metrics that matter:
 - `results/compression_metrics.json`
@@ -76,8 +129,7 @@ python run_full_demo.py \
   --paper-count 200 \
   --question-count 100 \
   --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
-  --qa-backend ollama \
-  --force
+  --qa-backend ollama
 ```
 
 This is the first run worth presenting externally.
@@ -118,10 +170,11 @@ Reject the run if:
 - questions can be answered from generic world knowledge
 - titles or ids leak the answer path
 - manifold retrieval remains strong after shuffling
+- compression remains too weak for the claim being made
 
 ## Practical advice
 
 - Start with `--qa-backend extractive` if you only want to debug retrieval.
-- Switch to `--qa-backend ollama` once retrieval looks sane.
+- Switch to `--qa-backend ollama` once retrieval looks sane, while keeping the same frozen corpus/questions.
 - Do not jump straight to 200 papers; most failure modes show up at 25-50.
 - Freeze `data/questions.json` and keep it untouched once the run starts.

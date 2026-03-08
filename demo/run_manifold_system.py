@@ -18,16 +18,15 @@ from demo.common import (
     MANIFOLD_RESULTS_PATH,
     SHUFFLED_MANIFOLD_RESULTS_PATH,
     answer_from_context,
-    build_chunks,
-    build_retrieved_contexts,
+    build_retrieval_query,
     ensure_directories,
-    load_manifest,
     load_questions,
     resolve_ollama_model,
     score_prediction,
     write_metrics,
 )
-from demo.retrieval import load_manifold_index, rank_documents, rank_manifold_chunks
+from demo.retrieval import load_manifold_index, rank_documents, rank_manifold_nodes_detailed
+from demo.structure import build_node_contexts, deserialize_nodes
 
 
 def parse_args() -> argparse.Namespace:
@@ -37,9 +36,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--ollama-model", default=None)
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--max-context-tokens", type=int, default=2000)
-    parser.add_argument("--chunk-chars", type=int, default=2200)
-    parser.add_argument("--chunk-overlap", type=int, default=250)
-    parser.add_argument("--shuffle-index", action="store_true", help="Rotate postings lists as an integrity check.")
+    parser.add_argument("--shuffle-index", action="store_true", help="Permute retrieved structural nodes across papers as an integrity check.")
     return parser.parse_args()
 
 
@@ -60,33 +57,34 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
 
     metadata = json.loads(MANIFOLD_JSON_PATH.read_text(encoding="utf-8"))
     questions = load_questions()
-    papers = load_manifest()
-    chunks = build_chunks(
-        papers,
-        chunk_chars=args.chunk_chars,
-        overlap_chars=args.chunk_overlap,
-    )
+    nodes = deserialize_nodes(metadata.get("nodes", []))
     index_payload = load_manifold_index(MANIFOLD_INDEX_PATH)
     ollama_model = resolve_ollama_model(args.ollama_model) if args.qa_backend == "ollama" else None
+    embedding_model = str(metadata.get("embedding_model", "all-MiniLM-L6-v2"))
 
     results: list[dict[str, object]] = []
     total_latency = 0.0
 
     for question in questions:
         started = time.perf_counter()
-        ranked_chunk_scores = rank_manifold_chunks(
+        retrieval_query = build_retrieval_query(question)
+        ranked_node_details = rank_manifold_nodes_detailed(
             question,
-            chunks=chunks,
+            nodes=nodes,
             index_payload=index_payload,
+            embedding_model=embedding_model,
             window_bytes=int(metadata["window_bytes"]),
             stride_bytes=int(metadata["stride_bytes"]),
             precision=int(metadata["precision"]),
             top_k=args.top_k,
-            shuffle_postings=args.shuffle_index,
+            shuffle_nodes=args.shuffle_index,
         )
-        ranked_chunks = [chunks[idx] for idx, _ in ranked_chunk_scores]
-        ranked_docs = rank_documents(ranked_chunk_scores, chunks)
-        contexts = build_retrieved_contexts(ranked_chunks, max_context_tokens=args.max_context_tokens)
+        ranked_node_scores = [
+            (int(item["node_index"]), float(item["score"])) for item in ranked_node_details
+        ]
+        ranked_nodes = [nodes[idx] for idx, _ in ranked_node_scores]
+        ranked_docs = rank_documents(ranked_node_scores, nodes)
+        contexts = build_node_contexts(ranked_nodes, max_context_tokens=args.max_context_tokens)
         answer = answer_from_context(
             question,
             contexts,
@@ -101,16 +99,19 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
             {
                 "question_id": question.question_id,
                 "question": question.question,
+                "retrieval_query": retrieval_query,
                 "expected_answer": question.answer,
                 "predicted_answer": answer,
                 "correct": score_prediction(answer, question),
                 "source_papers": question.source_papers,
                 "retrieved_papers": [doc_id for doc_id, _ in ranked_docs[: args.top_k]],
-                "retrieved_chunks": [chunk.chunk_id for chunk in ranked_chunks[: args.top_k]],
+                "retrieved_nodes": [node.node_id for node in ranked_nodes[: args.top_k]],
                 "retrieval_top1": top1,
                 "retrieval_top5": top5,
                 "latency_seconds": elapsed,
                 "shuffle_index": args.shuffle_index,
+                "sidecar_verified": any(bool(item["verified"]) for item in ranked_node_details),
+                "sidecar_scores": [float(item["sidecar_score"]) for item in ranked_node_details],
             }
         )
 

@@ -5,12 +5,26 @@ import pickle
 import sys
 from collections import Counter, defaultdict
 from dataclasses import asdict
+from functools import lru_cache
 from pathlib import Path
 from typing import Iterable, Sequence
 
 import numpy as np
 
-from demo.common import ChunkRecord, QuestionRecord
+from demo.common import (
+    ChunkRecord,
+    QuestionRecord,
+    build_retrieval_query,
+    estimated_token_count,
+    iter_retrieval_query_texts,
+)
+from demo.structure import (
+    StructuralNodeRecord,
+    build_shuffle_node_indices,
+    node_retrieval_text,
+    node_structural_text,
+    serialize_nodes,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC_PATH = REPO_ROOT / "src"
@@ -36,6 +50,7 @@ class HashingEmbedder:
         return matrix
 
 
+@lru_cache(maxsize=4)
 def get_embedder(model_name: str):
     if model_name == "hash":
         return HashingEmbedder()
@@ -100,7 +115,7 @@ def _encode_signature_counter(
 
 
 def build_manifold_payload(
-    chunks: Sequence[ChunkRecord],
+    nodes: Sequence[StructuralNodeRecord],
     *,
     question_hash: str,
     corpus_hash: str,
@@ -108,72 +123,58 @@ def build_manifold_payload(
     window_bytes: int,
     stride_bytes: int,
     precision: int,
+    embedding_model: str,
 ) -> tuple[dict[str, object], dict[str, object]]:
-    chunk_term_counts: list[Counter[str]] = []
-    signature_df: Counter[str] = Counter()
-    total_signature_tokens = 0
+    node_signature_counters: list[Counter[str]] = []
     unique_signatures = set()
+    sidecar_signature_tokens = 0
+    structural_tokens = 0
+    retrieval_texts = [node_retrieval_text(node) for node in nodes]
+    embeddings = encode_embeddings(retrieval_texts, model_name=embedding_model) if nodes else np.zeros((0, 0), dtype=np.float32)
 
-    for chunk in chunks:
+    for node in nodes:
+        structural_text = node_structural_text(node)
         counts = _encode_signature_counter(
-            chunk.text,
+            structural_text,
             window_bytes=window_bytes,
             stride_bytes=stride_bytes,
             precision=precision,
         )
-        chunk_term_counts.append(counts)
-        signature_df.update(counts.keys())
-        total_signature_tokens += sum(counts.values())
+        node_signature_counters.append(counts)
+        sidecar_signature_tokens += sum(counts.values())
+        structural_tokens += estimated_token_count(structural_text)
         unique_signatures.update(counts.keys())
 
-    document_count = len(chunks)
-    postings: dict[str, list[tuple[int, float]]] = defaultdict(list)
-    chunk_norms: list[float] = []
-
-    chunk_entries: list[dict[str, object]] = []
-    for chunk_idx, (chunk, counts) in enumerate(zip(chunks, chunk_term_counts, strict=False)):
-        weights: dict[str, float] = {}
-        for signature, count in counts.items():
-            idf = _idf(signature_df[signature], document_count)
-            weight = (1.0 + math.log(float(count))) * idf
-            weights[signature] = weight
-            postings[signature].append((chunk_idx, weight))
-        norm = math.sqrt(sum(value * value for value in weights.values())) or 1.0
-        chunk_norms.append(norm)
-        chunk_entries.append(
-            {
-                "chunk_id": chunk.chunk_id,
-                "paper_id": chunk.paper_id,
-                "title": chunk.title,
-                "text_path": chunk.text_path,
-                "start_char": chunk.start_char,
-                "end_char": chunk.end_char,
-                "estimated_tokens": chunk.estimated_tokens,
-                "signature_count": int(sum(counts.values())),
-                "unique_signature_count": len(counts),
-            }
-        )
+    if embeddings.size:
+        norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
+        norms[norms == 0.0] = 1.0
+        embeddings = (embeddings / norms).astype(np.float32)
 
     metadata = {
-        "format_version": 1,
+        "format_version": 2,
         "created_at": None,
         "question_hash": question_hash,
         "corpus_hash": corpus_hash,
         "corpus_tokens": corpus_tokens,
-        "chunk_count": len(chunks),
+        "node_count": len(nodes),
         "window_bytes": window_bytes,
         "stride_bytes": stride_bytes,
         "precision": precision,
-        "signature_tokens": total_signature_tokens,
+        "embedding_model": embedding_model,
+        "signature_tokens": sidecar_signature_tokens,
+        "structural_tokens": structural_tokens,
         "unique_signatures": len(unique_signatures),
-        "compression_ratio": (corpus_tokens / total_signature_tokens) if total_signature_tokens else float("inf"),
-        "chunks": chunk_entries,
+        "compression_ratio": (corpus_tokens / structural_tokens) if structural_tokens else float("inf"),
+        "nodes": serialize_nodes(nodes),
     }
 
     binary_payload = {
-        "chunk_norms": chunk_norms,
-        "postings": dict(postings),
-        "signature_df": dict(signature_df),
+        "embeddings": embeddings,
+        "signature_counters": node_signature_counters,
+        "shuffle_indices": build_shuffle_node_indices(
+            nodes,
+            seed_text=f"{corpus_hash}:{question_hash}",
+        ),
     }
     return metadata, binary_payload
 
@@ -189,60 +190,133 @@ def load_manifold_index(path: Path) -> dict[str, object]:
         return pickle.load(handle)
 
 
+def _query_signature_counter(
+    question: QuestionRecord,
+    *,
+    window_bytes: int,
+    stride_bytes: int,
+    precision: int,
+) -> Counter[str]:
+    query_stride_bytes = 1 if question.evidence_terms else max(1, stride_bytes // 2)
+    query_counts: Counter[str] = Counter()
+    for query_text in iter_retrieval_query_texts(question):
+        query_counts.update(
+            _encode_signature_counter(
+                query_text,
+                window_bytes=window_bytes,
+                stride_bytes=query_stride_bytes,
+                precision=precision,
+            )
+        )
+    return query_counts
+
+
+def _signature_overlap_score(
+    query_counts: Counter[str],
+    node_counts: Counter[str],
+) -> float:
+    total = sum(query_counts.values())
+    if not total:
+        return 0.0
+    overlap = sum(min(count, node_counts.get(signature, 0)) for signature, count in query_counts.items())
+    return overlap / total
+
+
+def _phrase_overlap_score(question: QuestionRecord, node: StructuralNodeRecord) -> float:
+    query_phrases = [phrase.lower() for phrase in question.evidence_terms if phrase]
+    if not query_phrases:
+        return 0.0
+    searchable = " ".join([node.heading, node.section_type, *node.salient_phrases, node.text_sketch]).lower()
+    hits = sum(1 for phrase in query_phrases if phrase in searchable)
+    return hits / max(1, len(query_phrases))
+
+
+def rank_manifold_nodes_detailed(
+    question: QuestionRecord,
+    *,
+    nodes: Sequence[StructuralNodeRecord],
+    index_payload: dict[str, object],
+    embedding_model: str,
+    window_bytes: int,
+    stride_bytes: int,
+    precision: int,
+    top_k: int,
+    shuffle_nodes: bool = False,
+) -> list[dict[str, float | int | bool]]:
+    embeddings = index_payload["embeddings"]
+    if not len(nodes) or embeddings.size == 0:
+        return []
+
+    query_embedding = encode_embeddings([build_retrieval_query(question)], model_name=embedding_model)[0]
+    query_counts = _query_signature_counter(
+        question,
+        window_bytes=window_bytes,
+        stride_bytes=stride_bytes,
+        precision=precision,
+    )
+    candidate_count = min(len(nodes), max(top_k * 8, 24))
+    candidate_indices = search_embedding_index(embeddings, query_embedding, top_k=candidate_count)
+    signature_counters = index_payload["signature_counters"]
+
+    ranking: list[dict[str, float | int | bool]] = []
+    for node_idx in candidate_indices:
+        embedding_score = float(embeddings[node_idx] @ query_embedding)
+        sidecar_score = _signature_overlap_score(query_counts, signature_counters[node_idx])
+        phrase_score = _phrase_overlap_score(question, nodes[node_idx])
+        final_score = embedding_score + (0.25 * sidecar_score) + (0.15 * phrase_score)
+        ranking.append(
+            {
+                "node_index": int(node_idx),
+                "score": final_score,
+                "embedding_score": embedding_score,
+                "sidecar_score": sidecar_score,
+                "phrase_score": phrase_score,
+                "verified": bool(sidecar_score >= 0.15 or phrase_score >= 0.5),
+            }
+        )
+
+    ranking.sort(key=lambda item: float(item["score"]), reverse=True)
+
+    if shuffle_nodes and ranking:
+        shuffled_indices = index_payload["shuffle_indices"]
+        remapped: list[dict[str, float | int | bool]] = []
+        for item in ranking:
+            shuffled_idx = int(shuffled_indices[int(item["node_index"])])
+            remapped.append(
+                {
+                    **item,
+                    "node_index": shuffled_idx,
+                }
+            )
+        ranking = remapped
+
+    return ranking[:top_k]
+
+
 def rank_manifold_chunks(
     question: QuestionRecord,
     *,
-    chunks: Sequence[ChunkRecord],
+    nodes: Sequence[StructuralNodeRecord],
     index_payload: dict[str, object],
+    embedding_model: str,
     window_bytes: int,
     stride_bytes: int,
     precision: int,
     top_k: int,
     shuffle_postings: bool = False,
 ) -> list[tuple[int, float]]:
-    signature_df = index_payload["signature_df"]
-    chunk_norms = index_payload["chunk_norms"]
-    postings = index_payload["postings"]
-    chunk_count = len(chunks)
-
-    query_counts = _encode_signature_counter(
-        question.question,
+    ranked = rank_manifold_nodes_detailed(
+        question,
+        nodes=nodes,
+        index_payload=index_payload,
+        embedding_model=embedding_model,
         window_bytes=window_bytes,
         stride_bytes=stride_bytes,
         precision=precision,
+        top_k=top_k,
+        shuffle_nodes=shuffle_postings,
     )
-    for evidence in question.evidence_terms:
-        query_counts.update(
-            _encode_signature_counter(
-                evidence,
-                window_bytes=window_bytes,
-                stride_bytes=stride_bytes,
-                precision=precision,
-            )
-        )
-
-    query_weights: dict[str, float] = {}
-    for signature, count in query_counts.items():
-        idf = _idf(int(signature_df.get(signature, 0)), chunk_count)
-        query_weights[signature] = (1.0 + math.log(float(count))) * idf
-
-    query_norm = math.sqrt(sum(weight * weight for weight in query_weights.values())) or 1.0
-    scores: dict[int, float] = defaultdict(float)
-
-    for signature, query_weight in query_weights.items():
-        posting_list = list(postings.get(signature, []))
-        if shuffle_postings and posting_list:
-            rotated = posting_list[1:] + posting_list[:1]
-            posting_list = rotated
-        for chunk_idx, chunk_weight in posting_list:
-            scores[int(chunk_idx)] += float(query_weight) * float(chunk_weight)
-
-    ranked = [
-        (chunk_idx, score / (query_norm * float(chunk_norms[chunk_idx])))
-        for chunk_idx, score in scores.items()
-    ]
-    ranked.sort(key=lambda item: item[1], reverse=True)
-    return ranked[:top_k]
+    return [(int(item["node_index"]), float(item["score"])) for item in ranked]
 
 
 def rank_embedding_chunks(
@@ -253,7 +327,7 @@ def rank_embedding_chunks(
     model_name: str,
     top_k: int,
 ) -> list[tuple[int, float]]:
-    query_embedding = encode_embeddings([question.question], model_name=model_name)[0]
+    query_embedding = encode_embeddings([build_retrieval_query(question)], model_name=model_name)[0]
     indices = search_embedding_index(embeddings, query_embedding, top_k=top_k)
     scores = embeddings[indices] @ query_embedding
     return [(int(idx), float(score)) for idx, score in zip(indices, scores, strict=False)]

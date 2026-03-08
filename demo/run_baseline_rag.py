@@ -15,6 +15,7 @@ from demo.common import (
     CORPUS_MANIFEST_PATH,
     DEFAULT_OLLAMA_GENERATE_ENDPOINT,
     answer_from_context,
+    build_retrieval_query,
     build_chunks,
     build_retrieved_contexts,
     ensure_directories,
@@ -70,6 +71,7 @@ def run_baseline(args: argparse.Namespace) -> dict[str, object]:
 
     for question in questions:
         started = time.perf_counter()
+        retrieval_query = build_retrieval_query(question)
         ranked_chunk_scores = rank_embedding_chunks(
             question,
             chunks=chunks,
@@ -94,6 +96,7 @@ def run_baseline(args: argparse.Namespace) -> dict[str, object]:
             {
                 "question_id": question.question_id,
                 "question": question.question,
+                "retrieval_query": retrieval_query,
                 "expected_answer": question.answer,
                 "predicted_answer": answer,
                 "correct": score_prediction(answer, question),

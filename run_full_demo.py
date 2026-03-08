@@ -19,8 +19,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--chunk-chars", type=int, default=2200)
     parser.add_argument("--chunk-overlap", type=int, default=250)
-    parser.add_argument("--window-bytes", type=int, default=24)
-    parser.add_argument("--stride-bytes", type=int, default=12)
+    parser.add_argument("--node-chars", type=int, default=1500)
+    parser.add_argument("--node-overlap", type=int, default=180)
+    parser.add_argument("--window-bytes", type=int, default=16)
+    parser.add_argument("--stride-bytes", type=int, default=4)
     parser.add_argument("--precision", type=int, default=2)
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--max-context-tokens", type=int, default=2000)
@@ -45,11 +47,12 @@ def main() -> None:
     )
     generate_manifold(
         argparse.Namespace(
-            chunk_chars=args.chunk_chars,
-            chunk_overlap=args.chunk_overlap,
+            node_chars=args.node_chars,
+            node_overlap=args.node_overlap,
             window_bytes=args.window_bytes,
             stride_bytes=args.stride_bytes,
             precision=args.precision,
+            embedding_model=args.embedding_model,
         )
     )
     run_baseline(
@@ -71,8 +74,6 @@ def main() -> None:
             ollama_model=args.ollama_model,
             top_k=args.top_k,
             max_context_tokens=args.max_context_tokens,
-            chunk_chars=args.chunk_chars,
-            chunk_overlap=args.chunk_overlap,
             shuffle_index=False,
         )
     )
@@ -83,8 +84,6 @@ def main() -> None:
             ollama_model=args.ollama_model,
             top_k=args.top_k,
             max_context_tokens=args.max_context_tokens,
-            chunk_chars=args.chunk_chars,
-            chunk_overlap=args.chunk_overlap,
             shuffle_index=True,
         )
     )

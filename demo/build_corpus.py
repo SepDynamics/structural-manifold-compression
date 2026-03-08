@@ -123,6 +123,7 @@ def build_from_arxiv(*, paper_count: int, categories: list[str]) -> list[PaperRe
                 characters=len(normalized),
                 estimated_tokens=estimated_token_count(normalized),
                 sha256=sha256_text(normalized),
+                summary=str(entry.get("summary", "")),
             )
         )
         if len(papers) >= paper_count:
@@ -153,6 +154,7 @@ def build_from_local(input_dir: Path) -> list[PaperRecord]:
                 characters=len(normalized),
                 estimated_tokens=estimated_token_count(normalized),
                 sha256=sha256_text(normalized),
+                summary=str(entry.get("summary", "")),
             )
         )
     return papers

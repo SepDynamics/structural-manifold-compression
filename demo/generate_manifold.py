@@ -17,7 +17,6 @@ from demo.common import (
     MANIFOLD_INDEX_PATH,
     MANIFOLD_JSON_PATH,
     QUESTIONS_PATH,
-    build_chunks,
     corpus_hash,
     ensure_directories,
     estimated_token_count,
@@ -26,15 +25,17 @@ from demo.common import (
     write_metrics,
 )
 from demo.retrieval import build_manifold_payload, save_manifold_index
+from demo.structure import build_structural_nodes
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate the structural manifold retrieval index.")
-    parser.add_argument("--chunk-chars", type=int, default=2200, help="Chunk size for corpus segmentation.")
-    parser.add_argument("--chunk-overlap", type=int, default=250, help="Character overlap between chunks.")
-    parser.add_argument("--window-bytes", type=int, default=24, help="Manifold encoder window size in bytes.")
-    parser.add_argument("--stride-bytes", type=int, default=12, help="Manifold encoder stride in bytes.")
+    parser.add_argument("--node-chars", type=int, default=1500, help="Maximum characters per structural node.")
+    parser.add_argument("--node-overlap", type=int, default=180, help="Character overlap when splitting long sections.")
+    parser.add_argument("--window-bytes", type=int, default=16, help="Manifold encoder window size in bytes.")
+    parser.add_argument("--stride-bytes", type=int, default=4, help="Manifold encoder stride in bytes.")
     parser.add_argument("--precision", type=int, default=2, help="Signature precision.")
+    parser.add_argument("--embedding-model", default="all-MiniLM-L6-v2", help="Primary retrieval embedding model.")
     return parser.parse_args()
 
 
@@ -46,22 +47,23 @@ def generate_manifold(args: argparse.Namespace) -> dict[str, object]:
         raise RuntimeError("questions.json must exist before manifold generation.")
 
     papers = load_manifest(CORPUS_MANIFEST_PATH)
-    chunks = build_chunks(
+    nodes = build_structural_nodes(
         papers,
-        chunk_chars=args.chunk_chars,
-        overlap_chars=args.chunk_overlap,
+        node_chars=args.node_chars,
+        node_overlap=args.node_overlap,
     )
 
     question_hash = hashlib.sha256(QUESTIONS_PATH.read_bytes()).hexdigest()
     corpus_tokens = sum(paper.estimated_tokens for paper in papers)
     metadata, binary_payload = build_manifold_payload(
-        chunks,
+        nodes,
         question_hash=question_hash,
         corpus_hash=corpus_hash(papers),
         corpus_tokens=corpus_tokens,
         window_bytes=args.window_bytes,
         stride_bytes=args.stride_bytes,
         precision=args.precision,
+        embedding_model=args.embedding_model,
     )
     metadata["created_at"] = utc_now()
     MANIFOLD_JSON_PATH.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
@@ -72,7 +74,8 @@ def generate_manifold(args: argparse.Namespace) -> dict[str, object]:
     metrics = {
         "original_tokens": corpus_tokens,
         "original_bytes": sum(paper.bytes for paper in papers),
-        "manifold_signature_tokens": int(metadata["signature_tokens"]),
+        "manifold_signature_tokens": int(metadata["structural_tokens"]),
+        "sidecar_signature_tokens": int(metadata["signature_tokens"]),
         "manifold_unique_signatures": int(metadata["unique_signatures"]),
         "manifold_serialized_bytes": json_bytes + bin_bytes,
         "manifold_serialized_tokens_estimate": estimated_token_count(MANIFOLD_JSON_PATH.read_text(encoding="utf-8")),
@@ -82,11 +85,12 @@ def generate_manifold(args: argparse.Namespace) -> dict[str, object]:
             if (json_bytes + bin_bytes)
             else float("inf")
         ),
-        "chunk_count": len(chunks),
+        "chunk_count": int(metadata["node_count"]),
         "question_hash": question_hash,
         "window_bytes": args.window_bytes,
         "stride_bytes": args.stride_bytes,
         "precision": args.precision,
+        "embedding_model": args.embedding_model,
     }
     write_metrics(COMPRESSION_METRICS_PATH, metrics)
     return metrics
@@ -96,7 +100,7 @@ def main() -> None:
     args = parse_args()
     metrics = generate_manifold(args)
     print(
-        f"Manifold ready: {metrics['manifold_signature_tokens']} signature tokens | "
+        f"Manifold ready: {metrics['manifold_signature_tokens']} structural tokens | "
         f"{metrics['compression_ratio_signature_tokens']:.2f}x token compression"
     )
 

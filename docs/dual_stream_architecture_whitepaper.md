@@ -13,6 +13,7 @@ This whitepaper now distinguishes between implemented components, prior reported
 ### Established
 - The repo contains structural manifold encoding, indexing, and verification code.
 - The repo now contains a leakage-aware corpus benchmark harness for testing compression-oriented retrieval with frozen questions and bounded reconstruction.
+- A 25-paper arXiv pilot with `extractive` answering produced `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, with shuffled control collapsing to `0.025`.
 
 ### Prior reported
 - The benchmark figures below refer to earlier internal experiments and narrower datasets.
@@ -20,8 +21,12 @@ This whitepaper now distinguishes between implemented components, prior reported
 
 ### Not yet established
 - 200-paper arXiv QA retention
-- 200-paper compression ratio under the new benchmark
+- Strong compression ratio under the new benchmark
+- Whether the 25-paper retrieval win survives with an LLM answerer under bounded reconstruction
 - General architectural replacement claims for transformers
+
+### Latest pilot interpretation
+The current benchmark evidence is strongest for structural retrieval, not compression. The latest 25-paper pilot shows that section-level structural indexing can outperform the current baseline chunked RAG on frozen document-identification questions, but the same run only achieved about `1.81x` token compression and stored a serialized manifold larger than the raw corpus bytes. This means the retrieval claim has improved materially, while the compression claim remains pending.
 
 ---
 

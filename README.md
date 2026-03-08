@@ -5,21 +5,23 @@
 ---
 
 ## Status
-Current status: the repo contains a working benchmark harness and reusable manifold primitives, but the large-corpus scientific claim is still unvalidated.
+Current status: the repo contains a working benchmark harness, reusable manifold primitives, and one meaningful arXiv pilot result. That pilot supports strong structural retrieval at small scale, but it does not yet support a strong corpus-compression claim.
 
 ### Established
 - Structural manifold encoding, indexing, and verification primitives exist in the codebase.
 - The repo now includes a leakage-aware corpus benchmark pipeline with frozen questions, neutral `paper_###` ids, stripped frontmatter, bounded reconstruction, and a shuffled-manifold control.
 - The new demo path is runnable end to end and covered by unit and smoke tests.
+- A 25-paper arXiv pilot using the new structural-node manifold and `extractive` answering reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
 
 ### Historical / prior reported
 - The benchmark snapshot later in this README summarizes prior results on earlier datasets.
 - Those numbers are useful background, but they do not establish the 200-paper corpus-compression claim.
 
 ### Not yet established
-- 200-paper arXiv compression ratio
+- Strong compression under the new arXiv corpus benchmark
 - 200-paper retrieval retention
 - 200-paper QA retention relative to baseline RAG
+- Whether the structural manifold still wins with an LLM answerer under bounded reconstruction
 - Any claim that this system replaces transformer context handling in general
 
 ---
@@ -69,7 +71,7 @@ Reconstructed Context (max 2000 tokens)
 LLM / extractive answer
 ```
 
-Current checkpoint: the benchmark scaffold is implemented and tested, but the 200-paper arXiv run has not yet been completed. Until that run exists, there are no serious compression-retention claims to make from this demo.
+Current checkpoint: the benchmark scaffold is implemented and the first meaningful pilot has been run, but the flagship compression claim is still pending.
 
 ### Protocol guarantees
 - Questions are frozen before `manifold/` is generated.
@@ -80,11 +82,55 @@ Current checkpoint: the benchmark scaffold is implemented and tested, but the 20
 
 ### What this section currently means
 - It proves the benchmark machinery exists.
-- It does not yet prove that structural manifolds preserve QA utility at arXiv scale.
+- It now provides pilot-scale evidence that section-level structural indexing can outperform the current baseline chunked RAG on frozen document-identification questions.
+- It does not yet prove high-ratio corpus compression.
+
+### Latest pilot snapshot
+The latest leakage-aware arXiv pilot used:
+
+- `25` papers
+- `40` frozen questions
+- `extractive` answering
+- structural nodes with sidecar signatures as reranking / verification features
+
+Results:
+
+| System | QA Acc. | Top-1 | Top-5 |
+|--------|--------:|------:|------:|
+| Baseline RAG | 0.650 | 0.650 | 0.875 |
+| Structural manifold | 0.900 | 0.900 | 0.950 |
+| Shuffled manifold | 0.025 | 0.025 | 0.050 |
+
+Compression on the same run:
+
+- Original corpus tokens: `248,231`
+- Structural manifold tokens: `136,989`
+- Compression ratio: `1.81x`
+- Serialized manifold size: larger than the raw corpus bytes
+
+Interpretation:
+
+- Strong result: the structural-node manifold is carrying real retrieval signal, and the shuffled control collapses as it should.
+- Weak result: the current implementation is not yet a compelling compressor.
+- Important caveat: with the `extractive` backend, QA accuracy is effectively document-retrieval accuracy, not full generative QA from reconstructed evidence.
 
 ### Run the full demo
 ```bash
 python run_full_demo.py
+```
+
+### Recommended pilot command
+```bash
+python run_full_demo.py \
+  --paper-count 25 \
+  --question-count 40 \
+  --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
+  --node-chars 1500 \
+  --node-overlap 180 \
+  --window-bytes 16 \
+  --stride-bytes 4 \
+  --qa-backend extractive \
+  --force
 ```
 
 For a local smoke test without downloading arXiv papers:

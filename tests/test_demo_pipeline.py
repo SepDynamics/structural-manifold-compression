@@ -19,6 +19,7 @@ from demo.retrieval import (
     rank_embedding_chunks,
     rank_manifold_chunks,
 )
+from demo.structure import build_structural_nodes, build_shuffle_node_indices
 
 
 def _write_paper(tmp_path: Path, name: str, text: str) -> str:
@@ -124,27 +125,46 @@ def test_embedding_and_manifold_retrieval_match_expected_chunk(tmp_path: Path) -
     embedding_docs = rank_documents(ranked_embedding, chunks)
     assert embedding_docs[0][0] == "paper_001"
 
+    nodes = build_structural_nodes(papers, node_chars=180, node_overlap=40)
     metadata, binary_payload = build_manifold_payload(
-        chunks,
+        nodes,
         question_hash="qhash",
         corpus_hash="chash",
         corpus_tokens=100,
         window_bytes=24,
-        stride_bytes=12,
+        stride_bytes=4,
         precision=2,
+        embedding_model="hash",
     )
-    assert metadata["chunk_count"] >= 2
+    assert metadata["node_count"] >= 2
     ranked_manifold = rank_manifold_chunks(
         question,
-        chunks=chunks,
+        nodes=nodes,
         index_payload=binary_payload,
+        embedding_model="hash",
         window_bytes=24,
-        stride_bytes=12,
+        stride_bytes=4,
         precision=2,
         top_k=3,
     )
-    manifold_docs = rank_documents(ranked_manifold, chunks)
+    manifold_docs = rank_documents(ranked_manifold, nodes)
     assert manifold_docs[0][0] == "paper_001"
+
+
+def test_shuffle_node_indices_break_document_assignment(tmp_path: Path) -> None:
+    doc1 = _write_paper(tmp_path, "aurora", "Abstract\nAurora Lattice Optimizer for plasma oscillations.\n")
+    doc2 = _write_paper(tmp_path, "spectral", "Abstract\nSpectral River Theorem for adaptive meshes.\n")
+    doc3 = _write_paper(tmp_path, "quantum", "Abstract\nQuantum Drift Solver for tempering trajectories.\n")
+    papers = [
+        _paper_record("paper_001", "Aurora Paper", doc1),
+        _paper_record("paper_002", "Spectral Paper", doc2),
+        _paper_record("paper_003", "Quantum Paper", doc3),
+    ]
+    nodes = build_structural_nodes(papers, node_chars=180, node_overlap=20)
+    shuffle_indices = build_shuffle_node_indices(nodes, seed_text="demo")
+    assert len(shuffle_indices) == len(nodes)
+    for idx, shuffled_idx in enumerate(shuffle_indices):
+        assert nodes[idx].paper_id != nodes[shuffled_idx].paper_id
 
 
 def test_extractive_answer_and_scoring_for_multi_paper_lookup() -> None:
