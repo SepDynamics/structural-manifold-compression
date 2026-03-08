@@ -16,6 +16,7 @@ from demo.common import (
     BASELINE_RESULTS_PATH,
     COMPRESSION_METRICS_PATH,
     GRAPHS_DIR,
+    MANIFOLD_NO_SIDECAR_RESULTS_PATH,
     MANIFOLD_RESULTS_PATH,
     QA_RESULTS_PATH,
     SHUFFLED_MANIFOLD_RESULTS_PATH,
@@ -26,11 +27,46 @@ from demo.common import (
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Evaluate compression, retrieval, QA, and latency metrics.")
+    parser.add_argument("--manifold-results-path", type=Path, default=None)
     return parser.parse_args()
 
 
 def _load_json(path: Path) -> dict[str, object]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _select_manifold_results_path(
+    *,
+    preferred_path: Path | None,
+    baseline: dict[str, object],
+) -> Path:
+    if preferred_path is not None:
+        return preferred_path
+
+    baseline_summary = baseline.get("summary", {})
+    baseline_questions = int(baseline_summary.get("questions", 0))
+    baseline_backend = str(baseline_summary.get("qa_backend", ""))
+
+    candidates: list[tuple[tuple[int, int, int, float], Path]] = []
+    for path in (MANIFOLD_RESULTS_PATH, MANIFOLD_NO_SIDECAR_RESULTS_PATH):
+        if not path.exists():
+            continue
+        try:
+            payload = _load_json(path)
+        except json.JSONDecodeError:
+            continue
+        summary = payload.get("summary", {})
+        score = (
+            int(int(summary.get("questions", 0)) == baseline_questions),
+            int(str(summary.get("qa_backend", "")) == baseline_backend),
+            int(int(summary.get("questions", 0)) > 0),
+            path.stat().st_mtime,
+        )
+        candidates.append((score, path))
+
+    if not candidates:
+        return MANIFOLD_RESULTS_PATH
+    return max(candidates, key=lambda item: item[0])[1]
 
 
 def _plot_compression(metrics: dict[str, object]) -> str:
@@ -80,7 +116,12 @@ def evaluate(_: argparse.Namespace) -> dict[str, object]:
     ensure_directories()
     compression = _load_json(COMPRESSION_METRICS_PATH)
     baseline = _load_json(BASELINE_RESULTS_PATH)
-    manifold = _load_json(MANIFOLD_RESULTS_PATH)
+    preferred_manifold_path = getattr(_, "manifold_results_path", None)
+    manifold_path = _select_manifold_results_path(
+        preferred_path=preferred_manifold_path,
+        baseline=baseline,
+    )
+    manifold = _load_json(manifold_path)
     shuffled = _load_json(SHUFFLED_MANIFOLD_RESULTS_PATH) if SHUFFLED_MANIFOLD_RESULTS_PATH.exists() else None
 
     graphs = {
@@ -116,6 +157,7 @@ def evaluate(_: argparse.Namespace) -> dict[str, object]:
             ),
         },
         "graphs": graphs,
+        "manifold_results_path": str(manifold_path),
     }
     write_metrics(QA_RESULTS_PATH, payload)
     return payload

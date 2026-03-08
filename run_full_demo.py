@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 
+from demo.common import MANIFOLD_NO_SIDECAR_RESULTS_PATH, MANIFOLD_RESULTS_PATH
 from demo.build_corpus import build_corpus
 from demo.evaluate import evaluate
 from demo.generate_manifold import generate_manifold
@@ -26,6 +27,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--precision", type=int, default=2)
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--max-context-tokens", type=int, default=2000)
+    parser.add_argument("--per-paper-snippets", type=int, default=3)
+    parser.add_argument("--disable-sidecar-rerank", action="store_true")
+    parser.add_argument("--sidecar-weight", type=float, default=0.25)
+    parser.add_argument("--phrase-weight", type=float, default=0.15)
     parser.add_argument("--embedding-model", default="all-MiniLM-L6-v2")
     parser.add_argument("--qa-backend", choices=("ollama", "extractive"), default="ollama")
     parser.add_argument("--ollama-endpoint", default="http://127.0.0.1:11434/api/generate")
@@ -74,6 +79,11 @@ def main() -> None:
             ollama_model=args.ollama_model,
             top_k=args.top_k,
             max_context_tokens=args.max_context_tokens,
+            per_paper_snippets=args.per_paper_snippets,
+            disable_sidecar_rerank=args.disable_sidecar_rerank,
+            sidecar_weight=args.sidecar_weight,
+            phrase_weight=args.phrase_weight,
+            output_path=None,
             shuffle_index=False,
         )
     )
@@ -84,10 +94,18 @@ def main() -> None:
             ollama_model=args.ollama_model,
             top_k=args.top_k,
             max_context_tokens=args.max_context_tokens,
+            per_paper_snippets=args.per_paper_snippets,
+            disable_sidecar_rerank=args.disable_sidecar_rerank,
+            sidecar_weight=args.sidecar_weight,
+            phrase_weight=args.phrase_weight,
+            output_path=None,
             shuffle_index=True,
         )
     )
-    payload = evaluate(argparse.Namespace())
+    manifold_results_path = (
+        MANIFOLD_NO_SIDECAR_RESULTS_PATH if args.disable_sidecar_rerank else MANIFOLD_RESULTS_PATH
+    )
+    payload = evaluate(argparse.Namespace(manifold_results_path=manifold_results_path))
     accuracy = payload["qa_accuracy"]
     print(
         "Demo complete:\n"

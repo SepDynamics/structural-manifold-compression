@@ -5,12 +5,12 @@ Run the new leakage-aware benchmark in stages until the 200-paper result is cred
 
 ## Current checkpoint
 
-The latest completed pilots are:
+The latest completed checkpoints are:
 
 - `25` arXiv papers
 - `40` frozen questions
-- both `extractive` and `ollama` answer backends
-- structural-node manifold with sidecar reranking / verification
+- both `extractive` and `ollama` answer backends on the locked pilot
+- a follow-on `50`-paper / `60`-question Ollama checkpoint with sidecar reranking disabled
 
 Observed results:
 
@@ -20,16 +20,19 @@ Observed results:
 - ollama baseline RAG: `QA=0.775`, `Top-1=0.650`, `Top-5=0.875`
 - ollama structural manifold: `QA=0.825`, `Top-1=0.900`, `Top-5=0.950`
 - ollama shuffled manifold: `QA=0.050`, `Top-1=0.025`, `Top-5=0.050`
-- compression: only `1.81x` on structural tokens, with serialized manifold bytes larger than the corpus
+- 50-paper ollama baseline RAG: `QA=0.750`, `Top-1=0.617`, `Top-5=0.767`
+- 50-paper ollama structural manifold (no sidecar rerank): `QA=0.883`, `Top-1=0.867`, `Top-5=0.950`
+- 50-paper ollama shuffled manifold: `QA=0.050`, `Top-1=0.000`, `Top-5=0.050`
+- compression at 50 papers: `2.24x` on structural tokens, with serialized manifold bytes still larger than the corpus
 
 Interpretation:
 
-- structural retrieval now looks legitimate at pilot scale
+- structural retrieval now looks legitimate through the mid-scale `50`-paper checkpoint
 - the shuffled control is behaving correctly
 - answer-path tightening worked materially on the same locked corpus/questions
-- the manifold still beats baseline under LLM answering, and the remaining manifold retrieval-to-QA gap is now only `0.075`
+- the manifold still beats baseline under LLM answering at `50` papers
 - the compression claim is still weak
-- the next highest-value step is ablation plus targeted reconstruction tuning on the locked 25-paper setup, then a 50-paper scale check
+- the next highest-value step is a `100`-paper checkpoint plus stronger baseline comparisons, not more prompt cleanup
 
 ## Recommended path
 
@@ -169,6 +172,28 @@ python run_full_demo.py \
   --window-bytes 16 \
   --stride-bytes 4 \
   --qa-backend ollama \
+  --disable-sidecar-rerank \
+  --force
+```
+
+Status:
+- Partially completed.
+- `50`-paper result: baseline `QA=0.750`, manifold `QA=0.883`, shuffled `QA=0.050`.
+- Retrieval also remained strong at `50` papers: baseline `Top-1=0.617`, manifold `Top-1=0.867`, shuffled `Top-1=0.000`.
+- Compression improved only modestly to `2.24x` and remains the weak part of the story.
+
+Next checkpoint:
+```bash
+python run_full_demo.py \
+  --paper-count 100 \
+  --question-count 80 \
+  --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
+  --node-chars 1500 \
+  --node-overlap 180 \
+  --window-bytes 16 \
+  --stride-bytes 4 \
+  --qa-backend ollama \
+  --disable-sidecar-rerank \
   --force
 ```
 
@@ -176,6 +201,7 @@ Metrics that matter:
 - `results/compression_metrics.json`
 - `results/baseline_rag_results.json`
 - `results/manifold_results.json`
+- `results/manifold_results_no_sidecar.json`
 - `results/manifold_results_shuffled.json`
 - `results/qa_results.json`
 

@@ -1,102 +1,88 @@
-# AGI-Lite: Predictive Coding and Topological Manifolds for Non-von Neumann Cognitive Architecture
+# Structural Retrieval and Compression Notes
 
-## Evidence Status
+This document summarizes what the repository currently measures, what it only suggests, and what remains speculative. It follows the evidence ladder in [docs/evidence_ladder.md](docs/evidence_ladder.md).
 
-This document should be read as a hypothesis and prior-results note, not as a settled research conclusion.
+## 1. Measured Results
 
-### Established in the repo
-- Structural manifold encoding, indexing, and verification primitives exist.
-- The repository now contains a leakage-aware corpus benchmark harness with frozen questions, neutral document ids, bounded reconstruction, and a shuffled-manifold control.
-- A 25-paper arXiv pilot with the `extractive` backend reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
-- The same locked pilot with `ollama` answering now reaches `0.825` manifold QA versus `0.775` for the baseline after answer-path tightening, with manifold retrieval holding at `0.90` Top-1 and shuffled manifold QA collapsing to `0.05`.
+Artifacts:
 
-### Prior reported results
-- The benchmarks described below were reported on earlier internal experiments and narrower datasets.
-- They are useful as background measurements, but they do not establish the new large-corpus compression claim.
+- `results/qa_results.json`
+- `results/manifold_ablation.json`
+- `results/manifold_reconstruction_sweep.json`
+- `results/manifold_results_no_sidecar.json`
 
-### Not yet established
-- Strong compression under the new arXiv benchmark
-- QA parity with a baseline RAG system at corpus scale
-- Whether the same pilot win survives with an LLM answerer under bounded reconstruction
-- Any claim of general replacement for transformer context handling
+### Latest mid-scale arXiv checkpoint
 
-## Latest corpus benchmark checkpoint
+- corpus: `50` papers
+- evaluation set: `60` frozen questions
+- protocol: leakage-aware, bounded reconstruction, shuffled-manifold control
 
-The latest locked arXiv pilot should still be read primarily as a retrieval result, but it now also provides a meaningful bounded-reconstruction QA result.
+Measured outputs:
 
-- Corpus: `25` papers, `40` frozen questions
-- Baseline RAG (`extractive`): `QA=0.650`, `Top-1=0.650`, `Top-5=0.875`
-- Structural-node manifold (`extractive`): `QA=0.900`, `Top-1=0.900`, `Top-5=0.950`
-- Shuffled manifold: `QA=0.025`, `Top-1=0.025`, `Top-5=0.050`
-- Baseline RAG (`ollama`): `QA=0.775`, `Top-1=0.650`, `Top-5=0.875`
-- Structural-node manifold (`ollama`): `QA=0.825`, `Top-1=0.900`, `Top-5=0.950`
-- Shuffled manifold (`ollama`): `QA=0.050`, `Top-1=0.025`, `Top-5=0.050`
-- Compression: about `1.81x` on structural tokens, with serialized manifold bytes larger than the corpus
+- baseline RAG (`ollama`): `QA=0.750`, `Top-1=0.617`, `Top-5=0.767`
+- structural manifold, no sidecar rerank: `QA=0.883`, `Top-1=0.867`, `Top-5=0.950`
+- shuffled manifold control: `QA=0.050`, `Top-1=0.000`, `Top-5=0.050`
+- compression: about `2.24x` on structural tokens, with serialized manifold bytes larger than the corpus
 
-Interpretation:
+### Measured interpretation
 
-- The new structural-node manifold is carrying real retrieval signal.
-- The shuffled control now behaves correctly and destroys that signal.
-- The manifold still beats the baseline under LLM answering, so the pilot is no longer only an extractive-title lookup result.
-- The answer-path cleanup materially improved bounded-reconstruction QA on the same locked corpus/questions.
-- The remaining gap between `0.90` retrieval and `0.825` Ollama QA is now much smaller, and the residual misses are mostly `INSUFFICIENT_CONTEXT` rather than formatting noise.
-- A follow-on ablation on the same locked pilot showed that disabling sidecar reranking improved Ollama QA from `0.850` to `0.900`, so the current sidecar layer is not yet adding retrieval value in this benchmark shape.
-- The current implementation is not yet a compelling compressor, so the flagship corpus-compression claim remains open.
+- Structural node retrieval remains stronger than the current chunked RAG baseline at `50` papers.
+- The shuffled control collapses, which supports the integrity of the retrieval result.
+- The current best committed manifold result is achieved with sidecar reranking disabled.
+- Compression remains weak by the standard required for a strong corpus-compression claim.
 
-## 1. Introduction: Beyond the Transformer Plateau
+## 2. Observed Behavior
 
-### The Quadratic Collapse
-The contemporary trajectory of artificial intelligence has been overwhelmingly dominated by the scaling laws of transformer-based Large Language Models (LLMs). However, this paradigm faces a real computational wall: the cost of self-attention grows quadratically with sequence length. Our empirical "Needle-in-a-Haystack" measurements illustrate this in one tested setup: for 81,967 bytes (81KB) of context, a baseline GPT-2 transformer consumed 652.88 MB of VRAM.
+- Most remaining manifold misses in the `50`-paper checkpoint are `INSUFFICIENT_CONTEXT`.
+- The sidecar-disabled manifold configuration remains better than the current baseline at `50` papers.
+- The reconstruction sweep did not find a better setting than `top_k=5`, `per_paper_snippets=3`, and `max_context_tokens=2000`.
 
-### The AGI-Lite Thesis
-To explore alternatives to quadratic attention costs, this document outlines the **Tripartite Architecture**, a design inspired by Thousand Brains Theory (Hawkins, 2021) and the Free-Energy Principle (Friston). The working hypothesis is that structural topological manifolds, State Space Models, and Valkey grid cells may support lower-overhead continuous inference than standard full-context transformer pipelines in the tested settings.
+These are meaningful observations, but they are still early mid-scale observations rather than robust scaling laws.
 
----
+## 3. Architecture Hypotheses
 
-## 2. Structural Manifold Physics (The C++ Layer)
+The current repository tests the following hypothesis:
 
-### Waveform Digestion
-This project investigates whether byte-level structure can preserve useful information that semantic subword tokenization discards. Instead of starting from subword tokens, the C++ engine (`sep_quantum.so`) scans byte-stream waveforms via a sliding window and measures continuous topological folds.
+Structural document nodes may preserve enough information for strong retrieval under bounded reconstruction, even when the answer stage never sees the full corpus.
 
-### Quantum Failure Hazard (QFH)
-As the byte stream is processed, the engine calculates the structural geometry of the data. We formalize this physics via the mathematics of Structural Tension ($I_t$). Phase shifts (Coherence), sequence repetition decay (Stability), and chaotic permutations (Entropy) are tracked continuously. When a topological manifold breaks structural constraints—such as an abrupt syntax violation or architectural inconsistency—it generates a "Reflex Spike" (High Variational Free Energy). This Quantum Failure Hazard (QFH) dictates exactly *when* the system needs to pay attention to novel reality.
+The current implementation has four technical layers:
 
----
+1. Structural encoder
+   - measures byte-level structural patterns
+2. Structural node index
+   - stores heading-aware document segments with short text sketches
+3. Sidecar signature layer
+   - provides optional secondary overlap features
+4. Language-model answer layer
+   - answers from reconstructed evidence only
 
-## 3. The Tripartite Cognitive Engine
+This is a hypothesis about retrieval architecture, not a proved model of language or cognition.
 
-AGI-Lite deconstructs the monolithic Transformer into three specialized cortical layers:
+## 4. What Is Not Yet Proven
 
-### 3.1 Long-Term Memory (SSM)
-The foundational sensory prediction engine is a Mamba State Space Model (SSM). Unlike Transformers, the SSM maintains a fixed-size recurrent state ($h_t$). In model design terms this keeps recurrent state size constant with respect to sequence length; end-to-end system scaling still requires empirical validation.
+- strong corpus compression under the arXiv benchmark
+- storage reduction relative to the source corpus
+- performance at `100-200` papers
+- parity with stronger RAG baselines
+- a useful role for the sidecar layer in its current form
+- any claim of general context-handling superiority over current transformer systems
 
-### 3.2 Working Memory (Valkey Grid Cells)
-Acting as the system's spatial reference frame, the architecture routes structural signatures into Valkey memory. In earlier internal scale tests, the system indexed over 5,000,000 manifold signatures with reported sub-10ms lookup speed in the tested setup.
+## 5. Prior Reported Measurements
 
-### 3.3 The Thalamic Adapter
-The Latent Semantic Thalamic Adapter bridges the gap between pure mathematical topology and human-readable semantics. By freezing a "Recency List" of 50 active grid-cell tokens (e.g., `[matrix, function, matrix, log]`), the adapter queries a local, high-variance top-down generator (like Llama3) *only* when the structural tension spikes. The intended effect is to reduce LLM context bloat and constrain the generator to a narrower evidence window than standard raw-passage fallback.
+The repo also contains earlier internal measurements from narrower settings. These are background observations, not proof of the current claim.
 
-### 3.4 Thousand Brains Voting
-We implemented a `VotingProcessor` inside the SSM proxy to mimic cortical-column-style consensus. Instead of a single monolithic forward pass, the data traverses 3 parallel columns. Earlier internal measurements reported roughly **22% faster** FEP error resolution than the single-stream baseline used in that experiment.
+Examples include:
 
----
+- earlier signature-compression tables on OCR-style datasets
+- internal latency and verification measurements in manifold-specific experiments
+- exploratory dual-stream and Hebbian-learning experiments
 
-## 4. Empirical Convergence (Escaping Backpropagation)
+These results are useful for hypothesis generation, but the current benchmark claim should stand on the committed arXiv benchmark artifacts instead.
 
-### 4.1 The Hebbian Descent Curve
-One internal experiment replaced global weight backpropagation (`loss.backward()`) with a Local Hebbian Descent rule. In that 10-epoch run, perplexity decreased from **3376** to **892** through local, asynchronous updates.
+## 6. Research Directions
 
-### 4.2 Biological Stabilization
-To prevent the Hebbian process from diverging into logit explosions, we mathematically define our optimization via Prediction Error Normalization (binding the update steps bounds) alongside Oja's Weight Decay implementation. \
-The update logic: $\Delta \theta_l \propto \epsilon_l - \gamma \theta_l$ \
-This strict regularization is intended to reduce drift and instability in continuous updates. Broader claims about eliminating catastrophic forgetting remain unvalidated at large scale.
-
----
-
-## 5. Generality and Agency
-
-### 5.1 The Multi-Modal Boundary
-To probe whether the engine computes structural tension on raw physical signals rather than only on text-like inputs, we applied the architecture to acoustic waves. We analyzed **22,052 audio windows** from a raw 440Hz binary `.wav` input stream without using audio-specific tokenizers.
-
-### 5.2 Proactive Architectural Autonomy
-The `pair_programmer_agent.py` script demonstrates an interactive anomaly-monitoring workflow. Running as a backend daemon, it tracks live code edits, maps them against manifold memory, and surfaces high-tension events in real time.
+- scale the benchmark to `100` and `200` papers
+- compare structural nodes against stronger embedding baselines
+- redesign the sidecar layer as verifier-only or verifier-first
+- improve compression without losing the current retrieval signal
+- test whether the pilot behavior transfers to other public corpora

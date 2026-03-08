@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+from types import SimpleNamespace
 from pathlib import Path
 
 import pytest
@@ -19,11 +21,14 @@ from demo.common import (
 from demo.retrieval import (
     build_manifold_payload,
     encode_embeddings,
+    save_manifold_index,
     rank_documents,
     rank_embedding_chunks,
     rank_manifold_chunks,
     rank_manifold_nodes_detailed,
 )
+from demo.evaluate import _select_manifold_results_path
+from demo.run_manifold_system import run_manifold
 from demo.structure import build_node_contexts, build_structural_nodes, build_shuffle_node_indices
 
 
@@ -376,3 +381,116 @@ def test_rank_manifold_nodes_can_disable_sidecar_rerank(tmp_path: Path) -> None:
     assert with_sidecar[0]["used_sidecar_rerank"] is True
     assert no_sidecar[0]["score"] == pytest.approx(no_sidecar[0]["embedding_score"])
     assert with_sidecar[0]["score"] >= no_sidecar[0]["score"]
+
+
+def test_run_manifold_accepts_legacy_namespace(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    doc1 = _write_paper(
+        tmp_path,
+        "aurora_legacy",
+        "Abstract\nWe introduce the Aurora Lattice Optimizer for plasma oscillations.\n",
+    )
+    doc2 = _write_paper(
+        tmp_path,
+        "spectral_legacy",
+        "Abstract\nWe study the Spectral River Theorem for adaptive meshes.\n",
+    )
+    papers = [
+        _paper_record("paper_001", "Aurora Paper", doc1),
+        _paper_record("paper_002", "Spectral Paper", doc2),
+    ]
+    nodes = build_structural_nodes(papers, node_chars=180, node_overlap=20)
+    metadata, binary_payload = build_manifold_payload(
+        nodes,
+        question_hash="qhash",
+        corpus_hash="chash",
+        corpus_tokens=100,
+        window_bytes=24,
+        stride_bytes=4,
+        precision=2,
+        embedding_model="hash",
+    )
+
+    manifold_json = tmp_path / "manifold.json"
+    manifold_json.write_text(json.dumps(metadata), encoding="utf-8")
+    manifold_index = tmp_path / "manifold_index.bin"
+    save_manifold_index(manifold_index, binary_payload)
+
+    monkeypatch.setattr("demo.run_manifold_system.MANIFOLD_JSON_PATH", manifold_json)
+    monkeypatch.setattr("demo.run_manifold_system.MANIFOLD_INDEX_PATH", manifold_index)
+    monkeypatch.setattr("demo.run_manifold_system.MANIFOLD_RESULTS_PATH", tmp_path / "manifold_results.json")
+    monkeypatch.setattr(
+        "demo.run_manifold_system.load_questions",
+        lambda: [
+            QuestionRecord(
+                question_id="q_legacy",
+                question='Which paper discusses "Aurora Lattice Optimizer"?',
+                answer="Aurora Paper",
+                answer_aliases=["Aurora Paper"],
+                source_papers=["paper_001"],
+                question_type="paper_lookup",
+                evidence_terms=["Aurora Lattice Optimizer"],
+            )
+        ],
+    )
+
+    payload = run_manifold(
+        SimpleNamespace(
+            qa_backend="extractive",
+            ollama_endpoint="http://127.0.0.1:11434/api/generate",
+            ollama_model=None,
+            top_k=3,
+            max_context_tokens=400,
+            shuffle_index=False,
+        )
+    )
+
+    assert payload["summary"]["qa_accuracy"] == 1.0
+    assert payload["summary"]["sidecar_rerank"] is True
+
+
+def test_evaluate_prefers_matching_no_sidecar_results(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    baseline_path = tmp_path / "baseline.json"
+    baseline_path.write_text(
+        json.dumps(
+            {
+                "summary": {
+                    "qa_backend": "ollama",
+                    "questions": 60,
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    stale_manifold = tmp_path / "manifold_results.json"
+    stale_manifold.write_text(
+        json.dumps(
+            {
+                "summary": {
+                    "qa_backend": "extractive",
+                    "questions": 0,
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+    no_sidecar = tmp_path / "manifold_results_no_sidecar.json"
+    no_sidecar.write_text(
+        json.dumps(
+            {
+                "summary": {
+                    "qa_backend": "ollama",
+                    "questions": 60,
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr("demo.evaluate.MANIFOLD_RESULTS_PATH", stale_manifold)
+    monkeypatch.setattr("demo.evaluate.MANIFOLD_NO_SIDECAR_RESULTS_PATH", no_sidecar)
+
+    selected = _select_manifold_results_path(
+        preferred_path=None,
+        baseline=json.loads(baseline_path.read_text(encoding="utf-8")),
+    )
+    assert selected == no_sidecar

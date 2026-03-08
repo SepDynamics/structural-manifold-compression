@@ -1,175 +1,191 @@
 # Structural Manifold Compression
 
-**Experimental tooling for testing whether byte-level structural signatures can support compression-oriented retrieval and bounded reconstruction over large corpora.**
+Experimental tooling for testing whether structural document representations can support retrieval and bounded reconstruction over corpora that exceed normal LLM context limits.
 
----
+## What This Project Is
 
-## Status
-Current status: the repo contains a working benchmark harness, reusable manifold primitives, and a meaningful locked arXiv pilot. That pilot now supports a credible small-scale structural-retrieval claim under both extractive and Ollama answering, but it still does not support a strong corpus-compression claim.
+This repository explores a structural retrieval pipeline built from:
 
-### Established
-- Structural manifold encoding, indexing, and verification primitives exist in the codebase.
-- The repo now includes a leakage-aware corpus benchmark pipeline with frozen questions, neutral `paper_###` ids, stripped frontmatter, bounded reconstruction, and a shuffled-manifold control.
-- The new demo path is runnable end to end and covered by unit and smoke tests.
-- A 25-paper arXiv pilot using the new structural-node manifold and `extractive` answering reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
-- The same locked 25-paper pilot with `ollama` answering now reaches `0.825` manifold QA versus `0.775` for the baseline after answer-path tightening, while manifold retrieval stays at `0.90` Top-1 and shuffled manifold QA collapses to `0.05`.
-- On a follow-on ablation on that same locked pilot, disabling sidecar reranking improved manifold Ollama QA from `0.850` to `0.900` with unchanged `0.900` Top-1 retrieval, so the current sidecar layer is not helping retrieval on this benchmark.
+- a byte-level signature encoder
+- section-level document nodes
+- an optional sidecar signature layer
+- a bounded-context answer stage using either extractive scoring or an LLM
 
-### Historical / prior reported
-- The benchmark snapshot later in this README summarizes prior results on earlier datasets.
-- Those numbers are useful background, but they do not establish the 200-paper corpus-compression claim.
+The current evidence supports a small-to-mid-scale retrieval claim on leakage-aware arXiv benchmarks. It does not yet support a strong corpus-compression claim.
 
-### Not yet established
-- Strong compression under the new arXiv corpus benchmark
-- 200-paper retrieval retention
-- 200-paper QA retention relative to baseline RAG
-- Whether the structural manifold still wins at `50-100` papers on the same protocol
-- Whether sidecar signatures can be reintroduced as a useful verifier or reranker after redesign
-- Any claim that this system replaces transformer context handling in general
+## Evidence Levels
 
----
+The repo uses the evidence ladder defined in [docs/evidence_ladder.md](docs/evidence_ladder.md):
 
-## 1. The Core Problem: $O(N^2)$ Context Collapse
-Modern Large Language Models (LLMs) process text by shredding words into isolated optical integers (tokens) and attempting to mathematically reconstruct their relationships across a massive, two-dimensional attention matrix.
+- Level 1: measured result
+- Level 2: observed behavior
+- Level 3: hypothesis
+- Level 4: research direction
 
-Because this matrix scales quadratically—$O(N^2)$—transformers suffer from catastrophic context collapse. As the prompt grows:
-1. **Compute Explodes**: VRAM requirements scale exponentially, pricing out local hardware.
-2. **Attention Dilutes**: The model "forgets" instructions in the middle of the prompt (The Needle in the Haystack problem).
-3. **Reasoning Fails**: The LLM cannot maintain a coherent, continuous state of architectural alignment across a massive codebase.
+## Current Benchmark Snapshot
 
-## 2. Working Hypothesis: The Tripartite Architecture
-Structural Manifold Compression is the project hypothesis under test. The current implementation processes raw byte topology through three main components:
+Level 1: measured result
 
-1. **The C++ Structural Engine (The Brainstem)**: A sub-millisecond physics engine (`sep_quantum.so`) that slides across byte arrays, translating them into dense `9-byte` structural motifs (Coherence, Entropy, Stability, Hazard) rather than semantic text.
-2. **The Valkey Working Memory (The Hippocampus)**: An $O(1)$ vector associative memory that spatially maps these geometric motifs. In design terms, retrieval is a fixed-time native graph traversal rather than a context-window expansion step.
-3. **The Mamba SSM / Transformer (The Cortex)**: An algorithmic Heuristic Fallback layer. It only activates when the bare-metal C++ Engine detects an unfamiliar topological sequence (a "Structural Tension Spike").
+Dataset and protocol:
 
-## 3. Prior Reported Results
-The repository also contains earlier internal benchmark results from narrower settings. Treat these as prior reported measurements, not as proof of the new corpus-compression claim:
+- `50` arXiv papers
+- `60` frozen questions
+- leakage-aware setup with neutral `paper_###` ids
+- bounded reconstruction only; the model never sees the full corpus
+- shuffled-manifold integrity control
 
-- **60% vs 20% RAG Precision**: The $O(1)$ spatial Grid Cell router achieves **0.60** precision retrieval on raw code structures, compared to the industry-standard `all-MiniLM-L6-v2` semantic embedding which collapses at **0.20** precision.
-- **0.006s FEP Learning**: Utilizing Thermodynamic Simulated Annealing, the Dual-Stream model assimilates a massive contextual contradiction (The Free Energy Principle spike) into long-term Mamba memory in just **0.0063 seconds**.
-- **Low-overhead manifold traversal**: Prior internal measurements suggest large working-memory traversal can be substantially cheaper than dense full-context transformer scans for the tested settings.
+Primary artifacts:
 
----
+- `results/qa_results.json`
+- `results/baseline_rag_results.json`
+- `results/manifold_results.json`
+- `results/manifold_results_no_sidecar.json`
+- `results/manifold_results_shuffled.json`
+- `results/manifold_ablation.json`
+- `results/manifold_reconstruction_sweep.json`
 
-## 4. Corpus Demo
-The repo now includes a locked-evaluation corpus demo for testing **LLM-usable compression**:
+### Locked pilot results
 
-```text
-200 Research Papers
-      ↓
-Question Freeze (`data/questions.json`)
-      ↓
-Structural Manifold Compression
-      ↓
-Manifold Index (`manifold/`)
-      ↓
-Question
-      ↓
-Manifold Retrieval
-      ↓
-Reconstructed Context (max 2000 tokens)
-      ↓
-LLM / extractive answer
-```
+| System | QA | Top-1 | Top-5 | Artifact |
+|--------|---:|------:|------:|----------|
+| Baseline RAG (`ollama`) | 0.750 | 0.617 | 0.767 | `results/baseline_rag_results.json` |
+| Structural manifold, no sidecar rerank | 0.883 | 0.867 | 0.950 | `results/manifold_results_no_sidecar.json` |
+| Shuffled manifold control | 0.050 | 0.025 | 0.050 | `results/manifold_results_shuffled.json` |
 
-Current checkpoint: the benchmark scaffold is implemented and the first meaningful pilot has been run, but the flagship compression claim is still pending.
+Compression on the same pilot:
 
-### Protocol guarantees
-- Questions are frozen before `manifold/` is generated.
-- Papers are re-labeled as neutral `paper_###` ids during corpus build.
-- Compression strips frontmatter before indexing to avoid title/DOI leakage.
-- The LLM never sees the full corpus, only bounded reconstructed chunks.
-- A shuffled-manifold control run is written to `results/manifold_results_shuffled.json`.
+- original corpus tokens: `576,051`
+- structural manifold tokens: `256,743`
+- token compression: `2.24x`
+- serialized manifold size: larger than the raw corpus bytes
 
-### What this section currently means
-- It proves the benchmark machinery exists.
-- It now provides pilot-scale evidence that section-level structural indexing can outperform the current baseline chunked RAG on frozen document-identification questions.
-- It does not yet prove high-ratio corpus compression.
+## Interpretation
 
-### Latest pilot snapshot
-The latest leakage-aware arXiv pilot used:
+Level 1: measured result
 
-- `25` papers
-- `40` frozen questions
-- locked corpus / locked questions
-- structural nodes with sidecar signatures as reranking / verification features
+- Structural node retrieval continues to outperform the current baseline at `50` papers.
+- The shuffled control collapses, so the pilot is not surviving randomization.
+- Disabling the current sidecar reranker improves QA from `0.850` to `0.900` in the committed ablation artifact.
+- The best tested reconstruction settings are `top_k=5`, `per_paper_snippets=3`, and `max_context_tokens=2000`.
 
-Results:
+Level 2: observed behavior
 
-| Backend | System | QA Acc. | Top-1 | Top-5 |
-|---------|--------|--------:|------:|------:|
-| `extractive` | Baseline RAG | 0.650 | 0.650 | 0.875 |
-| `extractive` | Structural manifold | 0.900 | 0.900 | 0.950 |
-| `extractive` | Shuffled manifold | 0.025 | 0.025 | 0.050 |
-| `ollama` | Baseline RAG | 0.775 | 0.650 | 0.875 |
-| `ollama` | Structural manifold | 0.825 | 0.900 | 0.950 |
-| `ollama` | Shuffled manifold | 0.050 | 0.025 | 0.050 |
+- Most remaining manifold misses in the `50`-paper run are `INSUFFICIENT_CONTEXT`.
+- The current sidecar layer behaves more like a noisy reranker than a helpful one on this benchmark.
 
-Compression on the same run:
+Level 3: hypothesis
 
-- Original corpus tokens: `248,231`
-- Structural manifold tokens: `136,989`
-- Compression ratio: `1.81x`
-- Serialized manifold size: larger than the raw corpus bytes
+- The structural node representation appears to carry most of the useful retrieval signal in the current design.
+- The sidecar signatures may be more useful as a verification layer than as a primary reranker.
 
-Interpretation:
+Level 4: research direction
 
-- Strong result: the structural-node manifold is carrying real retrieval signal, and the shuffled control collapses as it should.
-- Strong result: the structural-node manifold still beats the current baseline when answers are generated with `ollama`, not just when answers are extracted mechanically.
-- Strong result: answer-path tightening materially improved the locked Ollama pilot, moving manifold QA from `0.700` to `0.825` and baseline QA from `0.625` to `0.775` on the same frozen corpus/questions.
-- Weak result: the current implementation is not yet a compelling compressor.
-- Important caveat: the remaining gap between manifold retrieval (`0.90`) and manifold Ollama QA (`0.825`) is now much smaller, and the residual misses are mostly `INSUFFICIENT_CONTEXT` rather than formatting noise. The next bottleneck is reconstruction sufficiency / ablation, not basic answer normalization.
-- Additional caveat: with the `extractive` backend, QA accuracy is effectively document-retrieval accuracy, not full generative QA from reconstructed evidence.
+- A larger `100-200` paper benchmark may show whether the retrieval advantage survives further scale.
+- A redesigned sidecar layer may still become useful if it is decoupled from ranking.
 
-### Follow-on ablation and sweep
-Using the same locked 25-paper corpus and frozen questions:
+## What Is Established
 
-- Sidecar ablation (`results/manifold_ablation.json`): with sidecar `QA=0.850`; without sidecar `QA=0.900`; Top-1 retrieval stayed `0.900` in both arms.
-- Reconstruction sweep (`results/manifold_reconstruction_sweep.json`): the best tested configuration was `top_k=5`, `per_paper_snippets=3`, `max_context_tokens=2000`, with sidecar reranking disabled.
-- Best follow-on result: `QA=0.900`, `Top-1=0.900`, `Top-5=0.975`, and only `4` `INSUFFICIENT_CONTEXT` answers.
+Level 1: measured result
 
-Interpretation:
+- Structural manifold encoding, indexing, and verification code exists in the repo.
+- The corpus benchmark is leakage-aware and end-to-end reproducible.
+- The `25`-paper and `50`-paper arXiv checkpoints both support a credible retrieval claim.
+- The shuffled control, sidecar ablation, and reconstruction sweep are all implemented and committed as artifacts.
 
-- The structural-node retriever is now strong enough on this pilot that bounded-reconstruction QA can match Top-1 retrieval when the sidecar reranker is removed.
-- The current sidecar signatures look more promising as a verification signal than as a retrieval reranker.
-- The reconstruction sweep did not reveal a better context package than the current default `5 / 3 / 2000`; the main remaining work is now scaling and sidecar redesign, not more local prompt tuning.
+## What Is Not Yet Established
 
-### Run the full demo
+Level 4: research direction
+
+- strong compression under the arXiv benchmark
+- serialized storage reduction relative to the source corpus
+- retrieval retention at `100-200` papers
+- QA retention at `100-200` papers
+- value added by the sidecar layer after redesign
+- any claim of general context-handling superiority over current transformer systems
+
+## Current Limitations
+
+Level 1: measured result
+
+- Compression is currently weak at about `2.24x` token reduction in the latest mid-scale checkpoint.
+- Serialized manifold artifacts are larger than the source corpus bytes.
+- Results are still based on modest-scale checkpoints: `25` papers / `40` questions and `50` papers / `60` questions.
+- The baseline comparison is a simple chunked RAG pipeline, not a broad leaderboard of embedding systems.
+
+Level 2: observed behavior
+
+- The current answer bottleneck is reconstruction sufficiency, not output normalization.
+- The sidecar reranker is currently unnecessary on the best-performing pilot configuration.
+
+## Architecture Overview
+
+Level 3: hypothesis
+
+The current architecture under test has four technical layers:
+
+1. Structural encoder
+   - encodes local byte-level patterns into compact signatures
+2. Structural node index
+   - segments documents into section-level nodes with headings, section types, salient phrases, and short text sketches
+3. Sidecar signature layer
+   - provides optional secondary overlap features for verification or reranking
+4. Language-model answer layer
+   - answers from reconstructed evidence only, with a bounded context budget
+
+This is a proposed framework for structural retrieval and bounded reconstruction. It should not be read as a proven replacement for token-based language models.
+
+## Reproducible Commands
+
+Run the full pipeline:
+
 ```bash
 python run_full_demo.py
 ```
 
-### Recommended pilot command
+Recommended 50-paper checkpoint:
+
 ```bash
 python run_full_demo.py \
-  --paper-count 25 \
-  --question-count 40 \
+  --paper-count 50 \
+  --question-count 60 \
   --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
   --node-chars 1500 \
   --node-overlap 180 \
   --window-bytes 16 \
   --stride-bytes 4 \
-  --qa-backend extractive \
+  --qa-backend ollama \
+  --disable-sidecar-rerank \
   --force
 ```
 
-For a local smoke test without downloading arXiv papers:
+Run the sidecar ablation on the locked corpus/questions:
+
 ```bash
-python run_full_demo.py \
-  --input-dir /path/to/local/txt_corpus \
-  --qa-backend extractive \
-  --embedding-model hash
+python demo/run_manifold_ablation.py \
+  --qa-backend ollama \
+  --top-k 5 \
+  --per-paper-snippets 3 \
+  --max-context-tokens 2000
 ```
 
-### Outputs
+Run the reconstruction sweep on the locked corpus/questions:
+
+```bash
+python demo/run_manifold_sweep.py \
+  --qa-backend ollama \
+  --disable-sidecar-rerank
+```
+
+## Repo Layout
+
 ```text
 demo/
    build_corpus.py
    generate_manifold.py
    run_baseline_rag.py
    run_manifold_system.py
+   run_manifold_ablation.py
+   run_manifold_sweep.py
    evaluate.py
 
 data/
@@ -186,6 +202,7 @@ results/
    compression_metrics.json
    baseline_rag_results.json
    manifold_results.json
+   manifold_results_no_sidecar.json
    manifold_results_shuffled.json
    manifold_ablation.json
    manifold_reconstruction_sweep.json
@@ -193,80 +210,48 @@ results/
    graphs/
 ```
 
----
+## Other Experimental Components
 
-## Quick Start (The Pair Programmer Daemon)
-Experience the structural sidecar locally on any Linux machine. 
+Level 2: observed behavior
 
-Launch the Tripartite loop with just three commands:
+- The repo also contains pair-programmer and anomaly-monitoring demos.
+- These are exploratory applications of the structural tooling, not evidence for the corpus-compression claim.
 
-1. **Initialize the Spatial Memory (Terminal 1)**
-   ```bash
-   valkey-server
-   ```
-3. **Index Your Codebase (Terminal 2)**
-   *The Pair Programmer requires a fresh spatial layout of your specific repository to prevent stale codebook mapping.*
-   ```bash
-   cd structural-manifold-compression
-   source .venv/bin/activate
-   python scripts/rag/bulk_valkey_ingest.py ./
-   ```
-4. **Launch the Autonomous Watcher (Terminal 2)**
-   ```bash
-   python scripts/rag/pair_programmer_agent.py
-   ```
-5. **Open the 3-Body Telemetry UI (Terminal 3)**
-   ```bash
-   source .venv/bin/activate
-   python app.py
-   ```
-   *Navigate to `http://localhost:7860` in your browser.*
+Level 4: research direction
 
-Try it: Open any `.py` file in the `structural-manifold-compression` repository. Write a function that geometrically contradicts the established coding patterns and save the file. The `pair_programmer_agent.py` daemon will intercept the live save, process the code through the C++ engine without tokenizing it, and flag a massive **Architectural Alignment / Structural Tension** spike in real-time.
+- structural retrieval as agent memory
+- structural verification layers for retrieval pipelines
+- larger document benchmarks beyond arXiv
 
-### The "Aha Moment" (Real-time $O(1)$ Spike Detection)
-Watch the state manifold immediately jump to the "Heuristic Fallback" vertex when chaotic syntax disrupts the structural continuity:
+## Prior Reported Results
 
-![Aha Moment Demo Video](docs/assets/demo.mp4)
+Level 2: observed behavior
 
----
+The repository also contains earlier internal measurements from narrower settings. They are useful background, but they do not establish the current corpus-scale claim.
 
-## Technical Appendix & Reproducibility
-
-### The Benchmark Snapshot (Full Run @ RTX 3080 Ti)
-These are prior dataset results, not the new corpus demo:
-
-| Dataset | Docs | Byte × | Token × | Token Acc. | Char Acc. | Verif. Precision | Verif. FPR |
+| Dataset | Docs | Byte x | Token x | Token Acc. | Char Acc. | Verif. Precision | Verif. FPR |
 |---------|-----:|-------:|--------:|-----------:|----------:|-----------------:|-----------:|
 | Fox EN  | 112 | 42.03 | 85.48 | 95.35 % | 95.62 % | 91.21 % | 0.087 % |
 | Fox CN  | 100 | 42.01 | 88.08 | 94.94 % | 95.04 % | 97.19 % | 0.029 % |
-| OmniDoc | 1 349 | 41.59 | 89.49 | 94.90 % | 94.94 % | 80.85 % | 0.017 % |
+| OmniDoc | 1,349 | 41.59 | 89.49 | 94.90 % | 94.94 % | 80.85 % | 0.017 % |
 
-### Rebuild the Primary Report
-The complete Mathematical Methodology, DeepSeek-OCR comparisons, and limits are documented in the LaTeX manuscript:
-```bash
-make report   # compiles docs/manifold_vs_optical/report.pdf
-```
+## Research Directions
 
-### Multimodal Geometric Demo (Objective Audio Topology)
-This visualization is an exploratory demo of how the engine separates several physical audio signals in its measured feature space. It should be read as a qualitative demonstration, not as proof of a general "language of everything" claim.
+Level 4: research direction
 
-Run the visualizer:
-```bash
-python scripts/experiments/visualize_audio_manifold.py
-```
-*The script synthesizes the 16-bit `.wav` files and streams them blindly through the C++ byte engine (no audio-encoders). The resulting Matplotlib graph shows how the measured geometry separates the tested physical signals:*
+- validate the locked benchmark at `50`, `100`, and `200` papers
+- redesign the sidecar layer as verifier-first rather than reranker-first
+- compare against stronger embedding and hybrid retrieval baselines
+- test whether compression can improve without losing the current retrieval signal
 
-![Objective Audio Topology Mapping](docs/assets/audio_topology.png)
+## License and Citation
 
-## License & Citation
-
-This project is released under the [MIT License](LICENSE). 
+This project is released under the [MIT License](LICENSE).
 
 ```bibtex
 @misc{nagy2025manifold,
   author       = {Alexander Nagy},
-  title        = {Structural Manifold Compression: A Text-Only Alternative to Optical Context Encoding},
+  title        = {Structural Manifold Compression: Experimental Structural Retrieval and Bounded Reconstruction},
   year         = {2025},
   howpublished = {\url{https://github.com/SepDynamics/structural-manifold-compression}}
 }

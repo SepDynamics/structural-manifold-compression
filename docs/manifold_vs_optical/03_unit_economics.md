@@ -1,26 +1,38 @@
-# Unit Economics: Structural Manifold Compression
+# Unit Economics: Scenario Notes
 
-This file is an illustrative business scenario, not a validated benchmark result.
+This file is a scenario analysis, not a benchmark result.
 
-## Scenario
-- Enterprise corpus: **10M pages** (contracts, emails, logs).
-- Baseline vector pipeline: embeddings + vector DB.
+## Measured Ceiling From The Current Repo
 
-## Baseline Costs (Vector DB + embeddings)
-- Storage footprint: ~10 TB (dense vectors).
-- Embed pass: ~$2,000 (OpenAI-scale pricing).
-- Monthly storage/query: ~$5,000/month (managed vector DB).
+Level 1: measured result
 
-## With Structural Manifold Compression
-- Footprint: **~250 GB** (illustrative, assuming ≈40× smaller).
-- Encode pass: **~$50** (illustrative CPU/GPU-friendly estimate).
-- Monthly storage: **~$50/month** (illustrative S3/Glacier-class estimate).
-- Provenance: hazard-gated verification at window level; reconstruct-on-demand; on-device feasible.
+The strongest current corpus benchmark in this repository shows:
 
-## Business Impact
-- **Potentially large infra savings** on storage/query for context memory if the measured compression and retrieval results hold.
-- **Auditable AI**: every retrieved chunk carries a structural “fingerprint” + hazard gate for trust.
-- **Privacy**: indexes small enough for local/edge verification (no raw text upload required).
+- about `1.81x` token compression on the locked 25-paper arXiv pilot
+- serialized manifold artifacts larger than the source corpus bytes
+- strong retrieval signal, but weak storage reduction
 
-## Pitch Line
-“If the benchmarked compression and retrieval results hold, this could support materially smaller context memory footprints with built-in provenance.”
+These measurements set the current ceiling for any cost discussion in this repo.
+
+## What This Means For Cost Claims
+
+Level 2: observed behavior
+
+- The current implementation is not yet ready for strong storage-savings claims.
+- The current pilot does support discussion of retrieval behavior under bounded reconstruction.
+
+## Scenario Analysis
+
+Level 4: research direction
+
+If future versions of the system achieve materially stronger compression while preserving retrieval quality, a smaller retrieval representation could reduce:
+
+- index storage
+- query-time retrieval footprint
+- hardware requirements for bounded reconstruction
+
+Those outcomes are not established by the current benchmark artifacts.
+
+## Safe Pitch Line
+
+"If future benchmarks show stronger compression without losing retrieval quality, structural retrieval may reduce storage and retrieval overhead for large document collections."

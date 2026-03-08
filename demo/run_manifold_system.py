@@ -61,6 +61,11 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
     if not MANIFOLD_JSON_PATH.exists() or not MANIFOLD_INDEX_PATH.exists():
         raise FileNotFoundError("Manifold artifacts are missing. Run generate_manifold.py first.")
 
+    per_paper_snippets = int(getattr(args, "per_paper_snippets", 3))
+    disable_sidecar_rerank = bool(getattr(args, "disable_sidecar_rerank", False))
+    sidecar_weight = float(getattr(args, "sidecar_weight", 0.25))
+    phrase_weight = float(getattr(args, "phrase_weight", 0.15))
+
     metadata = json.loads(MANIFOLD_JSON_PATH.read_text(encoding="utf-8"))
     questions = load_questions()
     nodes = deserialize_nodes(metadata.get("nodes", []))
@@ -84,9 +89,9 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
             precision=int(metadata["precision"]),
             top_k=args.top_k,
             shuffle_nodes=args.shuffle_index,
-            use_sidecar_rerank=not args.disable_sidecar_rerank,
-            sidecar_weight=args.sidecar_weight,
-            phrase_weight=args.phrase_weight,
+            use_sidecar_rerank=not disable_sidecar_rerank,
+            sidecar_weight=sidecar_weight,
+            phrase_weight=phrase_weight,
         )
         ranked_node_scores = [
             (int(item["node_index"]), float(item["score"])) for item in ranked_node_details
@@ -96,7 +101,7 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
         contexts = build_node_contexts(
             ranked_nodes,
             max_context_tokens=args.max_context_tokens,
-            snippets_per_paper=args.per_paper_snippets,
+            snippets_per_paper=per_paper_snippets,
         )
         answer = answer_from_context(
             question,
@@ -123,7 +128,7 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
                 "retrieval_top5": top5,
                 "latency_seconds": elapsed,
                 "shuffle_index": args.shuffle_index,
-                "sidecar_rerank": not args.disable_sidecar_rerank,
+                "sidecar_rerank": not disable_sidecar_rerank,
                 "sidecar_verified": any(bool(item["verified"]) for item in ranked_node_details),
                 "sidecar_scores": [float(item["sidecar_score"]) for item in ranked_node_details],
             }
@@ -139,12 +144,12 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
         "retrieval_top5": sum(1 for row in results if row["retrieval_top5"]) / question_count,
         "mean_latency_seconds": total_latency / question_count,
         "max_context_tokens": args.max_context_tokens,
-        "per_paper_snippets": args.per_paper_snippets,
+        "per_paper_snippets": per_paper_snippets,
         "top_k": args.top_k,
         "shuffle_index": args.shuffle_index,
-        "sidecar_rerank": not args.disable_sidecar_rerank,
-        "sidecar_weight": args.sidecar_weight if not args.disable_sidecar_rerank else 0.0,
-        "phrase_weight": args.phrase_weight,
+        "sidecar_rerank": not disable_sidecar_rerank,
+        "sidecar_weight": sidecar_weight if not disable_sidecar_rerank else 0.0,
+        "phrase_weight": phrase_weight,
     }
     payload = {"summary": summary, "results": results}
     output_arg = getattr(args, "output_path", None)
@@ -152,7 +157,7 @@ def run_manifold(args: argparse.Namespace) -> dict[str, object]:
         output_path = Path(output_arg)
     elif args.shuffle_index:
         output_path = SHUFFLED_MANIFOLD_RESULTS_PATH
-    elif args.disable_sidecar_rerank:
+    elif disable_sidecar_rerank:
         output_path = MANIFOLD_NO_SIDECAR_RESULTS_PATH
     else:
         output_path = MANIFOLD_RESULTS_PATH
