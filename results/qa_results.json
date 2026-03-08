@@ -1,47 +1,47 @@
 {
   "compression": {
-    "original_tokens": 576051,
-    "original_bytes": 2304118,
-    "manifold_signature_tokens": 256743,
-    "sidecar_signature_tokens": 246192,
-    "manifold_unique_signatures": 4599,
-    "manifold_serialized_bytes": 12612409,
-    "manifold_serialized_tokens_estimate": 635797,
-    "compression_ratio_signature_tokens": 2.2436872670335704,
-    "compression_ratio_serialized_bytes": 0.1826865906425965,
-    "chunk_count": 3517,
-    "question_hash": "96fae59b1f17034841ab8cf771b1ed32afc3e5332d5c21781902f335edcec3a7",
+    "original_tokens": 2957826,
+    "original_bytes": 11831001,
+    "manifold_signature_tokens": 1111688,
+    "sidecar_signature_tokens": 1068885,
+    "manifold_unique_signatures": 6467,
+    "manifold_serialized_bytes": 52915576,
+    "manifold_serialized_tokens_estimate": 2698854,
+    "compression_ratio_signature_tokens": 2.660661984297753,
+    "compression_ratio_serialized_bytes": 0.2235825799193795,
+    "chunk_count": 14268,
+    "question_hash": "73749048cebf6f6d5a68b8cb93d5fc1c11c0739495809100cdfc7d675263305d",
     "window_bytes": 16,
     "stride_bytes": 4,
     "precision": 2,
     "embedding_model": "all-MiniLM-L6-v2",
-    "created_at": "2026-03-08T13:59:30+00:00"
+    "created_at": "2026-03-08T14:34:36+00:00"
   },
   "qa_accuracy": {
     "full_corpus_oracle": 1.0,
-    "baseline_rag": 0.75,
-    "structural_manifold": 0.8833333333333333
+    "baseline_rag": 0.504,
+    "structural_manifold": 0.716
   },
   "retrieval_accuracy": {
-    "baseline_top1": 0.6166666666666667,
-    "baseline_top5": 0.7666666666666667,
-    "manifold_top1": 0.8666666666666667,
-    "manifold_top5": 0.95
+    "baseline_top1": 0.392,
+    "baseline_top5": 0.536,
+    "manifold_top1": 0.728,
+    "manifold_top5": 0.828
   },
   "latency_seconds": {
-    "baseline_rag": 0.46051572206694497,
-    "structural_manifold": 0.35886986975007557
+    "baseline_rag": 0.4520166609040753,
+    "structural_manifold": 0.39724549135577397
   },
   "integrity_checks": {
-    "question_hash_locked": "96fae59b1f17034841ab8cf771b1ed32afc3e5332d5c21781902f335edcec3a7",
-    "randomized_manifold_qa_accuracy": 0.05,
-    "randomized_manifold_top1": 0.0
+    "question_hash_locked": "73749048cebf6f6d5a68b8cb93d5fc1c11c0739495809100cdfc7d675263305d",
+    "randomized_manifold_qa_accuracy": 0.016,
+    "randomized_manifold_top1": 0.008
   },
   "graphs": {
     "compression_ratio": "compression_ratio.png",
     "qa_accuracy": "qa_accuracy.png",
     "latency": "latency.png"
   },
-  "manifold_results_path": "results/manifold_results_no_sidecar.json",
-  "created_at": "2026-03-08T14:07:25+00:00"
+  "manifold_results_path": "/sep/structural-manifold-compression/results/manifold_results_no_sidecar.json",
+  "created_at": "2026-03-08T14:39:37+00:00"
 }

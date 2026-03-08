@@ -7,7 +7,7 @@ This file describes runnable components for the dual-stream experiments. It is a
 Level 1: measured result
 
 - The repository contains a locked corpus benchmark for structural retrieval.
-- The best committed mid-scale benchmark result on that benchmark path comes from structural nodes without sidecar reranking.
+- The best committed large-scale benchmark result on that benchmark path comes from structural nodes without sidecar reranking on the `200`-paper / `250`-question arXiv checkpoint.
 - The current benchmark does not support a strong compression claim.
 
 Level 3: hypothesis

@@ -1,7 +1,7 @@
 # Corpus Benchmark Plan
 
 ## Objective
-Run the new leakage-aware benchmark in stages until the 200-paper result is credible enough to cite.
+Run the leakage-aware benchmark in stages, keeping claims tied to committed artifacts as the corpus scales.
 
 ## Current checkpoint
 
@@ -11,6 +11,7 @@ The latest completed checkpoints are:
 - `40` frozen questions
 - both `extractive` and `ollama` answer backends on the locked pilot
 - a follow-on `50`-paper / `60`-question Ollama checkpoint with sidecar reranking disabled
+- a `200`-paper / `250`-question Ollama checkpoint with sidecar reranking disabled
 
 Observed results:
 
@@ -24,15 +25,20 @@ Observed results:
 - 50-paper ollama structural manifold (no sidecar rerank): `QA=0.883`, `Top-1=0.867`, `Top-5=0.950`
 - 50-paper ollama shuffled manifold: `QA=0.050`, `Top-1=0.000`, `Top-5=0.050`
 - compression at 50 papers: `2.24x` on structural tokens, with serialized manifold bytes still larger than the corpus
+- 200-paper ollama baseline RAG: `QA=0.504`, `Top-1=0.392`, `Top-5=0.536`
+- 200-paper ollama structural manifold (no sidecar rerank): `QA=0.716`, `Top-1=0.728`, `Top-5=0.828`
+- 200-paper ollama shuffled manifold: `QA=0.016`, `Top-1=0.008`, `Top-5=0.020`
+- compression at 200 papers: `2.66x` on structural tokens, with serialized manifold bytes still larger than the corpus
 
 Interpretation:
 
-- structural retrieval now looks legitimate through the mid-scale `50`-paper checkpoint
+- structural retrieval now looks legitimate through the `200`-paper checkpoint
 - the shuffled control is behaving correctly
 - answer-path tightening worked materially on the same locked corpus/questions
-- the manifold still beats baseline under LLM answering at `50` papers
+- the manifold still beats baseline under LLM answering at `200` papers
+- the retrieval-to-QA gap is now small at `200` papers (`Top-1=0.728`, `QA=0.716`)
 - the compression claim is still weak
-- the next highest-value step is a `100`-paper checkpoint plus stronger baseline comparisons, not more prompt cleanup
+- the next highest-value steps are stronger baseline comparisons, harder question sets, and compression redesign, not more prompt cleanup
 
 ## Recommended path
 
@@ -182,21 +188,6 @@ Status:
 - Retrieval also remained strong at `50` papers: baseline `Top-1=0.617`, manifold `Top-1=0.867`, shuffled `Top-1=0.000`.
 - Compression improved only modestly to `2.24x` and remains the weak part of the story.
 
-Next checkpoint:
-```bash
-python run_full_demo.py \
-  --paper-count 100 \
-  --question-count 80 \
-  --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
-  --node-chars 1500 \
-  --node-overlap 180 \
-  --window-bytes 16 \
-  --stride-bytes 4 \
-  --qa-backend ollama \
-  --disable-sidecar-rerank \
-  --force
-```
-
 Metrics that matter:
 - `results/compression_metrics.json`
 - `results/baseline_rag_results.json`
@@ -212,12 +203,39 @@ Suggested command:
 ```bash
 python run_full_demo.py \
   --paper-count 200 \
-  --question-count 100 \
+  --question-count 250 \
   --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
-  --qa-backend ollama
+  --node-chars 1500 \
+  --node-overlap 180 \
+  --window-bytes 16 \
+  --stride-bytes 4 \
+  --qa-backend ollama \
+  --disable-sidecar-rerank \
+  --force
 ```
 
-This is the first run worth presenting externally.
+Status:
+- Completed.
+- `200`-paper result: baseline `QA=0.504`, manifold `QA=0.716`, shuffled `QA=0.016`.
+- Retrieval remained materially stronger for the manifold at `200` papers: baseline `Top-1=0.392`, manifold `Top-1=0.728`, shuffled `Top-1=0.008`.
+- Compression improved only modestly to `2.66x`, and serialized manifold storage remains larger than the raw corpus bytes.
+- Mean latency was slightly better for the manifold path in this run (`0.397s` vs `0.452s`).
+
+This is the first large-scale run worth presenting externally, but it supports a retrieval claim rather than a strong compression claim.
+
+### Stage 4: post-200 validation
+Do this after the flagship run, using the same evidence discipline.
+
+Purpose:
+- determine whether the current win survives stronger baselines
+- measure whether the result survives harder question types
+- separate retrieval quality from compression quality in follow-on work
+
+Recommended next work:
+1. compare against stronger embedding and hybrid retrieval baselines
+2. add harder cross-document and structural questions to reduce title-lookup bias
+3. redesign the compression format so serialized artifacts are smaller than the source corpus
+4. only then test transfer to a second public corpus
 
 ## What corpus to obtain
 
@@ -261,5 +279,5 @@ Reject the run if:
 
 - Start with `--qa-backend extractive` if you only want to debug retrieval.
 - Switch to `--qa-backend ollama` once retrieval looks sane, while keeping the same frozen corpus/questions.
-- Do not jump straight to 200 papers; most failure modes show up at 25-50.
+- Use the `25`- and `50`-paper stages to debug, but treat the `200`-paper result as the current external checkpoint.
 - Freeze `data/questions.json` and keep it untouched once the run starts.

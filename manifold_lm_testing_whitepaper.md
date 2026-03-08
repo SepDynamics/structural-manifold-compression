@@ -11,33 +11,33 @@ Artifacts:
 - `results/manifold_reconstruction_sweep.json`
 - `results/manifold_results_no_sidecar.json`
 
-### Latest mid-scale arXiv checkpoint
+### Latest large-scale arXiv checkpoint
 
-- corpus: `50` papers
-- evaluation set: `60` frozen questions
+- corpus: `200` papers
+- evaluation set: `250` frozen questions
 - protocol: leakage-aware, bounded reconstruction, shuffled-manifold control
 
 Measured outputs:
 
-- baseline RAG (`ollama`): `QA=0.750`, `Top-1=0.617`, `Top-5=0.767`
-- structural manifold, no sidecar rerank: `QA=0.883`, `Top-1=0.867`, `Top-5=0.950`
-- shuffled manifold control: `QA=0.050`, `Top-1=0.000`, `Top-5=0.050`
-- compression: about `2.24x` on structural tokens, with serialized manifold bytes larger than the corpus
+- baseline RAG (`ollama`): `QA=0.504`, `Top-1=0.392`, `Top-5=0.536`
+- structural manifold, no sidecar rerank: `QA=0.716`, `Top-1=0.728`, `Top-5=0.828`
+- shuffled manifold control: `QA=0.016`, `Top-1=0.008`, `Top-5=0.020`
+- compression: about `2.66x` on structural tokens, with serialized manifold bytes larger than the corpus
 
 ### Measured interpretation
 
-- Structural node retrieval remains stronger than the current chunked RAG baseline at `50` papers.
+- Structural node retrieval remains stronger than the current chunked RAG baseline at `200` papers.
 - The shuffled control collapses, which supports the integrity of the retrieval result.
 - The current best committed manifold result is achieved with sidecar reranking disabled.
 - Compression remains weak by the standard required for a strong corpus-compression claim.
 
 ## 2. Observed Behavior
 
-- Most remaining manifold misses in the `50`-paper checkpoint are `INSUFFICIENT_CONTEXT`.
-- The sidecar-disabled manifold configuration remains better than the current baseline at `50` papers.
+- Most remaining manifold misses in the `200`-paper checkpoint are `INSUFFICIENT_CONTEXT`.
+- The sidecar-disabled manifold configuration remains better than the current baseline at `200` papers.
 - The reconstruction sweep did not find a better setting than `top_k=5`, `per_paper_snippets=3`, and `max_context_tokens=2000`.
 
-These are meaningful observations, but they are still early mid-scale observations rather than robust scaling laws.
+These are meaningful observations, but they are still early large-scale observations rather than robust scaling laws.
 
 ## 3. Architecture Hypotheses
 
@@ -62,7 +62,7 @@ This is a hypothesis about retrieval architecture, not a proved model of languag
 
 - strong corpus compression under the arXiv benchmark
 - storage reduction relative to the source corpus
-- performance at `100-200` papers
+- performance beyond the current `200`-paper checkpoint
 - parity with stronger RAG baselines
 - a useful role for the sidecar layer in its current form
 - any claim of general context-handling superiority over current transformer systems
@@ -81,8 +81,7 @@ These results are useful for hypothesis generation, but the current benchmark cl
 
 ## 6. Research Directions
 
-- scale the benchmark to `100` and `200` papers
-- compare structural nodes against stronger embedding baselines
+- compare structural nodes against stronger embedding and hybrid retrieval baselines at the `200`-paper scale
 - redesign the sidecar layer as verifier-only or verifier-first
 - improve compression without losing the current retrieval signal
-- test whether the pilot behavior transfers to other public corpora
+- test whether the current `200`-paper behavior transfers to other public corpora

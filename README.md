@@ -11,7 +11,7 @@ This repository explores a structural retrieval pipeline built from:
 - an optional sidecar signature layer
 - a bounded-context answer stage using either extractive scoring or an LLM
 
-The current evidence supports a small-to-mid-scale retrieval claim on leakage-aware arXiv benchmarks. It does not yet support a strong corpus-compression claim.
+The current evidence supports a retrieval claim on a leakage-aware `200`-paper arXiv benchmark. It does not yet support a strong corpus-compression claim.
 
 ## Evidence Levels
 
@@ -28,8 +28,8 @@ Level 1: measured result
 
 Dataset and protocol:
 
-- `50` arXiv papers
-- `60` frozen questions
+- `200` arXiv papers
+- `250` frozen questions
 - leakage-aware setup with neutral `paper_###` ids
 - bounded reconstruction only; the model never sees the full corpus
 - shuffled-manifold integrity control
@@ -44,34 +44,35 @@ Primary artifacts:
 - `results/manifold_ablation.json`
 - `results/manifold_reconstruction_sweep.json`
 
-### Locked pilot results
+### Current benchmark results
 
 | System | QA | Top-1 | Top-5 | Artifact |
 |--------|---:|------:|------:|----------|
-| Baseline RAG (`ollama`) | 0.750 | 0.617 | 0.767 | `results/baseline_rag_results.json` |
-| Structural manifold, no sidecar rerank | 0.883 | 0.867 | 0.950 | `results/manifold_results_no_sidecar.json` |
-| Shuffled manifold control | 0.050 | 0.025 | 0.050 | `results/manifold_results_shuffled.json` |
+| Baseline RAG (`ollama`) | 0.504 | 0.392 | 0.536 | `results/baseline_rag_results.json` |
+| Structural manifold, no sidecar rerank | 0.716 | 0.728 | 0.828 | `results/manifold_results_no_sidecar.json` |
+| Shuffled manifold control | 0.016 | 0.008 | 0.020 | `results/manifold_results_shuffled.json` |
 
 Compression on the same pilot:
 
-- original corpus tokens: `576,051`
-- structural manifold tokens: `256,743`
-- token compression: `2.24x`
+- original corpus tokens: `2,957,826`
+- structural manifold tokens: `1,111,688`
+- token compression: `2.66x`
 - serialized manifold size: larger than the raw corpus bytes
 
 ## Interpretation
 
 Level 1: measured result
 
-- Structural node retrieval continues to outperform the current baseline at `50` papers.
+- Structural node retrieval continues to outperform the current baseline at `200` papers.
 - The shuffled control collapses, so the pilot is not surviving randomization.
 - Disabling the current sidecar reranker improves QA from `0.850` to `0.900` in the committed ablation artifact.
 - The best tested reconstruction settings are `top_k=5`, `per_paper_snippets=3`, and `max_context_tokens=2000`.
 
 Level 2: observed behavior
 
-- Most remaining manifold misses in the `50`-paper run are `INSUFFICIENT_CONTEXT`.
+- Most remaining manifold misses in the `200`-paper run are `INSUFFICIENT_CONTEXT`.
 - The current sidecar layer behaves more like a noisy reranker than a helpful one on this benchmark.
+- The manifold retrieval-to-QA gap is now small (`0.728` Top-1 vs `0.716` QA), so retrieval rather than answer formatting is carrying most of the remaining error.
 
 Level 3: hypothesis
 
@@ -80,7 +81,8 @@ Level 3: hypothesis
 
 Level 4: research direction
 
-- A larger `100-200` paper benchmark may show whether the retrieval advantage survives further scale.
+- Stronger embedding and hybrid retrieval baselines may show how much of the current win is specific to the simple baseline used here.
+- Harder question sets may show whether the retrieval advantage survives beyond document-identification-heavy evaluation.
 - A redesigned sidecar layer may still become useful if it is decoupled from ranking.
 
 ## What Is Established
@@ -89,7 +91,7 @@ Level 1: measured result
 
 - Structural manifold encoding, indexing, and verification code exists in the repo.
 - The corpus benchmark is leakage-aware and end-to-end reproducible.
-- The `25`-paper and `50`-paper arXiv checkpoints both support a credible retrieval claim.
+- The `25`-paper, `50`-paper, and `200`-paper arXiv checkpoints all support a credible retrieval claim.
 - The shuffled control, sidecar ablation, and reconstruction sweep are all implemented and committed as artifacts.
 
 ## What Is Not Yet Established
@@ -98,8 +100,8 @@ Level 4: research direction
 
 - strong compression under the arXiv benchmark
 - serialized storage reduction relative to the source corpus
-- retrieval retention at `100-200` papers
-- QA retention at `100-200` papers
+- stronger baseline comparisons at the `200`-paper scale
+- performance on broader question types than the current generated set
 - value added by the sidecar layer after redesign
 - any claim of general context-handling superiority over current transformer systems
 
@@ -107,9 +109,9 @@ Level 4: research direction
 
 Level 1: measured result
 
-- Compression is currently weak at about `2.24x` token reduction in the latest mid-scale checkpoint.
+- Compression is currently weak at about `2.66x` token reduction in the latest `200`-paper checkpoint.
 - Serialized manifold artifacts are larger than the source corpus bytes.
-- Results are still based on modest-scale checkpoints: `25` papers / `40` questions and `50` papers / `60` questions.
+- The question set is generated automatically and is still weighted toward document identification rather than rich cross-document reasoning.
 - The baseline comparison is a simple chunked RAG pipeline, not a broad leaderboard of embedding systems.
 
 Level 2: observed behavior
@@ -142,12 +144,12 @@ Run the full pipeline:
 python run_full_demo.py
 ```
 
-Recommended 50-paper checkpoint:
+Recommended 200-paper checkpoint:
 
 ```bash
 python run_full_demo.py \
-  --paper-count 50 \
-  --question-count 60 \
+  --paper-count 200 \
+  --question-count 250 \
   --categories cs.LG cs.AI math.OC math.PR hep-th cond-mat.stat-mech \
   --node-chars 1500 \
   --node-overlap 180 \
