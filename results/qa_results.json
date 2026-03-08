@@ -15,12 +15,12 @@
     "stride_bytes": 4,
     "precision": 2,
     "embedding_model": "all-MiniLM-L6-v2",
-    "created_at": "2026-03-08T12:53:22+00:00"
+    "created_at": "2026-03-08T12:59:05+00:00"
   },
   "qa_accuracy": {
     "full_corpus_oracle": 1.0,
-    "baseline_rag": 0.65,
-    "structural_manifold": 0.9
+    "baseline_rag": 0.625,
+    "structural_manifold": 0.7
   },
   "retrieval_accuracy": {
     "baseline_top1": 0.65,
@@ -29,12 +29,12 @@
     "manifold_top5": 0.95
   },
   "latency_seconds": {
-    "baseline_rag": 0.003573310699539434,
-    "structural_manifold": 0.007286045974797162
+    "baseline_rag": 0.9672609007504434,
+    "structural_manifold": 0.5098320703502395
   },
   "integrity_checks": {
     "question_hash_locked": "ca6a93b123aa4d8f6ea6a6176baf53017cad19ee6d82030be7188b3319047143",
-    "randomized_manifold_qa_accuracy": 0.025,
+    "randomized_manifold_qa_accuracy": 0.0,
     "randomized_manifold_top1": 0.025
   },
   "graphs": {
@@ -42,5 +42,5 @@
     "qa_accuracy": "qa_accuracy.png",
     "latency": "latency.png"
   },
-  "created_at": "2026-03-08T12:53:24+00:00"
+  "created_at": "2026-03-08T13:00:19+00:00"
 }

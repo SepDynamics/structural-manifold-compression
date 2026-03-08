@@ -14,6 +14,7 @@ This whitepaper now distinguishes between implemented components, prior reported
 - The repo contains structural manifold encoding, indexing, and verification code.
 - The repo now contains a leakage-aware corpus benchmark harness for testing compression-oriented retrieval with frozen questions and bounded reconstruction.
 - A 25-paper arXiv pilot with `extractive` answering produced `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, with shuffled control collapsing to `0.025`.
+- The same locked 25-paper pilot with `ollama` answering produced `0.70` manifold QA versus `0.625` for the baseline, while manifold retrieval stayed at `0.90` Top-1 and shuffled manifold QA collapsed to `0.0`.
 
 ### Prior reported
 - The benchmark figures below refer to earlier internal experiments and narrower datasets.
@@ -26,7 +27,7 @@ This whitepaper now distinguishes between implemented components, prior reported
 - General architectural replacement claims for transformers
 
 ### Latest pilot interpretation
-The current benchmark evidence is strongest for structural retrieval, not compression. The latest 25-paper pilot shows that section-level structural indexing can outperform the current baseline chunked RAG on frozen document-identification questions, but the same run only achieved about `1.81x` token compression and stored a serialized manifold larger than the raw corpus bytes. This means the retrieval claim has improved materially, while the compression claim remains pending.
+The current benchmark evidence is strongest for structural retrieval, not compression. The latest 25-paper pilot shows that section-level structural indexing can outperform the current baseline chunked RAG on frozen document-identification questions, and that this advantage survives an `ollama` answer backend under bounded reconstruction. However, the same run only achieved about `1.81x` token compression and stored a serialized manifold larger than the raw corpus bytes. This means the retrieval claim has improved materially, while the compression claim remains pending. The next bottleneck is now answer-path quality rather than retrieval quality.
 
 ---
 

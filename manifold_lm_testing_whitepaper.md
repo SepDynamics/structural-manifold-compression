@@ -8,6 +8,7 @@ This document should be read as a hypothesis and prior-results note, not as a se
 - Structural manifold encoding, indexing, and verification primitives exist.
 - The repository now contains a leakage-aware corpus benchmark harness with frozen questions, neutral document ids, bounded reconstruction, and a shuffled-manifold control.
 - A 25-paper arXiv pilot with the `extractive` backend reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
+- The same locked pilot with `ollama` answering reached `0.70` manifold QA versus `0.625` for the baseline, with manifold retrieval holding at `0.90` Top-1 and shuffled manifold QA collapsing to `0.0`.
 
 ### Prior reported results
 - The benchmarks described below were reported on earlier internal experiments and narrower datasets.
@@ -21,18 +22,23 @@ This document should be read as a hypothesis and prior-results note, not as a se
 
 ## Latest corpus benchmark checkpoint
 
-The latest locked arXiv pilot should be read as a retrieval result more than a compression result.
+The latest locked arXiv pilot should still be read primarily as a retrieval result, but it now also provides a meaningful bounded-reconstruction QA result.
 
 - Corpus: `25` papers, `40` frozen questions
 - Baseline RAG (`extractive`): `QA=0.650`, `Top-1=0.650`, `Top-5=0.875`
 - Structural-node manifold (`extractive`): `QA=0.900`, `Top-1=0.900`, `Top-5=0.950`
 - Shuffled manifold: `QA=0.025`, `Top-1=0.025`, `Top-5=0.050`
+- Baseline RAG (`ollama`): `QA=0.625`, `Top-1=0.650`, `Top-5=0.875`
+- Structural-node manifold (`ollama`): `QA=0.700`, `Top-1=0.900`, `Top-5=0.950`
+- Shuffled manifold (`ollama`): `QA=0.000`, `Top-1=0.025`, `Top-5=0.050`
 - Compression: about `1.81x` on structural tokens, with serialized manifold bytes larger than the corpus
 
 Interpretation:
 
 - The new structural-node manifold is carrying real retrieval signal.
 - The shuffled control now behaves correctly and destroys that signal.
+- The manifold still beats the baseline under LLM answering, so the pilot is no longer only an extractive-title lookup result.
+- The current gap between `0.90` retrieval and `0.70` Ollama QA suggests the main next bottleneck is answer generation / reconstruction / scoring rather than retrieval.
 - The current implementation is not yet a compelling compressor, so the flagship corpus-compression claim remains open.
 
 ## 1. Introduction: Beyond the Transformer Plateau

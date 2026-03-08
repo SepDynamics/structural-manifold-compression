@@ -12,6 +12,7 @@ Current status: the repo contains a working benchmark harness, reusable manifold
 - The repo now includes a leakage-aware corpus benchmark pipeline with frozen questions, neutral `paper_###` ids, stripped frontmatter, bounded reconstruction, and a shuffled-manifold control.
 - The new demo path is runnable end to end and covered by unit and smoke tests.
 - A 25-paper arXiv pilot using the new structural-node manifold and `extractive` answering reached `0.90` manifold QA / Top-1 retrieval versus `0.65` for the baseline chunked RAG, while the shuffled control collapsed to `0.025`.
+- The same locked 25-paper pilot with `ollama` answering reached `0.70` manifold QA versus `0.625` for the baseline, while manifold retrieval stayed at `0.90` Top-1 and shuffled manifold QA collapsed to `0.0`.
 
 ### Historical / prior reported
 - The benchmark snapshot later in this README summarizes prior results on earlier datasets.
@@ -22,6 +23,7 @@ Current status: the repo contains a working benchmark harness, reusable manifold
 - 200-paper retrieval retention
 - 200-paper QA retention relative to baseline RAG
 - Whether the structural manifold still wins with an LLM answerer under bounded reconstruction
+- Whether the current Ollama gap is mostly prompt/reconstruction friction or a deeper manifold limitation
 - Any claim that this system replaces transformer context handling in general
 
 ---
@@ -90,16 +92,19 @@ The latest leakage-aware arXiv pilot used:
 
 - `25` papers
 - `40` frozen questions
-- `extractive` answering
+- locked corpus / locked questions
 - structural nodes with sidecar signatures as reranking / verification features
 
 Results:
 
-| System | QA Acc. | Top-1 | Top-5 |
-|--------|--------:|------:|------:|
-| Baseline RAG | 0.650 | 0.650 | 0.875 |
-| Structural manifold | 0.900 | 0.900 | 0.950 |
-| Shuffled manifold | 0.025 | 0.025 | 0.050 |
+| Backend | System | QA Acc. | Top-1 | Top-5 |
+|---------|--------|--------:|------:|------:|
+| `extractive` | Baseline RAG | 0.650 | 0.650 | 0.875 |
+| `extractive` | Structural manifold | 0.900 | 0.900 | 0.950 |
+| `extractive` | Shuffled manifold | 0.025 | 0.025 | 0.050 |
+| `ollama` | Baseline RAG | 0.625 | 0.650 | 0.875 |
+| `ollama` | Structural manifold | 0.700 | 0.900 | 0.950 |
+| `ollama` | Shuffled manifold | 0.000 | 0.025 | 0.050 |
 
 Compression on the same run:
 
@@ -111,8 +116,10 @@ Compression on the same run:
 Interpretation:
 
 - Strong result: the structural-node manifold is carrying real retrieval signal, and the shuffled control collapses as it should.
+- Strong result: the structural-node manifold still beats the current baseline when answers are generated with `ollama`, not just when answers are extracted mechanically.
 - Weak result: the current implementation is not yet a compelling compressor.
-- Important caveat: with the `extractive` backend, QA accuracy is effectively document-retrieval accuracy, not full generative QA from reconstructed evidence.
+- Important caveat: the gap between manifold retrieval (`0.90`) and manifold Ollama QA (`0.70`) indicates the current bottleneck is now answer generation / reconstruction / scoring, not retrieval.
+- Additional caveat: with the `extractive` backend, QA accuracy is effectively document-retrieval accuracy, not full generative QA from reconstructed evidence.
 
 ### Run the full demo
 ```bash
