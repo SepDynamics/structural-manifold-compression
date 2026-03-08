@@ -28,6 +28,77 @@ This architecture has been mathematically proven across three distinct capabilit
 
 ---
 
+## 4. Corpus Demo
+The repo now includes a locked-evaluation corpus demo for **LLM-usable compression**:
+
+```text
+200 Research Papers
+      ↓
+Question Freeze (`data/questions.json`)
+      ↓
+Structural Manifold Compression
+      ↓
+Manifold Index (`manifold/`)
+      ↓
+Question
+      ↓
+Manifold Retrieval
+      ↓
+Reconstructed Context (max 2000 tokens)
+      ↓
+LLM / extractive answer
+```
+
+### Protocol guarantees
+- Questions are frozen before `manifold/` is generated.
+- Papers are re-labeled as neutral `paper_###` ids during corpus build.
+- Compression strips frontmatter before indexing to avoid title/DOI leakage.
+- The LLM never sees the full corpus, only bounded reconstructed chunks.
+- A shuffled-manifold control run is written to `results/manifold_results_shuffled.json`.
+
+### Run the full demo
+```bash
+python run_full_demo.py
+```
+
+For a local smoke test without downloading arXiv papers:
+```bash
+python run_full_demo.py \
+  --input-dir /path/to/local/txt_corpus \
+  --qa-backend extractive \
+  --embedding-model hash
+```
+
+### Outputs
+```text
+demo/
+   build_corpus.py
+   generate_manifold.py
+   run_baseline_rag.py
+   run_manifold_system.py
+   evaluate.py
+
+data/
+   corpus/
+   corpus_manifest.json
+   corpus_full.txt
+   questions.json
+
+manifold/
+   manifold.json
+   manifold_index.bin
+
+results/
+   compression_metrics.json
+   baseline_rag_results.json
+   manifold_results.json
+   manifold_results_shuffled.json
+   qa_results.json
+   graphs/
+```
+
+---
+
 ## Quick Start (The Pair Programmer Daemon)
 Experience the $O(1)$ Structural Architecture locally on any Linux machine. 
 
